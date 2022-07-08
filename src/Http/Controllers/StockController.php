@@ -14,7 +14,9 @@ class StockController extends Controller
      */
     public function index()
     {
-        //
+        $stocks = Stock::simplePaginate(15);
+
+        return view("finance-dashboard::stocks.list");
     }
 
     /**

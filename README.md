@@ -8,6 +8,20 @@ You can install the package via composer:
 composer require breuermarcel/finance-dashboard
 ```
 
+Or install locally to "packages":
+```json
+"repositories": [
+    {
+        "type":"path",
+        "url": "./packages/*"
+    }
+],
+```
+
+```bash
+composer require breuermarcel/finance-dashboard
+```
+
 ## Usage
 
 ```php
