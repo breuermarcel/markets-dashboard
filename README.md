@@ -21,9 +21,3 @@ Or install locally to "packages":
 ```bash
 composer require breuermarcel/finance-dashboard
 ```
-
-## Usage
-
-```php
-
-```
