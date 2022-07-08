@@ -1,0 +1,49 @@
+{
+    "name": "breuermarcel/finance-dashboard",
+    "description": "",
+    "keywords": [
+        "breuermarcel",
+        "finance-dashboard"
+    ],
+    "homepage": "https://github.com/breuermarcel/finance-dashboard",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Marcel Breuer",
+            "email": "breuer.marcel@outlook.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "illuminate/support": "^8.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Breuermarcel\\FinanceDashboard\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Breuermarcel\\FinanceDashboard\\FinanceDashboardServiceProvider"
+            ],
+            "aliases": {
+                "FinanceDashboard": "Breuermarcel\\FinanceDashboard\\FinanceDashboardFacade"
+            }
+        }
+    }
+}
