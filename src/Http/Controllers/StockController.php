@@ -16,7 +16,7 @@ class StockController extends Controller
     {
         $stocks = Stock::simplePaginate(15);
 
-        return view("finance-dashboard::stocks.list");
+        return view("finance-dashboard::stocks.list", ["stocks" => $stocks]);
     }
 
     /**

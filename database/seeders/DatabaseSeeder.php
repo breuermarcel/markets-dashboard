@@ -2,8 +2,8 @@
 
 namespace Breuermarcel\FinanceDashboard\Database\Seeder;
 
+use Breuermarcel\FinanceDashboard\Database\Seeders\StockSeeder;
 use Illuminate\Database\Seeder;
-use Breuermarcel\FinanceDashboard\Models\Stock;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,25 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        /**
-         * Seed stocks from csv.
-         */
-        $csv = fopen(base_path("database/seeders/data/stocks.csv"), "r");
-        $firstline = true;
-
-        while(($data = fgetcsv($csv)) !== false) {
-            if (!$firstline) {
-                Stock::create([
-                    "symbol" => $data[0],
-                    "wkn" => $data[1],
-                    "isin" => $data[2],
-                    "name" => $data[3]
-                ]);
-            }
-
-            $firstline = false;
-        }
-
-        fclose($csv);
+        $this->call([
+            StockSeeder::class
+        ]);
     }
 }
