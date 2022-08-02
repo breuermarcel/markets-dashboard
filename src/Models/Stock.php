@@ -10,11 +10,33 @@ class Stock extends Model
     use HasFactory;
 
     /**
-     * Deklare tablename
+     * The table associated with the model.
      *
      * @var string
      */
+    //protected $table = config("finance-dashboard.tables.stocks");
     protected $table = "bm_stocks";
+
+    /**
+     * The primary key for the model.
+     *
+     * @var string
+     */
+    protected $primaryKey = "symbol";
+
+    /**
+     * The "type" of the primary key ID.
+     *
+     * @var string
+     */
+    protected $keyType = "string";
+
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
 
     /**
      * Set timestamps

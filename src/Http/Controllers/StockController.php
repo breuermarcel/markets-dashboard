@@ -3,7 +3,9 @@
 namespace Breuermarcel\FinanceDashboard\Http\Controllers;
 
 use Breuermarcel\FinanceDashboard\Models\Stock;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
+use Symfony\Component\Routing\Loader\Configurator\ImportConfigurator;
 
 class StockController extends Controller
 {
@@ -84,4 +86,57 @@ class StockController extends Controller
     {
         //
     }
+
+    /**
+     * Display the form to post csv-file.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function import_csv()
+    {
+        return view("finance-dashboard::stocks.import");
+    }
+
+    /**
+     * Import csv-file to stocks.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function do_import_csv(Request $request)
+    {
+        $validated = $request->validateWithBag("stock_errors", [
+            "file" => "required|mimes:csv,txt|max:2048"
+        ]);
+
+        $csv = fopen($request->file->getPathname(), "r");
+        $firstline = true;
+
+        while (($data = fgetcsv($csv)) !== false) {
+            if (!$firstline) {
+                $stock = Stock::find(strtoupper($data[0]));
+
+                if ($stock->exists()) {
+                    $stock->symbol = $data[0];
+                    $stock->wkn = $data[1];
+                    $stock->isin = $data[2];
+                    $stock->name = $data[3];
+                } else {
+                    Stock::create([
+                        "symbol" => $data[0],
+                        "wkn" => $data[1],
+                        "isin" => $data[2],
+                        "name" => $data[3]
+                    ]);
+                }
+            }
+
+            $firstline = false;
+        }
+
+        fclose($csv);
+
+        return redirect()->back()->with("success", "Import war erfolgreich.");
+    }
+
 }
