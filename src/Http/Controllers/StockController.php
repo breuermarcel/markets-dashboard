@@ -166,4 +166,14 @@ class StockController extends Controller
         return redirect()->back()->withSuccess(trans("Import war erfolgreich."));
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getStocksByCriteria()
+    {
+        //
+    }
+
 }
