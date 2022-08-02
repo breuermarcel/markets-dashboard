@@ -159,7 +159,7 @@ class StockController extends Controller
 
         fclose($csv);
 
-        return redirect()->back()->with("success", trans("Import war erfolgreich."));
+        return redirect()->back()->withSuccess(trans("Import war erfolgreich.");
     }
 
 }
