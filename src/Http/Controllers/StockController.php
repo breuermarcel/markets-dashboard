@@ -114,21 +114,15 @@ class StockController extends Controller
 
         while (($data = fgetcsv($csv)) !== false) {
             if (!$firstline) {
-                $stock = Stock::find(strtoupper($data[0]));
-
-                if ($stock->exists()) {
-                    $stock->symbol = $data[0];
-                    $stock->wkn = $data[1];
-                    $stock->isin = $data[2];
-                    $stock->name = $data[3];
-                } else {
-                    Stock::create([
+                Stock::updateOrCreate(
+                    ["symbol" => strtoupper($data[0])],
+                    [
                         "symbol" => $data[0],
                         "wkn" => $data[1],
                         "isin" => $data[2],
                         "name" => $data[3]
-                    ]);
-                }
+                    ]
+                );
             }
 
             $firstline = false;
