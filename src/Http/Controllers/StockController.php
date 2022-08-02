@@ -146,7 +146,7 @@ class StockController extends Controller
                 Stock::updateOrCreate(
                     ["symbol" => strtoupper($data[0])],
                     [
-                        "symbol" => $data[0],
+                        "symbol" => strtoupper($data[0]),
                         "wkn" => $data[1],
                         "isin" => $data[2],
                         "name" => $data[3]
