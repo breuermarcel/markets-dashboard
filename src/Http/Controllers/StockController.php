@@ -144,8 +144,12 @@ class StockController extends Controller
         while (($data = fgetcsv($csv)) !== false) {
             if (!$firstline) {
                 Stock::updateOrCreate(
-                    ["symbol" => strtoupper($data[0])],
                     [
+                        // search for item
+                        "symbol" => strtoupper($data[0])
+                    ],
+                    [
+                        // replace/insert with
                         "symbol" => strtoupper($data[0]),
                         "wkn" => $data[1],
                         "isin" => $data[2],
