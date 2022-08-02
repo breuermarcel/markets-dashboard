@@ -4,6 +4,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="robots" content="noindex"/>
+    <meta name="google" content="notranslate">
 
     <title>Finance-Dashboard</title>
 
@@ -16,17 +18,19 @@
 <body>
     @include('finance-dashboard::components.navbar')
 
-    <main class="bm__fd">
-        @include('finance-dashboard::components.sidebar')
-        <main class="bm__main container">
-            @include('finance-dashboard::components.breadcrumb')
+    <div class="bm__fdcontainer-fluid">
+        <div class="row">
+            @include('finance-dashboard::components.sidebar')
+            <main class="bm__main">
+                @include('finance-dashboard::components.breadcrumb')
 
-            <div id="bm__searchResultsContainer"></div>
+                <div id="bm__searchResultsContainer"></div>
 
-            @include("finance-dashboard::components.status")
+                @include("finance-dashboard::components.status")
 
-            @yield('content')
-        </main>
-    </main>
+                @yield('content')
+            </main>
+        </div>
+    </div>
 </body>
 </html>

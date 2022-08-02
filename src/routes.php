@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Breuermarcel\FinanceDashboard\FinanceDashboard;
 use Breuermarcel\FinanceDashboard\Http\Controllers\StockController;
+use Breuermarcel\FinanceDashboard\Http\Controllers\AnalysisController;
 
 Route::get("/", [FinanceDashboard::class, "welcome"]);
 
@@ -15,6 +16,7 @@ Route::resource("stocks", StockController::class);
 
 
 Route::prefix("analysis")->group(function () {
+    Route::get("/", [AnalysisController::class, "index"])->name("analysis.index");
 });
 
 Route::get("/", function () {
