@@ -7,16 +7,21 @@
     @csrf
 
     <div class="col-12">
-    <label for="file" class="form-label">Datei</label>
-    <input type="file" name="file" id="file" class="form-control" aria-describedby="fileHelpBlock">
-    <div id="fileHelpBlock" class="form-text">
-        Erlaubte Dateiformate: CSV.
-    </div>
+        <label for="file" class="form-label">Datei</label>
+        <input type="file" name="file" id="file" class="form-control @error('file') is-invalid @enderror" aria-describedby="fileHelpBlock">
+        <div id="fileHelpBlock" class="form-text">
+            {{ trans("Erlaubte Dateiformate: CSV.") }}
+        </div>
+        @error("file")
+        <div class="invalid-feedback">
+            {{ $message }}
+        </div>
+        @enderror
     </div>
 
-<div class="col-12">
-    <button type="submit" class="btn btn-primary">Hochladen</button>
-</div>
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">{{ trans("Hochladen") }}</button>
+    </div>
 
 </form>
 

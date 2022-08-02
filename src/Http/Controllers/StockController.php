@@ -3,9 +3,8 @@
 namespace Breuermarcel\FinanceDashboard\Http\Controllers;
 
 use Breuermarcel\FinanceDashboard\Models\Stock;
-use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
-use Symfony\Component\Routing\Loader\Configurator\ImportConfigurator;
+use Illuminate\Support\Facades\Validator;
 
 class StockController extends Controller
 {
@@ -28,7 +27,7 @@ class StockController extends Controller
      */
     public function create()
     {
-        //
+        return view("finance-dashboard::stocks.create");
     }
 
     /**
@@ -105,9 +104,15 @@ class StockController extends Controller
      */
     public function do_import_csv(Request $request)
     {
-        $validated = $request->validateWithBag("stock_errors", [
-            "file" => "required|mimes:csv,txt|max:2048"
-        ]);
+        $validator = Validator::make($request->only("file"),
+            ["file" => "required|mimes:csv,txt|max:2048"]
+        );
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $validated = $validator->validated();
 
         $csv = fopen($request->file->getPathname(), "r");
         $firstline = true;
@@ -130,7 +135,7 @@ class StockController extends Controller
 
         fclose($csv);
 
-        return redirect()->back()->with("success", "Import war erfolgreich.");
+        return redirect()->back()->with("success", trans("Import war erfolgreich."));
     }
 
 }
