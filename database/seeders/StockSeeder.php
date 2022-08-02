@@ -15,9 +15,31 @@ class StockSeeder extends Seeder
      */
     public function run()
     {
+        $testarray = [
+            ["AAPL","865985","US0378331005","Apple Inc."],
+            ["NFLX","552484","US64110L1061", "Netflix Inc."]
+        ];
+
+        DB::table("bm_stocks")->insert([
+            "symbol" => "AAPL",
+            "wkn" => "865985",
+            "isin" => "US0378331005",
+            "name" => "Apple Inc."
+        ]);
+
+        foreach ($testarray as $stock) {
+            DB::table("bm_stocks")->insert([
+                "symbol" => $stock[0],
+                "wkn" => $stock[1],
+                "isin" => $stock[2],
+                "name" => $stock[3]
+            ]);
+        }
+
         /**
          * Seed stocks from csv.
          */
+        /*
         $csv = fopen("./data/stocks.csv", "r");
         $firstline = true;
 
@@ -35,5 +57,6 @@ class StockSeeder extends Seeder
         }
 
         fclose($csv);
+        */
     }
 }
