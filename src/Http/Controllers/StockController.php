@@ -38,7 +38,31 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //@todo use config for table
+        $validator = Validator::make($request->all(), [
+            "symbol" => "required|string|max:10",
+            "wkn" => "string|max:25",
+            "isin" => "string|max:25",
+            "name" => "string|max:150"
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $validated = $validator->validated();
+
+        Stock::updateOrCreate(
+            ["symbol" => strtoupper($validated["symbol"])],
+            [
+                "symbol" => $validated["symbol"],
+                "wkn" => $validated["wkn"],
+                "isin" => $validated["isin"],
+                "name" => $validated["name"]
+            ]
+        );
+
+        return redirect()->back()->withSuccess(trans("Aktie erfolgreich hinzugefügt."));
     }
 
     /**

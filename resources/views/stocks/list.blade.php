@@ -3,7 +3,7 @@
 @section('content')
 
 @foreach ($stocks as $stock)
-    $stock->name
+    {{$stock->name}}
 @endforeach
 
 @endsection
