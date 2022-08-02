@@ -17,7 +17,7 @@ class StockController extends Controller
     {
         $stocks = Stock::simplePaginate(15);
 
-        return view("finance-dashboard::stocks.list", ["stocks" => $stocks]);
+        return view("finance-dashboard::stocks.list", compact('stocks'));
     }
 
     /**
@@ -73,7 +73,7 @@ class StockController extends Controller
      */
     public function show(Stock $stock)
     {
-        //
+        return view("finance-dashboard::stocks.detail", compact('stock'));
     }
 
     /**
