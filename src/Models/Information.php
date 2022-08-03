@@ -32,4 +32,9 @@ class Information extends Model
     protected $fillable = [
         //
     ];
+
+    public function stock()
+    {
+        $this->belongsTo(Stock::class);
+    }
 }

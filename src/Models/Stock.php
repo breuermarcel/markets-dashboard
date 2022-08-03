@@ -56,4 +56,9 @@ class Stock extends Model
         "isin",
         "name"
     ];
+
+    public function information()
+    {
+        $this->hasOne(Information::class);
+    }
 }
