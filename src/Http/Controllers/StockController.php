@@ -84,7 +84,7 @@ class StockController extends Controller
      */
     public function edit(Stock $stock)
     {
-        //
+        return view("financial-dashboard::stocks.edit", compact("stock"));
     }
 
     /**
@@ -107,7 +107,9 @@ class StockController extends Controller
      */
     public function destroy(Stock $stock)
     {
-        //
+        $stock->delete();
+
+        return redirect()->back()->withSuccess(trans("Aktie erfolgreich gelöscht."));
     }
 
     /**
