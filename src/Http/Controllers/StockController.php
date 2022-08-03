@@ -47,7 +47,7 @@ class StockController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return redirect()->route("stocks.create")->withErrors($validator)->withInput();
         }
 
         $validated = $validator->validated();
@@ -62,7 +62,7 @@ class StockController extends Controller
             ]
         );
 
-        return redirect()->back()->withSuccess(trans("Aktie erfolgreich hinzugefügt."));
+        return redirect()->route("stocks.index")->withSuccess(trans("Aktie erfolgreich hinzugefügt."));
     }
 
     /**
@@ -84,7 +84,7 @@ class StockController extends Controller
      */
     public function edit(Stock $stock)
     {
-        return view("financial-dashboard::stocks.edit", compact("stock"));
+        return view("finance-dashboard::stocks.edit", compact("stock"));
     }
 
     /**
@@ -96,7 +96,24 @@ class StockController extends Controller
      */
     public function update(Request $request, Stock $stock)
     {
-        //
+        $validator = Validator::make($request->only(["wkn", "isin", "name"]), [
+            "wkn" => "string|max:25",
+            "isin" => "string|max:25",
+            "name" => "string|max:150"
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->route("stocks.edit")->withErrors($validator)->withInput();
+        }
+
+        $validated = $validator->validated();
+
+        $stock->wkn = $validated["wkn"];
+        $stock->isin = $validated["isin"];
+        $stock->name = $validated["name"];
+        $stock->save();
+
+        return redirect()->route("stocks.index")->withSuccess(trans("Aktie erfolgreich aktualisiert."));
     }
 
     /**
@@ -109,7 +126,7 @@ class StockController extends Controller
     {
         $stock->delete();
 
-        return redirect()->back()->withSuccess(trans("Aktie erfolgreich gelöscht."));
+        return redirect()->route("stocks.list")->withSuccess(trans("Aktie erfolgreich gelöscht."));
     }
 
     /**
@@ -135,7 +152,7 @@ class StockController extends Controller
         );
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
+            return redirect()->route("stocks.import")->withErrors($validator)->withInput();
         }
 
         $validated = $validator->validated();
@@ -165,7 +182,7 @@ class StockController extends Controller
 
         fclose($csv);
 
-        return redirect()->back()->withSuccess(trans("Import war erfolgreich."));
+        return redirect()->route("stocks.import")->withSuccess(trans("Import war erfolgreich."));
     }
 
     /**
