@@ -41,9 +41,9 @@ class StockController extends Controller
         //@todo use config for table
         $validator = Validator::make($request->all(), [
             "symbol" => "required|string|max:10",
-            "wkn" => "string|max:25",
-            "isin" => "string|max:25",
-            "name" => "string|max:150"
+            "wkn" => "nullable|string|max:25",
+            "isin" => "nullable|string|max:25",
+            "name" => "nullable|string|max:150"
         ]);
 
         if ($validator->fails()) {
@@ -97,9 +97,9 @@ class StockController extends Controller
     public function update(Request $request, Stock $stock)
     {
         $validator = Validator::make($request->only(["wkn", "isin", "name"]), [
-            "wkn" => "string|max:25",
-            "isin" => "string|max:25",
-            "name" => "string|max:150"
+            "wkn" => "nullable|string|max:25",
+            "isin" => "nullable|string|max:25",
+            "name" => "nullable|string|max:150"
         ]);
 
         if ($validator->fails()) {
@@ -126,7 +126,7 @@ class StockController extends Controller
     {
         $stock->delete();
 
-        return redirect()->route("stocks.list")->withSuccess(trans("Aktie erfolgreich gelöscht."));
+        return redirect()->route("stocks.index")->withSuccess(trans("Aktie erfolgreich gelöscht."));
     }
 
     /**

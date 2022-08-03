@@ -1,7 +1,6 @@
 @extends('finance-dashboard::main')
 
 @section('content')
-
     <div class="btn-toolbar mb-2">
         <div class="btn-group">
             <a href="{{ route('stocks.create') }}"
@@ -9,9 +8,10 @@
         </div>
     </div>
 
-    @empty($stocks)
-        <div class="">
+    @if($stocks->count() <= 0)
+        <div class="alert alert-warning alert-dismissible fade show my-3" role="alert">
             {{ trans("Keine Aktien verfügbar.")}}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     @else
 
@@ -27,7 +27,7 @@
             </tr>
             </thead>
             <tbody>
-            @forelse($stocks as $stock)
+            @foreach($stocks as $stock)
                 <tr>
                     <td>{{ $stock->symbol }}</td>
                     <td>{{ $stock->name }}</td>
@@ -46,8 +46,7 @@
                         </form>
                     </td>
                 </tr>
-            @empty
-            @endforelse
+            @endforeach
             </tbody>
         </table>
     </div>

@@ -18,5 +18,5 @@ Route::prefix("analysis")->group(function () {
 Route::resource("analysis", AnalysisController::class);
 
 Route::get("/", function () {
-    return redirect(route("stocks.index"));
+    return redirect()->route("stocks.index");
 });
