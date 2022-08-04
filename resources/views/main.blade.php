@@ -11,17 +11,17 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
 
-    <link href="{{ asset('css/bm_fd.css') }}" rel="stylesheet">
-    <script src="{{ asset('js/bm_fd.js') }}"></script>
+    <link href="{{ asset('vendor/finance-dashboard/css/main.css') }}" rel="stylesheet">
+    <script src="{{ asset('vendor/finance-dashboard/js/main.js') }}"></script>
 </head>
-<body>
+<body id="bm__body">
     @include('finance-dashboard::components.navbar')
-
-    <div class="bm__fdcontainer-fluid">
+    <div class="container-fluid">
         <div class="row">
             @include('finance-dashboard::components.sidebar')
-            <main class="bm__main">
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 my-sm-3 my-2" id="bm__main">
                 @include('finance-dashboard::components.breadcrumb')
 
                 <div id="bm__searchResultsContainer"></div>

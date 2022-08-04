@@ -3,8 +3,8 @@
 @section('content')
     <div class="btn-toolbar mb-2">
         <div class="btn-group">
-            <a href="{{ route('stocks.create') }}"
-                class="btn btn-sm btn-outline-secondary">{{ trans('Hinzufügen') }}</a>
+            <a href="{{ route('stocks.create') }}" class="btn btn-sm btn-outline-secondary">{{ trans('Hinzufügen') }}</a>
+            <a href="{{ route('stocks.import') }}" class="btn btn-sm btn-outline-secondary">{{ trans('Importieren') }}</a>
         </div>
     </div>
 

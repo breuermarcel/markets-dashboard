@@ -50,7 +50,7 @@
         </div>
 
         <div class="col-12">
-            <button class="btn btn-primary">{{ trans('Create') }}</button>
+            <button class="btn btn-outline-secondary">{{ trans('Create') }}</button>
         </div>
     </form>
 @endsection

@@ -17,7 +17,12 @@ Or install locally to "packages":
     }
 ],
 ```
-
+Require package in composer.json
 ```bash
 composer require breuermarcel/finance-dashboard
+```
+
+Publish assets
+```bash
+php artisan vendor:publish --provider="Breuermarcel\FinanceDashboard\FinanceDashboardServiceProvider" --tag="assets"
 ```

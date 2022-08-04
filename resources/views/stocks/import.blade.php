@@ -20,7 +20,7 @@
     </div>
 
     <div class="col-12">
-        <button type="submit" class="btn btn-primary">{{ trans("Hochladen") }}</button>
+        <button type="submit" class="btn btn-outline-secondary">{{ trans("Hochladen") }}</button>
     </div>
 
 </form>
