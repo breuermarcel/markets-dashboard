@@ -39,7 +39,7 @@
         </div>
 
         <div class="col-md-12 form-floating">
-            <input value="{{ $stock->name }}" name="name" type="text" class="form-control @error('name') is-invalid @enderror" id="name" required autofocus>
+            <input value="{{ $stock->name }}" name="name" type="text" class="form-control @error('name') is-invalid @enderror" id="name" required>
             <label for="name" class="ps-4">{{ trans('Name') }}</label>
 
             @error("name")

@@ -55,7 +55,7 @@
                                 display: true,
                                 scaleLabel: {
                                     display: true,
-                                    labelString: 'Value in {{ $information['finance']['Financial Currency'] ?? '-' }}'
+                                    labelString: 'Value in {{ $history[0]["currency"] }}'
                                 }
                             }]
                         },
