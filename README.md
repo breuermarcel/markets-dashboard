@@ -1,4 +1,4 @@
-# Very short description of the package
+# Finance-Dashboard
 
 ## Installation
 
