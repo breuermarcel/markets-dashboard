@@ -26,3 +26,8 @@ Publish assets
 ```bash
 php artisan vendor:publish --provider="Breuermarcel\FinanceDashboard\FinanceDashboardServiceProvider" --tag="assets"
 ```
+
+Migrate database
+```bash
+php artisan migrate
+```
