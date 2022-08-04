@@ -153,8 +153,6 @@ class APIController
             }
         }
 
-        dd($asset);
-
         return $asset;
     }
 }
