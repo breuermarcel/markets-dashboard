@@ -17,6 +17,7 @@ Or install locally to "packages":
     }
 ],
 ```
+
 Require package in composer.json
 ```bash
 composer require breuermarcel/finance-dashboard
