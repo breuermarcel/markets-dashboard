@@ -74,7 +74,7 @@ class StockController extends Controller
      */
     public function show(Stock $stock)
     {
-        $information = $stock->information();
+        $information = APIController::getFinance($stock->symbol);
 
         if (request()->has("period")) {
             $history = APIController::getChart($stock->symbol, intval(request()->get("period")));
@@ -156,7 +156,8 @@ class StockController extends Controller
      */
     public function do_import_csv(Request $request)
     {
-        $validator = Validator::make($request->only("file"),
+        $validator = Validator::make(
+            $request->only("file"),
             ["file" => "required|mimes:csv,txt|max:2048"]
         );
 
