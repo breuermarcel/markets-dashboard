@@ -2,10 +2,10 @@
 
 namespace Breuermarcel\FinanceDashboard\Http\Controllers;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Breuermarcel\FinanceDashboard\Models\Stock;
+use Breuermarcel\FinanceDashboard\Http\Helpers\APIController;
 
 class StockController extends Controller
 {
@@ -77,9 +77,9 @@ class StockController extends Controller
         $information = $stock->information();
 
         if (request()->has("period")) {
-            $history = $this->getChart($stock->symbol, intval(request()->get("period")));
+            $history = APIController::getChart($stock->symbol, intval(request()->get("period")));
         } else {
-            $history = $this->getChart($stock->symbol, 30);
+            $history = APIController::getChart($stock->symbol, 30);
         }
 
         return view("finance-dashboard::stocks.detail", compact('stock', 'history'));
@@ -202,39 +202,5 @@ class StockController extends Controller
     public function getStocksByCriteria()
     {
         //
-    }
-
-    /**
-     * Get financial chart from API.
-     *
-     * @param $symbol
-     * @param integer $period
-     * @return array
-     */
-    public function getChart($symbol, $period) : array
-    {
-        $chart = [];
-
-        $from_date = Carbon::now()->subDays($period)->format('U');
-        $interval = "1d";
-
-        $url = 'https://query2.finance.yahoo.com/v8/finance/chart/' . "?symbol=" . $symbol . "&period1=" . $from_date . "&period2=9999999999&interval=".$interval;
-        $response = file_get_contents($url);
-        $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
-
-        if (array_key_exists('adjclose', $data['chart']['result']['0']['indicators']['adjclose'][0])) {
-            foreach ($data['chart']['result'][0]['timestamp'] as $d_key => $date) {
-                foreach ($data['chart']['result'][0]['indicators']['adjclose'][0]['adjclose'] as $v_key => $value) {
-                    if (($value !== null) && $d_key === $v_key) {
-                        $chart[$date] = [
-                            'adj_close' => $value,
-                            'date' => Carbon::parse($date)->format('d.m.Y')
-                        ];
-                    }
-                }
-            }
-        }
-
-        return $chart;
     }
 }
