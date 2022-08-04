@@ -6,16 +6,28 @@ use Carbon\Carbon;
 
 class APIController
 {
+    /**
+     * Yahoo finance API-url
+     *
+     * @var string
+     */
     private static string $chart_url = "https://query2.finance.yahoo.com/v8/finance/chart/?symbol=";
+
+    /**
+     * Yahoo finance API-url
+     *
+     * @var string
+     */
+    private static string $finance_url = "https://query2.finance.yahoo.com/v10/finance/quoteSummary/?symbol=";
 
     /**
      * Get financial chart from API.
      *
-     * @param $symbol
+     * @param string $symbol
      * @param integer $period
      * @return array
      */
-    public static function getChart($symbol, $period) : array
+    public static function getChart(string $symbol, integer $period) : array
     {
         $chart = [];
 
@@ -40,5 +52,16 @@ class APIController
         }
 
         return $chart;
+    }
+
+    public static function getFinance(string $symbol) : array
+    {
+
+        return $finance;
+    }
+
+    public static function getAssetProfile(string $symbol) : array
+    {
+
     }
 }
