@@ -164,8 +164,6 @@ class StockController extends Controller
             return redirect()->route("stocks.import")->withErrors($validator)->withInput();
         }
 
-        $validated = $validator->validated();
-
         $csv = fopen($request->file->getPathname(), "r");
         $firstline = true;
 
