@@ -39,7 +39,6 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
-        //@todo use config for table
         $validator = Validator::make($request->all(), [
             "symbol" => "required|string|max:10",
             "wkn" => "nullable|string|max:25",
