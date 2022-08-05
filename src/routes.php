@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Breuermarcel\FinanceDashboard\Http\Controllers\StockController;
 use Breuermarcel\FinanceDashboard\Http\Controllers\AnalysisController;
+use Breuermarcel\FinanceDashboard\Http\Controllers\SearchController;
 
 Route::get("search", [SearchController::class, "index"])->name("search");
 

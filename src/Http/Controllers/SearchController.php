@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 use Breuermarcel\FinanceDashboard\Models\Stock;
+use Illuminate\Database\Eloquent\Collection;
 
 class SearchController extends Controller
 {
@@ -27,19 +28,19 @@ class SearchController extends Controller
             }
 
             $validated = $validator->validated();
-            $search_resullts = $this->do_search($validated["sword"]);
+            $search_results = $this->do_search($validated["sword"]);
 
-            return View::make('components.search-results')->with('search_results', $search_resullts);
+            return View::make("finance-dashboard::components.search-results")->with("search_results", $search_results);
         }
     }
 
     /**
-     * Search by word in stocks.
+     * Search by word for stock.
      *
      * @param string $val
-     * @return Stock
+     * @return Collection
      */
-    public function do_search(string $val) : Stock
+    private function do_search(string $val) : Collection
     {
         return Stock::select('symbol', 'name')
             ->where('symbol', 'LIKE', '%' . $val . '%')
