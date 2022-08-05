@@ -81,7 +81,7 @@ class StockController extends Controller
             $history = APIController::getChart($stock->symbol, 30);
         }
 
-        return view("finance-dashboard::stocks.detail", compact('stock', 'history'));
+        return view("finance-dashboard::stocks.detail", compact("stock", "history", "information"));
     }
 
     /**

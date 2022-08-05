@@ -144,8 +144,8 @@ class APIController
                         }
 
                         if (array_key_exists("totalPay", $officer)) {
-                            if (array_key_exists("raw", $officer)) {
-                                $asset["company_officiers"][$index]["total_pay"] = $officer["totalPay"]["raw"];
+                            if (array_key_exists("raw", $officer["totalPay"])) {
+                                $asset["company_officiers"][$index]["total_pay"] = $officer["totalPay"]["fmt"];
                             }
                         }
                     }
