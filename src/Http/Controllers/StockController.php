@@ -199,7 +199,7 @@ class StockController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getStocksByCriteria()
+    public function get_stocks_by_criteria()
     {
         //
     }
