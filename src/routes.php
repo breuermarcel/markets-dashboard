@@ -9,7 +9,7 @@ Route::get("search", [SearchController::class, "index"])->name("search");
 
 Route::prefix("stocks")->group(function () {
     Route::get("import", [StockController::class, "importCSV"])->name("stocks.import");
-    Route::post("import", [StockController::class, "doImportCSV"])->name("stocks.do_import");
+    Route::post("import", [StockController::class, "doImportCSV"])->name("stocks.doImport");
     Route::get("analysis", [StockController::class, "getStocksByCriteria"])->name("stocks.analysis");
 });
 Route::resource("stocks", StockController::class);

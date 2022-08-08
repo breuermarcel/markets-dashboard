@@ -2,7 +2,7 @@
 
 @section("content")
 
-<form class="row g-3" action="{{ route('stocks.do_import') }}" method="POST" enctype="multipart/form-data">
+<form class="row g-3" action="{{ route('stocks.doImport') }}" method="POST" enctype="multipart/form-data">
     @method("POST")
     @csrf
 
