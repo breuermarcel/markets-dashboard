@@ -12,7 +12,10 @@ Define your package repositories:
 "repositories": [
     {
         "type":"path",
-        "url": "./packages/*"
+        "url": "./packages/*",
+        "options": {
+            "symlink": true
+        }
     }
 ],
 ```
