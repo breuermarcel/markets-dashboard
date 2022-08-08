@@ -14,7 +14,6 @@ class Stock extends Model
      *
      * @var string
      */
-    //protected $table = config("finance-dashboard.tables.stocks");
     protected $table = "bm_stocks";
 
     /**

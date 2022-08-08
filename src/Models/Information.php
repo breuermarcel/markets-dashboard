@@ -14,7 +14,6 @@ class Information extends Model
      *
      * @var string
      */
-    //protected $table = config("finance-dashboard.tables.informations");
     protected $table = "bm_informations";
 
     /**

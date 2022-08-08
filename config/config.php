@@ -8,9 +8,5 @@ return [
         "middleware" => [
             "web"
         ]
-    ],
-
-    "tables" => [
-        "stocks" => "bm_stocks",
     ]
 ];

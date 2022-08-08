@@ -16,7 +16,7 @@ class StockController extends Controller
      */
     public function index()
     {
-        $stocks = Stock::simplePaginate(15);
+        $stocks = Stock::simplePaginate(10);
 
         return view("finance-dashboard::stocks.list", compact('stocks'));
     }
@@ -177,9 +177,7 @@ class StockController extends Controller
                     [
                         // replace/insert with
                         "symbol" => strtoupper($data[0]),
-                        "wkn" => $data[1],
-                        "isin" => $data[2],
-                        "name" => $data[3]
+                        "name" => $data[1]
                     ]
                 );
             }

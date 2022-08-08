@@ -14,7 +14,6 @@ class Analysis extends Model
      *
      * @var string
      */
-    //protected $table = config("finance-dashboard.tables.analysis");
     protected $table = "bm_analysis";
 
     /**
