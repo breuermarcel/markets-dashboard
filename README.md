@@ -2,13 +2,12 @@
 
 ## Installation
 
-You can install the package via composer:
-
+Clone repository into your packages folder:
 ```bash
-composer require breuermarcel/finance-dashboard
+git clone https://github.com/breuermarcel/finance-dashboard-v2.git
 ```
 
-Or install locally to "packages":
+Define your package repositories:
 ```json
 "repositories": [
     {
@@ -18,17 +17,17 @@ Or install locally to "packages":
 ],
 ```
 
-Require package in composer.json
+Require package:
 ```bash
 composer require breuermarcel/finance-dashboard
 ```
 
-Publish assets
+Publish assets:
 ```bash
 php artisan vendor:publish --provider="Breuermarcel\FinanceDashboard\FinanceDashboardServiceProvider" --tag="assets"
 ```
 
-Migrate database
+Migrate database:
 ```bash
 php artisan migrate
 ```
