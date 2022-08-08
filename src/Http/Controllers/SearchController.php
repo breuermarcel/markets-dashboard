@@ -40,7 +40,7 @@ class SearchController extends Controller
      * @param string $val
      * @return Collection
      */
-    private function do_search(string $val) : Collection
+    private function doSearch(string $val) : Collection
     {
         return Stock::select('symbol', 'name')
             ->where('symbol', 'LIKE', '%' . $val . '%')

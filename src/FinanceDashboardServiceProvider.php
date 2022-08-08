@@ -21,9 +21,9 @@ class FinanceDashboardServiceProvider extends ServiceProvider
         $this->registerRoutes();
 
         if ($this->app->runningInConsole()) {
-            $this->publishes([
+            /*$this->publishes([
                 __DIR__ . "/../config/config.php" => config_path("finance-dashboard.php"),
-            ], "config");
+            ], "config");*/
 
             // Publishing the views.
             /*$this->publishes([

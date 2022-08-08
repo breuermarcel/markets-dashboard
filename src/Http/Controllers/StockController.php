@@ -142,7 +142,7 @@ class StockController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function import_csv()
+    public function importCSV()
     {
         return view("finance-dashboard::stocks.import");
     }
@@ -153,7 +153,7 @@ class StockController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function do_import_csv(Request $request)
+    public function doImportCSV(Request $request)
     {
         $validator = Validator::make(
             $request->only("file"),
@@ -195,7 +195,7 @@ class StockController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function get_stocks_by_criteria()
+    public function getStocksByCriteria()
     {
         //
     }
