@@ -81,11 +81,11 @@ class FinanceDashboardServiceProvider extends ServiceProvider
         Blade::directive("fmt_money", function ($amount, $currency = null) {
             switch ($currency) {
                 case "euro":
-                    return "<?php echo number_format($amount, 2) . '€'; ?>";
+                    return "<?php echo number_format($amount) . '€'; ?>";
                     break;
 
                 default:
-                    return "<?php echo '$' . number_format($amount, 2); ?>";
+                    return "<?php echo '$' . number_format($amount); ?>";
                     break;
             }
         });
@@ -110,6 +110,18 @@ class FinanceDashboardServiceProvider extends ServiceProvider
 
                 default:
                     return "<?php echo number_format($amount, 2); ?>";
+                    break;
+            }
+        });
+
+        Blade::directive("fmt_percentage", function ($amount, $location = null) {
+            switch ($location) {
+                case "eu":
+                    return "<?php echo number_format($amount, 2, ',', '.') . '%'; ?>";
+                    break;
+
+                default:
+                    return "<?php echo number_format($amount, 2) . '%'; ?>";
                     break;
             }
         });
