@@ -23,7 +23,7 @@
                         <p>
                             {{ trans('Sektor') }}: {{ $information["asset_profile"]['sector'] }}<br/>
                             {{ trans('Industrie') }}: {{ $information["asset_profile"]['industry'] }}<br/>
-                            {{ trans('Mitarbeiter in Vollzeit') }}: {{ number_format($information["asset_profile"]['employees']) }}<br/>
+                            {{ trans('Mitarbeiter in Vollzeit') }}: @fmt_number($information["asset_profile"]['employees'])<br/>
                         </p>
                     </div>
 

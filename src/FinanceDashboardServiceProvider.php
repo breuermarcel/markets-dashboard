@@ -85,7 +85,31 @@ class FinanceDashboardServiceProvider extends ServiceProvider
                     break;
 
                 default:
-                    return "<?php echo '$' . number_format($amount, 2) ?>";
+                    return "<?php echo '$' . number_format($amount, 2); ?>";
+                    break;
+            }
+        });
+
+        Blade::directive("fmt_number", function ($amount, $location = null) {
+            switch ($location) {
+                case "eu":
+                    return "<?php echo number_format($amount, 0, ',', '.'); ?>";
+                    break;
+
+                default:
+                    return "<?php echo number_format($amount); ?>";
+                    break;
+            }
+        });
+
+        Blade::directive("fmt_decimal", function ($amount, $location = null) {
+            switch ($location) {
+                case "eu":
+                    return "<?php echo number_format($amount, 2, ',', '.'); ?>";
+                    break;
+
+                default:
+                    return "<?php echo number_format($amount, 2); ?>";
                     break;
             }
         });
