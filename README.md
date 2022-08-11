@@ -4,7 +4,7 @@
 
 Clone repository into your packages folder:
 ```bash
-git clone https://github.com/breuermarcel/finance-dashboard-v2.git
+git clone https://github.com/breuermarcel/finance-dashboard.git
 ```
 
 Define your package repositories:
