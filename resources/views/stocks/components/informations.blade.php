@@ -10,25 +10,25 @@
                <div class="row">
                     <div class="col-xl-6">
                         <p>
-                            {{ $information["asset_profile"]['address'] }}<br/>
-                            {{ $information["asset_profile"]['zip'] }}
-                            {{ $information["asset_profile"]['city'] }}<br/>
-                            {{ $information["asset_profile"]['country'] }}<br/>
-                            <a href="{{ $information["asset_profile"]['website'] }}" target="_blank"
-                               title="{{ $stock->name }}">{{ $information["asset_profile"]['website'] }}</a>
+                            {{ $information["asset_profile"]["address"] }}<br/>
+                            {{ $information["asset_profile"]["zip"] }}
+                            {{ $information["asset_profile"]["city"] }}<br/>
+                            {{ $information["asset_profile"]["country"] }}<br/>
+                            <a href="{{ $information["asset_profile"]["website"] }}" target="_blank"
+                               title="{{ $stock->name }}">{{ $information["asset_profile"]["website"] }}</a>
                         </p>
                     </div>
 
                     <div class="col-xl-6">
                         <p>
-                            {{ trans('Sektor') }}: {{ $information["asset_profile"]['sector'] }}<br/>
-                            {{ trans('Industrie') }}: {{ $information["asset_profile"]['industry'] }}<br/>
-                            {{ trans('Mitarbeiter in Vollzeit') }}: @fmt_number($information["asset_profile"]['employees'])<br/>
+                            {{ trans("Sektor") }}: {{ $information["asset_profile"]["sector"] }}<br/>
+                            {{ trans("Industrie") }}: {{ $information["asset_profile"]["industry"] }}<br/>
+                            {{ trans("Mitarbeiter in Vollzeit") }}: @fmt_number($information["asset_profile"]["employees"])<br/>
                         </p>
                     </div>
 
                     <div class="col-12">
-                        <p>{{ $information["asset_profile"]['business_summary'] }}</p>
+                        <p>{{ $information["asset_profile"]["business_summary"] }}</p>
                     </div>
                 </div>
         </div>
