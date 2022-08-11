@@ -72,7 +72,7 @@
                             </td>
                             <td>
                                 @if (array_key_exists("total_pay", $officer))
-                                    {{ $officer["total_pay"] }}
+                                    @fmt_money($officer["total_pay"])
                                 @endif
                             </td>
                         </tr>

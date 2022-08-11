@@ -4,6 +4,7 @@ namespace Breuermarcel\FinanceDashboard;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Blade;
 
 class FinanceDashboardServiceProvider extends ServiceProvider
 {
@@ -18,6 +19,7 @@ class FinanceDashboardServiceProvider extends ServiceProvider
         // $this->loadTranslationsFrom(__DIR__."/../resources/lang", "finance-dashboard");
         $this->loadViewsFrom(__DIR__ . "/../resources/views", "finance-dashboard");
         $this->loadMigrationsFrom(__DIR__ . "/../database/migrations");
+        $this->loadBladeDirectives();
         $this->registerRoutes();
 
         if ($this->app->runningInConsole()) {
@@ -59,7 +61,7 @@ class FinanceDashboardServiceProvider extends ServiceProvider
         });
     }
 
-    protected function routeConfiguration()
+    private function routeConfiguration()
     {
         return [
             "prefix" => config("finance-dashboard.routing.prefix"),
@@ -67,10 +69,25 @@ class FinanceDashboardServiceProvider extends ServiceProvider
         ];
     }
 
-    protected function registerRoutes()
+    private function registerRoutes()
     {
         Route::group($this->routeConfiguration(), function () {
             $this->loadRoutesFrom(__DIR__ . "/routes.php");
+        });
+    }
+
+    private function loadBladeDirectives()
+    {
+        Blade::directive("fmt_money", function ($amount, $currency = null) {
+            switch ($currency) {
+                case "euro":
+                    return "<?php echo number_format($amount, 2) . '€'; ?>";
+                    break;
+
+                default:
+                    return "<?php echo '$' . number_format($amount, 2) ?>";
+                    break;
+            }
         });
     }
 }

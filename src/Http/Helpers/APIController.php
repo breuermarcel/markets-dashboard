@@ -3,7 +3,6 @@
 namespace Breuermarcel\FinanceDashboard\Http\Helpers;
 
 use Carbon\Carbon;
-use PhpParser\Node\Expr\NullsafeMethodCall;
 
 class APIController
 {
@@ -194,7 +193,7 @@ class APIController
                         $esg["social"] = $data["quoteSummary"]["result"][0]["esgScores"]["socialScore"]["raw"];
                     }
                 }
-                
+
                 if (array_key_exists("governanceScore", $data["quoteSummary"]["result"][0]["esgScores"])) {
                     if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["esgScores"]["governanceScore"])) {
                         $esg["governance"] = $data["quoteSummary"]["result"][0]["esgScores"]["governanceScore"]["raw"];
