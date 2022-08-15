@@ -24,12 +24,9 @@ class APIController
      * Yahoo finance modules.
      *
      * @var array
+     * @todo remove when all modules added.
      */
     private static array $modules = [
-        "profile" => "assetProfile",
-        "esg" => "esgScores",
-        "income" => "incomeStatementHistoryQuarterly",
-        "cashflow" => "cashflowStatementHistoryQuarterly",
         "earnings" => "earnings",
         "balance_sheet" => "balanceSheetHistoryQuarterly",
         "recommendations" => "recommendationTrend",
@@ -93,6 +90,7 @@ class APIController
         $finance["asset_profile"] = self::getAssetProfile($symbol);
         $finance["esg_score"] = self::getEsgScore($symbol);
         $finance["income"] = self::getIncome($symbol);
+        $finance["cashflow"] = self::getCashflow($symbol);
 
         return $finance;
     }
@@ -386,5 +384,141 @@ class APIController
         }
 
         return $income;
+    }
+
+    /**
+     * Get cashflow from API.
+     *
+     * @param string $symbol
+     * @return array
+     */
+    private static function getCashflow(string $symbol):array
+    {
+        $cashflow = [
+            "net_income" => null,
+            "depreciation" => null,
+            "change_to_net_income" => null,
+            "change_to_account_receivables" => null,
+            "change_to_liabilities" => null,
+            "change_to_inventory" => null,
+            "change_to_operating_activities" => null,
+            "capital_expenditures" => null,
+            "investments" => null,
+            "dividends_paid" => null,
+            "net_borrowings" => null,
+            "change_in_cash" => null,
+            "repurchase_of_stock" => null,
+            "total_cash_from_operating_activities" => null,
+            "total_cashflows_from_investing_activities" => null,
+            "total_cash_from_financing_activities" => null,
+        ];
+
+        $url = self::$finance_url . $symbol . "&modules=cashflowStatementHistoryQuarterly";
+        $response = file_get_contents($url);
+        $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+
+        if ($data["quoteSummary"]["error"] === null) {
+            if (array_key_exists("cashflowStatementHistoryQuarterly", $data["quoteSummary"]["result"][0])) {
+                if (array_key_exists("cashflowStatements", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"])) {
+                    if (array_key_exists("netIncome", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["netIncome"])) {
+                            $cashflow["net_income"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["netIncome"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("depreciation", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["depreciation"])) {
+                            $cashflow["depreciation"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["depreciation"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("changeToNetincome", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeToNetincome"])) {
+                            $cashflow["change_to_net_income"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeToNetincome"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("changeToAccountReceivables", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeToAccountReceivables"])) {
+                            $cashflow["change_to_account_receivables"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeToAccountReceivables"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("changeToLiabilities", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeToLiabilities"])) {
+                            $cashflow["change_to_liabilities"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeToLiabilities"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("changeToInventory", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeToInventory"])) {
+                            $cashflow["change_to_inventory"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeToInventory"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("changeToOperatingActivities", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeToOperatingActivities"])) {
+                            $cashflow["change_to_operating_activities"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeToOperatingActivities"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("capitalExpenditures", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["capitalExpenditures"])) {
+                            $cashflow["capital_expenditures"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["capitalExpenditures"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("investments", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["investments"])) {
+                            $cashflow["investments"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["investments"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("dividendsPaid", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["dividendsPaid"])) {
+                            $cashflow["dividends_paid"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["dividendsPaid"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("netBorrowings", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["netBorrowings"])) {
+                            $cashflow["net_borrowings"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["netBorrowings"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("changeInCash", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeInCash"])) {
+                            $cashflow["change_in_cash"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeInCash"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("repurchaseOfStock", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["repurchaseOfStock"])) {
+                            $cashflow["repurchase_of_stock"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["repurchaseOfStock"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("totalCashFromOperatingActivities", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["totalCashFromOperatingActivities"])) {
+                            $cashflow["total_cash_from_operating_activities"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["totalCashFromOperatingActivities"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("totalCashflowsFromInvestingActivities", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["totalCashflowsFromInvestingActivities"])) {
+                            $cashflow["total_cashflows_from_investing_activities"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["totalCashflowsFromInvestingActivities"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("totalCashFromFinancingActivities", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["totalCashFromFinancingActivities"])) {
+                            $cashflow["total_cash_from_financing_activities"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["totalCashFromFinancingActivities"]["raw"];
+                        }
+                    }
+                }
+            }
+        }
+
+        return $cashflow;
     }
 }
