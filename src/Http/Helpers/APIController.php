@@ -27,7 +27,6 @@ class APIController
      * @todo remove when all modules added.
      */
     public static array $modules = [
-        "balance_sheet" => "balanceSheetHistoryQuarterly",
         "recommendations" => "recommendationTrend",
         "upgrade_downgrade" => "upgradeDowngradeHistory",
         "index_trend" => "indexTrend",
