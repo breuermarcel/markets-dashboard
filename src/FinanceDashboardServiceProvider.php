@@ -78,51 +78,81 @@ class FinanceDashboardServiceProvider extends ServiceProvider
 
     private function loadBladeDirectives()
     {
-        Blade::directive("fmt_money", function ($amount, $currency = null) {
-            switch ($currency) {
-                case "euro":
-                    return "<?php echo number_format($amount) . '€'; ?>";
-                    break;
+        Blade::directive("fmt_money", function ($expression) {
+            switch (config("app.locale")) {
+                case "de":
+                    return "
+                        <?php
+                            if ($expression > 100)
+                                echo number_format($expression, 0, ',', '.') . '€';
+                            else
+                                echo number_format($expression, 2, ',', '.') . '€';
+                        ?>
+                    ";
 
                 default:
-                    return "<?php echo '$' . number_format($amount); ?>";
-                    break;
+                    return "
+                        <?php
+                            if ($expression > 100)
+                                echo '$' . number_format($expression, 0);
+                            else
+                                echo '$' . number_format($expression, 2);
+                        ?>
+                    ";
             }
         });
 
-        Blade::directive("fmt_number", function ($amount, $location = null) {
-            switch ($location) {
-                case "eu":
-                    return "<?php echo number_format($amount, 0, ',', '.'); ?>";
-                    break;
+        Blade::directive("fmt_number", function ($expression) {
+            switch (config("app.locale")) {
+                case "de":
+                    return "
+                        <?php
+                            echo number_format($expression, 0, ',', '.');
+                        ?>
+                    ";
 
                 default:
-                    return "<?php echo number_format($amount); ?>";
-                    break;
+                    return "
+                        <?php
+                            echo number_format($expression, 0);
+                        ?>
+                    ";
             }
         });
 
-        Blade::directive("fmt_decimal", function ($amount, $location = null) {
-            switch ($location) {
-                case "eu":
-                    return "<?php echo number_format($amount, 2, ',', '.'); ?>";
-                    break;
+        Blade::directive("fmt_decimal", function ($expression) {
+            switch (config("app.locale")) {
+                case "de":
+                    return "
+                        <?php
+                            echo number_format($expression, 2, ',', '.');
+                        ?>
+                    ";
 
                 default:
-                    return "<?php echo number_format($amount, 2); ?>";
-                    break;
+                    return "
+                        <?php
+                            echo number_format($expression, 2);
+                        ?>
+                    ";
             }
         });
 
-        Blade::directive("fmt_percentage", function ($amount, $location = null) {
-            switch ($location) {
-                case "eu":
-                    return "<?php echo number_format($amount, 2, ',', '.') . '%'; ?>";
-                    break;
+        Blade::directive("fmt_percentage", function ($expression) {
+            switch (config("app.locale")) {
+                case "de":
+                    return "
+                        <?php
+                            echo number_format($expression, 2, ',', '.') * 100 . '%';
+                        ?>
+                    ";
 
                 default:
-                    return "<?php echo number_format($amount, 2) . '%'; ?>";
-                    break;
+                    return "
+                        <?php
+                            echo number_format($expression, 2) * 100 . '%';
+                        ?>
+                    ";
             }
         });
     }

@@ -19,7 +19,7 @@
         "php": "^8.0"
     },
     "require-dev": {
-    
+        "barryvdh/laravel-debugbar": "^3.7"
     },
     "autoload": {
         "psr-4": {
