@@ -7,18 +7,41 @@ use Carbon\Carbon;
 class APIController
 {
     /**
-     * Yahoo finance API-url
+     * Yahoo finance API-url.
      *
      * @var string
      */
     private static string $chart_url = "https://query2.finance.yahoo.com/v8/finance/chart/?symbol=";
 
     /**
-     * Yahoo finance API-url
+     * Yahoo finance API-url.
      *
      * @var string
      */
     private static string $finance_url = "https://query2.finance.yahoo.com/v10/finance/quoteSummary/?symbol=";
+
+    /**
+     * Yahoo finance modules.
+     *
+     * @var array
+     */
+    private static array $modules = [
+        "profile" => "assetProfile",
+        "esg" => "esgScores",
+        "income" => "incomeStatementHistoryQuarterly",
+        "cashflow" => "cashflowStatementHistoryQuarterly",
+        "earnings" => "earnings",
+        "balance_sheet" => "balanceSheetHistoryQuarterly",
+        "recommendations" => "recommendationTrend",
+        "upgrade_downgrade" => "upgradeDowngradeHistory",
+        "index_trend" => "indexTrend",
+        "industry_trend" => "industryTrend",
+        "sector_trend" => "sectorTrend",
+        "institution_ownership" => "institutionOwnership",
+        "fund_ownership" => "fundOwnership",
+        "insider_ownership" => "insiderHolders",
+        "insider_transactions" => "insiderTransactions",
+    ];
 
     /**
      * Get financial chart from API.
@@ -57,16 +80,29 @@ class APIController
         return $chart;
     }
 
+    /**
+     * Call all API modules.
+     *
+     * @param string $symbol
+     * @return array
+     */
     public static function getFinance(string $symbol): array
     {
         $finance = [];
 
         $finance["asset_profile"] = self::getAssetProfile($symbol);
         $finance["esg_score"] = self::getEsgScore($symbol);
+        $finance["income"] = self::getIncome($symbol);
 
         return $finance;
     }
 
+    /**
+     * Get asset profile from API.
+     *
+     * @param string $symbol
+     * @return array
+     */
     public static function getAssetProfile(string $symbol): array
     {
         $asset = [
@@ -156,7 +192,14 @@ class APIController
         return $asset;
     }
 
-    public static function getEsgScore($symbol) {
+    /**
+     * Get esg score from API.
+     *
+     * @param string $symbol
+     * @return array
+     */
+    public static function getEsgScore(string $symbol): array
+    {
         $esg = [
             "total" => null,
             "environment" => null,
@@ -235,5 +278,49 @@ class APIController
         }
 
         return $esg;
+    }
+
+    /**
+     * Get income from API.
+     *
+     * @param string $symbol
+     * @return array
+     */
+    private static function getIncome(string $symbol): array
+    {
+        $income = [
+            "total_revenue" => null,
+            "cost_of_revenue" => null,
+            "gross_profit" => null,
+            "research_and_development" => null,
+            "selling_general_administrative" => null,
+            "total_operating_expanses" => null,
+            "operating_income" => null,
+            "ebit" => null,
+            "interest_expense" => null,
+            "income_before_tax" => null,
+            "income_tax_expense" => null,
+            "net_income" => null,
+        ];
+
+        $url = self::$finance_url . $symbol . "&modules=incomeStatementHistory";
+        $response = file_get_contents($url);
+        $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+
+        if ($data["quoteSummary"]["error"] === null) {
+            if (array_key_exists("incomeStatementHistory", $data["quoteSummary"]["result"][0])) {
+                if (array_key_exists("incomeStatementHistory", $data["quoteSummary"]["result"][0]["incomeStatementHistory"])) {
+                    if (array_key_exists("totalRevenue", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"]["totalRevenue"])) {
+                            $income["total_revenue"] = $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"]["totalRevenue"]["raw"];
+                        }
+                    }
+
+
+                }
+            }
+        }
+
+        return $income;
     }
 }

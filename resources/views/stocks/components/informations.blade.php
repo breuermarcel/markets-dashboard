@@ -62,7 +62,7 @@
                             </th>
                             <td>
                                 @if (array_key_exists("age", $officer))
-                                    {{ $officer["age"] }}
+                                    @fmt_number($officer["age"])
                                 @endif
                             </td>
                             <td>
