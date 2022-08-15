@@ -19,22 +19,22 @@
         <table class="table table-striped table-hover">
             <thead>
             <tr>
-                <th>{{ trans('Symbol') }}</th>
-                <th>{{ trans('Name') }}</th>
-                <th>{{ trans('WKN') }}</th>
-                <th>{{ trans('ISIN') }}</th>
-                <th class="visually-hidden">{{ trans("Toolbar")}}</th>
+                <th scope="col">{{ trans('Symbol') }}</th>
+                <th scope="col">{{ trans('Name') }}</th>
+                <th scope="col">{{ trans('WKN') }}</th>
+                <th scope="col">{{ trans('ISIN') }}</th>
+                <th scope="col" class="visually-hidden">{{ trans("Toolbar")}}</th>
             </tr>
             </thead>
             <tbody>
             @foreach($stocks as $stock)
                 <tr>
-                    <td>{{ $stock->symbol }}</td>
+                    <td scope="row">{{ $stock->symbol }}</td>
                     <td>{{ $stock->name }}</td>
                     <td>{{ $stock->wkn }}</td>
                     <td>{{ $stock->isin }}</td>
 
-                    <td class="text-end">
+                    <td class="btn-group" role="group">
                         <a href="{{ route('stocks.show', $stock) }}"
                            class="btn btn-outline-secondary">{{ trans('Anzeigen') }}</a>
                         <a href="{{ route('stocks.edit', $stock) }}"

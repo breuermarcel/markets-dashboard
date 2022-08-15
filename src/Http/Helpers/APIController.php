@@ -310,13 +310,77 @@ class APIController
         if ($data["quoteSummary"]["error"] === null) {
             if (array_key_exists("incomeStatementHistory", $data["quoteSummary"]["result"][0])) {
                 if (array_key_exists("incomeStatementHistory", $data["quoteSummary"]["result"][0]["incomeStatementHistory"])) {
-                    if (array_key_exists("totalRevenue", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"]["totalRevenue"])) {
-                            $income["total_revenue"] = $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"]["totalRevenue"]["raw"];
+                    if (array_key_exists("totalRevenue", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["totalRevenue"])) {
+                            $income["total_revenue"] = $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["totalRevenue"]["raw"];
                         }
                     }
 
+                    if (array_key_exists("costOfRevenue", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["costOfRevenue"])) {
+                            $income["cost_of_revenue"] = $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["costOfRevenue"]["raw"];
+                        }
+                    }
 
+                    if (array_key_exists("grossProfit", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["grossProfit"])) {
+                            $income["gross_profit"] = $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["grossProfit"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("researchDevelopment", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["researchDevelopment"])) {
+                            $income["research_and_development"] = $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["researchDevelopment"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("sellingGeneralAdministrative", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["sellingGeneralAdministrative"])) {
+                            $income["selling_general_administrative"] = $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["sellingGeneralAdministrative"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("totalOperatingExpenses", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["totalOperatingExpenses"])) {
+                            $income["total_operating_expanses"] = $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["totalOperatingExpenses"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("operatingIncome", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["operatingIncome"])) {
+                            $income["operating_income"] = $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["operatingIncome"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("ebit", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["ebit"])) {
+                            $income["ebit"] = $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["ebit"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("interestExpense", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["interestExpense"])) {
+                            $income["interest_expense"] = $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["interestExpense"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("incomeBeforeTax", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["incomeBeforeTax"])) {
+                            $income["income_before_tax"] = $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["incomeBeforeTax"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("incomeTaxExpense", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["incomeTaxExpense"])) {
+                            $income["income_tax_expense"] = $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["incomeTaxExpense"]["raw"];
+                        }
+                    }
+
+                    if (array_key_exists("netIncome", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["netIncome"])) {
+                            $income["net_income"] = $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["netIncome"]["raw"];
+                        }
+                    }
                 }
             }
         }
