@@ -27,7 +27,6 @@ class APIController
      * @todo remove when all modules added.
      */
     public static array $modules = [
-        "recommendations" => "recommendationTrend",
         "upgrade_downgrade" => "upgradeDowngradeHistory",
         "index_trend" => "indexTrend",
         "industry_trend" => "industryTrend",
@@ -90,6 +89,7 @@ class APIController
         $finance["income"] = self::getIncome($symbol);
         $finance["cashflow"] = self::getCashflow($symbol);
         $finance["balance_sheet"] = self::getBalanceSheet($symbol);
+        $finance["recommendations"] = self::getRecommendations($symbol);
 
         return $finance;
     }
@@ -703,5 +703,56 @@ class APIController
         }
 
         return $balance_sheet;
+    }
+
+    /**
+     * Get recommendations from API.
+     *
+     * @param string $symbol
+     * @return array
+     */
+    public static function getRecommendations(string $symbol): array
+    {
+        $recommendations = [
+            "strong_buy" => null,
+            "buy" => null,
+            "hold" => null,
+            "sell" => null,
+            "strong_sell" => null
+        ];
+
+        $url = self::$finance_url . $symbol . "&modules=recommendationTrend";
+        $response = file_get_contents($url);
+        $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+
+        if ($data["quoteSummary"]["error"] === null) {
+            if (array_key_exists("recommendationTrend", $data["quoteSummary"]["result"][0])) {
+                if (array_key_exists("trend", $data["quoteSummary"]["result"][0]["recommendationTrend"])) {
+                    if (array_key_exists(0, $data["quoteSummary"]["result"][0]["recommendationTrend"]["trend"])) {
+                        if (array_key_exists("strongBuy", $data["quoteSummary"]["result"][0]["recommendationTrend"]["trend"][0])) {
+                            $recommendations["strong_buy"] = $data["quoteSummary"]["result"][0]["recommendationTrend"]["trend"][0]["strongBuy"];
+                        }
+
+                        if (array_key_exists("buy", $data["quoteSummary"]["result"][0]["recommendationTrend"]["trend"][0])) {
+                            $recommendations["buy"] = $data["quoteSummary"]["result"][0]["recommendationTrend"]["trend"][0]["buy"];
+                        }
+
+                        if (array_key_exists("hold", $data["quoteSummary"]["result"][0]["recommendationTrend"]["trend"][0])) {
+                            $recommendations["hold"] = $data["quoteSummary"]["result"][0]["recommendationTrend"]["trend"][0]["hold"];
+                        }
+
+                        if (array_key_exists("sell", $data["quoteSummary"]["result"][0]["recommendationTrend"]["trend"][0])) {
+                            $recommendations["sell"] = $data["quoteSummary"]["result"][0]["recommendationTrend"]["trend"][0]["sell"];
+                        }
+
+                        if (array_key_exists("strongSell", $data["quoteSummary"]["result"][0]["recommendationTrend"]["trend"][0])) {
+                            $recommendations["strong_sell"] = $data["quoteSummary"]["result"][0]["recommendationTrend"]["trend"][0]["strongSell"];
+                        }
+                    }
+                }
+            }
+        }
+
+        return $recommendations;
     }
 }
