@@ -90,6 +90,7 @@ class APIController
         $finance["cashflow"] = self::getCashflow($symbol);
         $finance["balance_sheet"] = self::getBalanceSheet($symbol);
         $finance["recommendations"] = self::getRecommendations($symbol);
+        $finance["upgrade_downgrade"] = self::getUpgradeDowngrade($symbol);
 
         return $finance;
     }
@@ -754,5 +755,26 @@ class APIController
         }
 
         return $recommendations;
+    }
+
+    public static function getUpgradeDowngrade(string $symbol): array
+    {
+        $upgrade_downgrade = [];
+
+        $url = self::$finance_url . $symbol . "&modules=upgradeDowngradeHistory";
+        $response = file_get_contents($url);
+        $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+
+        if ($data["quoteSummary"]["error"] === null) {
+            if (array_key_exists("upgradeDowngradeHistory", $data["quoteSummary"]["result"][0])) {
+                if (array_key_exists("history", $data["quoteSummary"]["result"][0]["upgradeDowngradeHistory"])) {
+                    foreach ($data["quoteSummary"]["result"][0]["upgradeDowngradeHistory"]["history"] as $set) {
+                        dd($set);
+                    }
+                }
+            }
+        }
+
+        return $upgrade_downgrade;
     }
 }
