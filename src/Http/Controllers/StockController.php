@@ -73,16 +73,6 @@ class StockController extends Controller
      */
     public function show(Stock $stock)
     {
-        /*
-        $information = APIController::getFinance($stock->symbol);
-
-        if (request()->has("period")) {
-            $history = APIController::getChart($stock->symbol, intval(request()->get("period")));
-        } else {
-            $history = APIController::getChart($stock->symbol, 30);
-        }
-        */
-
         return view("finance-dashboard::stocks.detail", compact("stock"));
     }
 

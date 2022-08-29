@@ -53,28 +53,37 @@ class APIController
                     if ($request->has("period")) {
                         $chart = self::getChart($request->get("symbol"), intval($request->get("period")));
 
-                        if ($request->get("html") == true) {
-                            return View::make("finance-dashboard::stocks.generated.graph")->with(["history" => $chart, "stock" => $stock]);
-                        } else {
+                        if ($request->has("json")) {
                             return $chart;
+                        } else {
+                            return View::make("finance-dashboard::stocks.components.graph")->with(["history" => $chart, "stock" => $stock]);
                         }
                     } else {
                         $chart = self::getChart($request->get("symbol"), 30);
 
-                        if ($request->get("html") == true) {
-                            return View::make("finance-dashboard::stocks.generated.graph")->with(["history"=> $chart, "stock" => $stock]);
-                        } else {
+                        if ($request->has("json")) {
                             return $chart;
+                        } else {
+                            return View::make("finance-dashboard::stocks.components.graph")->with(["history"=> $chart, "stock" => $stock]);
                         }
                     }
 
                 case "profile":
                     $profile = self::getAssetProfile($request->get("symbol"));
 
-                    if ($request->get("html") == true) {
-                        return View::make("finance-dashboard::stocks.generated.profile")->with(["profile" => $profile, "stock" => $stock]);
-                    } else {
+                    if ($request->has("json")) {
                         return $profile;
+                    } else {
+                        return View::make("finance-dashboard::stocks.components.profile")->with(["profile" => $profile, "stock" => $stock]);
+                    }
+
+                case "esg":
+                    $esg = self::getEsgScore($request->get("symbol"));
+
+                    if ($request->has("json")) {
+                        return $esg;
+                    } else {
+                        return View::make("finance-dashboard::stocks.components.esg")->with(["esg" => $esg, "stock" => $stock]);
                     }
 
                 default:

@@ -7,7 +7,7 @@ $('#bm__searchInput').on('keyup', function (event) {
     if (event.keyCode === 13) {
         $.get({
             type: 'GET',
-            url: '/finance-dashboard/search',
+            url: '/finance-dashboard/search/',
             data: {
                 'sword': this.value
             },
@@ -21,4 +21,23 @@ $('#bm__searchInput').on('keyup', function (event) {
         });
     }
 });
+
+function callAPI(data) {
+    $.get({
+        type: 'GET',
+        url: '/finance-dashboard/api/',
+        data: data,
+        success: function (response) {
+            $(data["container"]).remove();
+            $('#bm__stock-detail-container').append(response);
+
+            let bm__msnry = new Masonry(document.getElementById("bm__stock-detail-container"), {
+                itemSelector: '.col',
+                percentPosition: true
+            });
+
+            bm__msnry.layout();
+        }
+    });
+}
 </script>
