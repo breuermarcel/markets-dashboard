@@ -768,8 +768,28 @@ class APIController
         if ($data["quoteSummary"]["error"] === null) {
             if (array_key_exists("upgradeDowngradeHistory", $data["quoteSummary"]["result"][0])) {
                 if (array_key_exists("history", $data["quoteSummary"]["result"][0]["upgradeDowngradeHistory"])) {
+                    $index = 0;
+
                     foreach ($data["quoteSummary"]["result"][0]["upgradeDowngradeHistory"]["history"] as $set) {
-                        dd($set);
+                        if ($index <= 10) {
+                            if (array_key_exists("epochGradeDate", $set)) {
+                                $upgrade_downgrade[$index]["date"] = $set["epochGradeDate"];
+                            }
+
+                            if (array_key_exists("firm", $set)) {
+                                $upgrade_downgrade[$index]["firm"] = $set["firm"];
+                            }
+
+                            if (array_key_exists("fromGrade", $set)) {
+                                $upgrade_downgrade[$index]["grade"]["from"] = $set["fromGrade"];
+                            }
+
+                            if (array_key_exists("toGrade", $set)) {
+                                $upgrade_downgrade[$index]["grade"]["to"] = $set["toGrade"];
+                            }
+                        }
+
+                        $index++;
                     }
                 }
             }
