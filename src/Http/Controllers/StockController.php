@@ -73,6 +73,7 @@ class StockController extends Controller
      */
     public function show(Stock $stock)
     {
+        /*
         $information = APIController::getFinance($stock->symbol);
 
         if (request()->has("period")) {
@@ -80,8 +81,9 @@ class StockController extends Controller
         } else {
             $history = APIController::getChart($stock->symbol, 30);
         }
+        */
 
-        return view("finance-dashboard::stocks.detail", compact("stock", "history", "information"));
+        return view("finance-dashboard::stocks.detail", compact("stock"));
     }
 
     /**

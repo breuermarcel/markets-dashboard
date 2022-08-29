@@ -3,6 +3,9 @@
 namespace Breuermarcel\FinanceDashboard\Http\Helpers;
 
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\View;
+use Breuermarcel\FinanceDashboard\Models\Stock;
 
 class APIController
 {
@@ -27,7 +30,6 @@ class APIController
      * @todo remove when all modules added.
      */
     public static array $modules = [
-        "upgrade_downgrade" => "upgradeDowngradeHistory",
         "index_trend" => "indexTrend",
         "industry_trend" => "industryTrend",
         "sector_trend" => "sectorTrend",
@@ -36,6 +38,47 @@ class APIController
         "insider_ownership" => "insiderHolders",
         "insider_transactions" => "insiderTransactions",
     ];
+
+    /**
+     * Basis function.
+     */
+    public function load(Request $request) {
+        if ($request->has("module") && $request->has("symbol")) {
+            $stock = Stock::findOrFail($request->get("symbol"));
+
+            if ($request->get("module") === "chart") {
+                if ($request->has("period")) {
+                    //@todo validate request
+                    $chart = self::getChart($request->get("symbol"), intval($request->get("period")));
+
+                    if ($request->get("html") == true) {
+                        return View::make("finance-dashboard::stocks.generated.graph")->with(["history" => $chart, "stock" => $stock]);
+                    } else {
+                        return $chart;
+                    }
+                } else {
+                    //@todo validate request
+                    $chart = self::getChart($request->get("symbol"), 30);
+
+                    if ($request->get("html") == true) {
+                        return View::make("finance-dashboard::stocks.generated.graph")->with(["history"=> $chart, "stock" => $stock]);
+                    } else {
+                        return $chart;
+                    }
+                }
+            }
+
+            if ($request->get("module") === "profile") {
+                $profile = self::getAssetProfile($request->get("symbol"));
+
+                if ($request->get("html") == true) {
+                    return View::make("finance-dashboard::stocks.generated.profile")->with(["profile" => $profile, "stock" => $stock]);
+                } else {
+                    return $profile;
+                }
+            }
+        }
+    }
 
     /**
      * Get financial chart from API.
