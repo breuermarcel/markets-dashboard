@@ -1,3 +1,5 @@
+<style>
+
 body {
     font-size: 16px;
     font-family: 'Noto Sans JP', sans-serif;
@@ -96,3 +98,4 @@ body {
         top: 5rem;
     }
 }
+</style>

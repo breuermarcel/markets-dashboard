@@ -43,39 +43,42 @@ class APIController
      * Basis function.
      */
     public function load(Request $request) {
+        // todo validate requests
+
         if ($request->has("module") && $request->has("symbol")) {
             $stock = Stock::findOrFail($request->get("symbol"));
 
-            if ($request->get("module") === "chart") {
-                if ($request->has("period")) {
-                    //@todo validate request
-                    $chart = self::getChart($request->get("symbol"), intval($request->get("period")));
+            switch ($request->get("module")) {
+                case "chart":
+                    if ($request->has("period")) {
+                        $chart = self::getChart($request->get("symbol"), intval($request->get("period")));
+
+                        if ($request->get("html") == true) {
+                            return View::make("finance-dashboard::stocks.generated.graph")->with(["history" => $chart, "stock" => $stock]);
+                        } else {
+                            return $chart;
+                        }
+                    } else {
+                        $chart = self::getChart($request->get("symbol"), 30);
+
+                        if ($request->get("html") == true) {
+                            return View::make("finance-dashboard::stocks.generated.graph")->with(["history"=> $chart, "stock" => $stock]);
+                        } else {
+                            return $chart;
+                        }
+                    }
+
+                case "profile":
+                    $profile = self::getAssetProfile($request->get("symbol"));
 
                     if ($request->get("html") == true) {
-                        return View::make("finance-dashboard::stocks.generated.graph")->with(["history" => $chart, "stock" => $stock]);
+                        return View::make("finance-dashboard::stocks.generated.profile")->with(["profile" => $profile, "stock" => $stock]);
                     } else {
-                        return $chart;
+                        return $profile;
                     }
-                } else {
-                    //@todo validate request
-                    $chart = self::getChart($request->get("symbol"), 30);
 
-                    if ($request->get("html") == true) {
-                        return View::make("finance-dashboard::stocks.generated.graph")->with(["history"=> $chart, "stock" => $stock]);
-                    } else {
-                        return $chart;
-                    }
-                }
-            }
-
-            if ($request->get("module") === "profile") {
-                $profile = self::getAssetProfile($request->get("symbol"));
-
-                if ($request->get("html") == true) {
-                    return View::make("finance-dashboard::stocks.generated.profile")->with(["profile" => $profile, "stock" => $stock]);
-                } else {
-                    return $profile;
-                }
+                default:
+                    return;
             }
         }
     }

@@ -11,14 +11,10 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
-
-    <link href="{{ asset('vendor/finance-dashboard/css/main.css') }}" rel="stylesheet">
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="{{ asset('vendor/finance-dashboard/js/main.js') }}"></script>
 </head>
 <body id="bm__body">
+    @include("finance-dashboard::components.styling")
+    @include("finance-dashboard::components.scripts")
     @include('finance-dashboard::components.navbar')
     <div class="container-fluid">
         <div class="row">
