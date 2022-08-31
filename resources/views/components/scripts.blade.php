@@ -29,7 +29,7 @@ function callAPI(data) {
         data: data,
         success: function (response) {
             $(data["container"]).remove();
-            $('#bm__stock-detail-container').append(response);
+            $('#bm__stock-detail-container').prepend(response);
 
             let bm__msnry = new Masonry(document.getElementById("bm__stock-detail-container"), {
                 itemSelector: '.col',

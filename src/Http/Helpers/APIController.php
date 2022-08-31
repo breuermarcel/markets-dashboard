@@ -42,26 +42,26 @@ class APIController
     /**
      * Basis function.
      */
-    public function load(Request $request) {
+    public function load() {
         // todo validate requests
 
-        if ($request->has("module") && $request->has("symbol")) {
-            $stock = Stock::findOrFail($request->get("symbol"));
+        if (request()->has("module") && request()->has("symbol")) {
+            $stock = Stock::findOrFail(request()->get("symbol"));
 
-            switch ($request->get("module")) {
+            switch (request()->get("module")) {
                 case "chart":
-                    if ($request->has("period")) {
-                        $chart = self::getChart($request->get("symbol"), intval($request->get("period")));
+                    if (request()->has("period")) {
+                        $chart = self::getChart(request()->get("symbol"), intval(request()->get("period")));
 
-                        if ($request->has("json")) {
+                        if (request()->has("json")) {
                             return $chart;
                         } else {
                             return View::make("finance-dashboard::stocks.components.graph")->with(["history" => $chart, "stock" => $stock]);
                         }
                     } else {
-                        $chart = self::getChart($request->get("symbol"), 30);
+                        $chart = self::getChart(request()->get("symbol"), 30);
 
-                        if ($request->has("json")) {
+                        if (request()->has("json")) {
                             return $chart;
                         } else {
                             return View::make("finance-dashboard::stocks.components.graph")->with(["history"=> $chart, "stock" => $stock]);
@@ -69,27 +69,27 @@ class APIController
                     }
 
                 case "profile":
-                    $profile = self::getAssetProfile($request->get("symbol"));
+                    $profile = self::getAssetProfile(request()->get("symbol"));
 
-                    if ($request->has("json")) {
+                    if (request()->has("json")) {
                         return $profile;
                     } else {
                         return View::make("finance-dashboard::stocks.components.profile")->with(["profile" => $profile, "stock" => $stock]);
                     }
 
                 case "esg":
-                    $esg = self::getEsgScore($request->get("symbol"));
+                    $esg = self::getEsgScore(request()->get("symbol"));
 
-                    if ($request->has("json")) {
+                    if (request()->has("json")) {
                         return $esg;
                     } else {
                         return View::make("finance-dashboard::stocks.components.esg")->with(["esg" => $esg, "stock" => $stock]);
                     }
 
                 case "income":
-                    $income = self::getIncome($request->get("symbol"));
+                    $income = self::getIncome(request()->get("symbol"));
 
-                    if ($request->has("json")) {
+                    if (request()->has("json")) {
                         return $income;
                     } else {
                         return View::make("finance-dashboard::stocks.components.income")->with(["income" => $income, "stock" => $stock]);
@@ -136,27 +136,6 @@ class APIController
         }
 
         return $chart;
-    }
-
-    /**
-     * Call all API modules.
-     *
-     * @param string $symbol
-     * @return array
-     */
-    public static function getFinance(string $symbol): array
-    {
-        $finance = [];
-
-        $finance["asset_profile"] = self::getAssetProfile($symbol);
-        $finance["esg_score"] = self::getEsgScore($symbol);
-        $finance["income"] = self::getIncome($symbol);
-        $finance["cashflow"] = self::getCashflow($symbol);
-        $finance["balance_sheet"] = self::getBalanceSheet($symbol);
-        $finance["recommendations"] = self::getRecommendations($symbol);
-        $finance["upgrade_downgrade"] = self::getUpgradeDowngrade($symbol);
-
-        return $finance;
     }
 
     /**

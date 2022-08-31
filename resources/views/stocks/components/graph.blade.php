@@ -4,15 +4,59 @@
             <span class="me-2 fw-bolder">{{ trans('Chart') }}</span>
 
             <div class="btn-group btn-group-sm" role="group" aria-label="{{ trans('Period') }}">
-                <button class="btn btn-outline-danger" click="">1 {{ trans('Monat') }}</button>
-                <button class="btn btn-outline-danger" href="{{ route('stocks.show', $stock->symbol) }}?period=180">6
-                    {{ trans('Monate') }}</button>
-                <button class="btn btn-outline-danger" href="{{ route('stocks.show', $stock->symbol) }}?period=365">1
-                    {{ trans('Jahr') }}</button>
-                <button class="btn btn-outline-danger" href="{{ route('stocks.show', $stock->symbol) }}?period=1095">3
-                    {{ trans('Jahre') }}</button>
-                <button class="btn btn-outline-danger" href="{{ route('stocks.show', $stock->symbol) }}?period=1825">5
-                    {{ trans('Jahre') }}</button>
+                <button class="btn btn-outline-danger" onclick="callAPI({
+                        'symbol': '{{ $stock->symbol }}',
+                        'module': 'chart',
+                        'period': '30',
+                        'container': '#bm__stock-detail-container #bm__chart-container'
+                    });">
+                    1 {{ trans('Monat') }}
+                </button>
+
+                <button class="btn btn-outline-danger" onclick="callAPI({
+                        'symbol': '{{ $stock->symbol }}',
+                        'module': 'chart',
+                        'period': '90',
+                        'container': '#bm__stock-detail-container #bm__chart-container'
+                    });">
+                    3 {{ trans('Monate') }}
+                </button>
+
+                <button class="btn btn-outline-danger" onclick="callAPI({
+                        'symbol': '{{ $stock->symbol }}',
+                        'module': 'chart',
+                        'period': '180',
+                        'container': '#bm__stock-detail-container #bm__chart-container'
+                    });">
+                    6 {{ trans('Monate') }}
+                </button>
+
+                <button class="btn btn-outline-danger" onclick="callAPI({
+                        'symbol': '{{ $stock->symbol }}',
+                        'module': 'chart',
+                        'period': '365',
+                        'container': '#bm__stock-detail-container #bm__chart-container'
+                    });">
+                    1 {{ trans('Jahr') }}
+                </button>
+
+                <button class="btn btn-outline-danger" onclick="callAPI({
+                        'symbol': '{{ $stock->symbol }}',
+                        'module': 'chart',
+                        'period': '1095',
+                        'container': '#bm__stock-detail-container #bm__chart-container'
+                    });">
+                    3 {{ trans('Jahre') }}
+                </button>
+
+                <button class="btn btn-outline-danger" onclick="callAPI({
+                        'symbol': '{{ $stock->symbol }}',
+                        'module': 'chart',
+                        'period': '1825',
+                        'container': '#bm__stock-detail-container #bm__chart-container'
+                    });">
+                    5 {{ trans('Jahre') }}
+                </button>
             </div>
         </div>
 
@@ -51,11 +95,12 @@
                             text: '{{ $stock->name }} ({{ $stock->symbol }})'
                         },
                         scales: {
-                            xAxes: [{
+                            x: {[
                                 display: true,
-                            }],
-                            yAxes: [{
+                            ]},
+                            y: [{
                                 display: true,
+                                type: 'time',
                                 scaleLabel: {
                                     display: true,
                                     labelString: 'Value in {{ $history[0]['currency'] }}'

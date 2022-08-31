@@ -7,20 +7,14 @@
 
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.0/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 
     <script>
         $(document).ready(function(){
             callAPI({
                 'symbol': '{{ $stock->symbol }}',
-                'module': 'chart',
-                'container': '#bm__stock-detail-container #bm__chart-container'
-            });
-
-            callAPI({
-                'symbol': '{{ $stock->symbol }}',
-                'module': 'profile',
-                'container': '#bm__stock-detail-container #bm__profile-container'
+                'module': 'income',
+                'container': '#bm__stock-detail-container #bm__income-container'
             });
 
             callAPI({
@@ -31,8 +25,14 @@
 
             callAPI({
                 'symbol': '{{ $stock->symbol }}',
-                'module': 'income',
-                'container': '#bm__stock-detail-container #bm__income-container'
+                'module': 'profile',
+                'container': '#bm__stock-detail-container #bm__profile-container'
+            });
+
+            callAPI({
+                'symbol': '{{ $stock->symbol }}',
+                'module': 'chart',
+                'container': '#bm__stock-detail-container #bm__chart-container'
             });
         });
     </script>
