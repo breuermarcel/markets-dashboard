@@ -86,6 +86,15 @@ class APIController
                         return View::make("finance-dashboard::stocks.components.esg")->with(["esg" => $esg, "stock" => $stock]);
                     }
 
+                case "income":
+                    $income = self::getIncome($request->get("symbol"));
+
+                    if ($request->has("json")) {
+                        return $income;
+                    } else {
+                        return View::make("finance-dashboard::stocks.components.income")->with(["income" => $income, "stock" => $stock]);
+                    }
+
                 default:
                     return;
             }
@@ -342,18 +351,18 @@ class APIController
     public static function getIncome(string $symbol): array
     {
         $income = [
+            "date" => null,
             "total_revenue" => null,
             "cost_of_revenue" => null,
             "gross_profit" => null,
             "research_and_development" => null,
             "selling_general_administrative" => null,
             "total_operating_expanses" => null,
-            "operating_income" => null,
             "ebit" => null,
             "interest_expense" => null,
             "income_before_tax" => null,
             "income_tax_expense" => null,
-            "net_income" => null,
+            "net_income" => null
         ];
 
         $url = self::$finance_url . $symbol . "&modules=incomeStatementHistory";
@@ -363,6 +372,12 @@ class APIController
         if ($data["quoteSummary"]["error"] === null) {
             if (array_key_exists("incomeStatementHistory", $data["quoteSummary"]["result"][0])) {
                 if (array_key_exists("incomeStatementHistory", $data["quoteSummary"]["result"][0]["incomeStatementHistory"])) {
+                    if (array_key_exists("endDate", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["endDate"])) {
+                            $income["date"] = $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["endDate"]["raw"];
+                        }
+                    }
+
                     if (array_key_exists("totalRevenue", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0])) {
                         if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["totalRevenue"])) {
                             $income["total_revenue"] = $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["totalRevenue"]["raw"];
@@ -390,18 +405,6 @@ class APIController
                     if (array_key_exists("sellingGeneralAdministrative", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0])) {
                         if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["sellingGeneralAdministrative"])) {
                             $income["selling_general_administrative"] = $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["sellingGeneralAdministrative"]["raw"];
-                        }
-                    }
-
-                    if (array_key_exists("totalOperatingExpenses", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["totalOperatingExpenses"])) {
-                            $income["total_operating_expanses"] = $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["totalOperatingExpenses"]["raw"];
-                        }
-                    }
-
-                    if (array_key_exists("operatingIncome", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["operatingIncome"])) {
-                            $income["operating_income"] = $data["quoteSummary"]["result"][0]["incomeStatementHistory"]["incomeStatementHistory"][0]["operatingIncome"]["raw"];
                         }
                     }
 
@@ -437,6 +440,8 @@ class APIController
                 }
             }
         }
+
+        $income["total_operating_expanses"] = $income["research_and_development"] + $income["selling_general_administrative"];
 
         return $income;
     }

@@ -155,5 +155,23 @@ class FinanceDashboardServiceProvider extends ServiceProvider
                     ";
             }
         });
+
+        Blade::directive("fmt_date", function ($expression) {
+            switch (config("app.locale")) {
+                case "de":
+                    return "
+                        <?php
+                            echo date('d.m.Y', $expression);
+                        ?>
+                    ";
+
+                default:
+                    return "
+                        <?php
+                            echo date('Y-m-d', $expression);
+                        ?>
+                    ";
+            }
+        });
     }
 }

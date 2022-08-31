@@ -28,6 +28,12 @@
                 'module': 'esg',
                 'container': '#bm__stock-detail-container #bm__esg-container'
             });
+
+            callAPI({
+                'symbol': '{{ $stock->symbol }}',
+                'module': 'income',
+                'container': '#bm__stock-detail-container #bm__income-container'
+            });
         });
     </script>
 @endsection
