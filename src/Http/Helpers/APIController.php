@@ -95,6 +95,15 @@ class APIController
                         return View::make("finance-dashboard::stocks.components.income")->with(["income" => $income, "stock" => $stock]);
                     }
 
+                case "cashflow":
+                    $cashflow = self::getCashflow(request()->get("symbol"));
+
+                    if (request()->has("json")) {
+                        return $cashflow;
+                    } else {
+                        return View::make("finance-dashboard::stocks.components.cashflow")->with(["cashflow" => $cashflow, "stock" => $stock]);
+                    }
+
                 default:
                     return;
             }
@@ -434,6 +443,7 @@ class APIController
     public static function getCashflow(string $symbol): array
     {
         $cashflow = [
+            "date" => null,
             "net_income" => null,
             "depreciation" => null,
             "change_to_net_income" => null,
@@ -459,6 +469,12 @@ class APIController
         if ($data["quoteSummary"]["error"] === null) {
             if (array_key_exists("cashflowStatementHistoryQuarterly", $data["quoteSummary"]["result"][0])) {
                 if (array_key_exists("cashflowStatements", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"])) {
+                    if (array_key_exists("endDate", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["endDate"])) {
+                            $cashflow["date"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["endDate"]["raw"]; //@todo proof if this is correct
+                        }
+                    }
+
                     if (array_key_exists("netIncome", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
                         if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["netIncome"])) {
                             $cashflow["net_income"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["netIncome"]["raw"];

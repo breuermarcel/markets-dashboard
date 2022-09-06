@@ -10,7 +10,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
 
     <script>
-        $(document).ready(function(){
+        $(document).ready(function() {
+            callAPI({
+                'symbol': '{{ $stock->symbol }}',
+                'module': 'cashflow',
+                'container': '#bm__stock-detail-container #bm__cashflow-container'
+            });
+
             callAPI({
                 'symbol': '{{ $stock->symbol }}',
                 'module': 'income',
