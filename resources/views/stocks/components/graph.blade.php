@@ -95,9 +95,9 @@
                             text: '{{ $stock->name }} ({{ $stock->symbol }})'
                         },
                         scales: {
-                            x: {[
-                                display: true,
-                            ]},
+                            x: {
+                                display: true
+                            },
                             y: [{
                                 display: true,
                                 type: 'time',
