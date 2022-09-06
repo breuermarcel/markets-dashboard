@@ -23,7 +23,7 @@
                 <th scope="col">{{ trans('Name') }}</th>
                 <th scope="col">{{ trans('WKN') }}</th>
                 <th scope="col">{{ trans('ISIN') }}</th>
-                <th scope="col" class="visually-hidden">{{ trans("Toolbar")}}</th>
+                <th scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -33,12 +33,11 @@
                     <td>{{ $stock->name }}</td>
                     <td>{{ $stock->wkn }}</td>
                     <td>{{ $stock->isin }}</td>
-
-                    <td class="btn-group" role="group">
+                    <td>
                         <a href="{{ route('stocks.show', $stock) }}"
-                           class="btn btn-outline-secondary">{{ trans('Anzeigen') }}</a>
+                        class="btn btn-outline-secondary">{{ trans('Anzeigen') }}</a>
                         <a href="{{ route('stocks.edit', $stock) }}"
-                               class="btn btn-secondary">{{ trans('Bearbeiten') }}</a>
+                            class="btn btn-secondary">{{ trans('Bearbeiten') }}</a>
                         <form class="d-inline" method="POST" action="{{ route('stocks.destroy', $stock) }}">
                             @csrf
                             @method('DELETE')
