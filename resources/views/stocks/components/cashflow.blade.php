@@ -15,38 +15,33 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td scope="row">{{ trans("Operativen Cashflow") }}</td>
+                            <td scope="row">{{ trans("Cashflow aus operativer Geschchäftstätigkeit") }}</td>
+                            <td>@fmt_money($cashflow["total_cash_from_operating_activities"])</td>
+                        </tr>
+                        <tr>
+                            <td scope="row">{{ trans("Cashflow aus Investitionstätigkeit") }}</td>
+                            <td>@fmt_money($cashflow["total_cashflows_from_investing_activities"])</td>
+                        </tr>
+                        <tr>
+                            <td scope="row">{{ trans("Cashflow aus Finanzierungstätigkeit") }}</td>
+                            <td>@fmt_money($cashflow["total_cash_from_financing_activities"])</td>
+                        </tr>
+                        <tr>
+                            <td scope="row">{{ trans("Netto-Änderung bei Cash") }}</td>
+                            <td>@fmt_money($cashflow["change_to_net_income"])</td>
+                        </tr>
+                        <tr>
+                            <td scope="row">{{ trans("Barbestand zu Beginn des Zeitraums") }}</td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td scope="row">{{ trans("Investierenden Cashflow") }}</td>
+                            <td scope="row">{{ trans("Barbestand zum Ende des Zeitraums") }}</td>
                             <td></td>
                         </tr>
                         <tr>
-                            <td scope="row">{{ trans("Finanzierenden Cashflow") }}</td>
+                            <td scope="row">{{ trans("Freier Cashflow") }}</td>
                             <td></td>
                         </tr>
-                        <tr>
-                            <td scope="row">{{ trans("Kassenbestand am Ende") }}</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td scope="row">{{ trans("TEST") }}</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td scope="row">{{ trans("TEST") }}</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td scope="row">{{ trans("TEST") }}</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td scope="row">{{ trans("TEST") }}</td>
-                            <td></td>
-                        </tr>
-
                     </tbody>
                 </table>
             </div>

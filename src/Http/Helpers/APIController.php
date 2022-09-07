@@ -14,14 +14,14 @@ class APIController
      *
      * @var string
      */
-    public static string $chart_url = "https://query2.finance.yahoo.com/v8/finance/chart/?symbol=";
+    private string $chart_url = "https://query2.finance.yahoo.com/v8/finance/chart/?symbol=";
 
     /**
      * Yahoo finance API-url.
      *
      * @var string
      */
-    public static string $finance_url = "https://query2.finance.yahoo.com/v10/finance/quoteSummary/?symbol=";
+    private string $finance_url = "https://query2.finance.yahoo.com/v10/finance/quoteSummary/?symbol=";
 
     /**
      * Yahoo finance modules.
@@ -29,7 +29,7 @@ class APIController
      * @var array
      * @todo remove when all modules added.
      */
-    public static array $modules = [
+    private array $modules = [
         "index_trend" => "indexTrend",
         "industry_trend" => "industryTrend",
         "sector_trend" => "sectorTrend",
@@ -51,7 +51,7 @@ class APIController
             switch (request()->get("module")) {
                 case "chart":
                     if (request()->has("period")) {
-                        $chart = self::getChart(request()->get("symbol"), intval(request()->get("period")));
+                        $chart = $this->getChart(request()->get("symbol"), intval(request()->get("period")));
 
                         if (request()->has("json")) {
                             return $chart;
@@ -59,7 +59,7 @@ class APIController
                             return View::make("finance-dashboard::stocks.components.graph")->with(["history" => $chart, "stock" => $stock]);
                         }
                     } else {
-                        $chart = self::getChart(request()->get("symbol"), 30);
+                        $chart = $this->getChart(request()->get("symbol"), 30);
 
                         if (request()->has("json")) {
                             return $chart;
@@ -69,7 +69,7 @@ class APIController
                     }
 
                 case "profile":
-                    $profile = self::getAssetProfile(request()->get("symbol"));
+                    $profile = $this->getAssetProfile(request()->get("symbol"));
 
                     if (request()->has("json")) {
                         return $profile;
@@ -78,7 +78,7 @@ class APIController
                     }
 
                 case "esg":
-                    $esg = self::getEsgScore(request()->get("symbol"));
+                    $esg = $this->getEsgScore(request()->get("symbol"));
 
                     if (request()->has("json")) {
                         return $esg;
@@ -87,7 +87,7 @@ class APIController
                     }
 
                 case "income":
-                    $income = self::getIncome(request()->get("symbol"));
+                    $income = $this->getIncome(request()->get("symbol"));
 
                     if (request()->has("json")) {
                         return $income;
@@ -96,7 +96,7 @@ class APIController
                     }
 
                 case "cashflow":
-                    $cashflow = self::getCashflow(request()->get("symbol"));
+                    $cashflow = $this->getCashflow(request()->get("symbol"));
 
                     if (request()->has("json")) {
                         return $cashflow;
@@ -117,14 +117,14 @@ class APIController
      * @param int $period
      * @return array
      */
-    public static function getChart(string $symbol, int $period): array
+    private function getChart(string $symbol, int $period): array
     {
         $chart = [];
 
         $from_date = Carbon::now()->subDays($period)->format("U");
         $interval = "1d";
 
-        $url = self::$chart_url . $symbol . "&period1=" . $from_date . "&period2=9999999999&interval=" . $interval;
+        $url = $this->chart_url . $symbol . "&period1=" . $from_date . "&period2=9999999999&interval=" . $interval;
         $response = file_get_contents($url);
         $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
 
@@ -153,7 +153,7 @@ class APIController
      * @param string $symbol
      * @return array
      */
-    public static function getAssetProfile(string $symbol): array
+    private function getAssetProfile(string $symbol): array
     {
         $asset = [
             "address" => null,
@@ -169,7 +169,7 @@ class APIController
             "company_officiers" => null,
         ];
 
-        $url = self::$finance_url . $symbol . "&modules=assetProfile";
+        $url = $this->finance_url . $symbol . "&modules=assetProfile";
         $response = file_get_contents($url);
         $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
 
@@ -248,7 +248,7 @@ class APIController
      * @param string $symbol
      * @return array
      */
-    public static function getEsgScore(string $symbol): array
+    private function getEsgScore(string $symbol): array
     {
         $esg = [
             "total" => null,
@@ -263,7 +263,7 @@ class APIController
             "peer_governance" => null,
         ];
 
-        $url = self::$finance_url . $symbol . "&modules=esgScores";
+        $url = $this->finance_url . $symbol . "&modules=esgScores";
         $response = file_get_contents($url);
         $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
 
@@ -336,7 +336,7 @@ class APIController
      * @param string $symbol
      * @return array
      */
-    public static function getIncome(string $symbol): array
+    private function getIncome(string $symbol): array
     {
         $income = [
             "date" => null,
@@ -353,7 +353,7 @@ class APIController
             "net_income" => null
         ];
 
-        $url = self::$finance_url . $symbol . "&modules=incomeStatementHistory";
+        $url = $this->finance_url . $symbol . "&modules=incomeStatementHistory";
         $response = file_get_contents($url);
         $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
 
@@ -440,7 +440,7 @@ class APIController
      * @param string $symbol
      * @return array
      */
-    public static function getCashflow(string $symbol): array
+    private function getCashflow(string $symbol): array
     {
         $cashflow = [
             "date" => null,
@@ -462,112 +462,112 @@ class APIController
             "total_cash_from_financing_activities" => null,
         ];
 
-        $url = self::$finance_url . $symbol . "&modules=cashflowStatementHistoryQuarterly";
+        $url = $this->finance_url . $symbol . "&modules=cashflowStatementHistory";
         $response = file_get_contents($url);
         $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
 
         if ($data["quoteSummary"]["error"] === null) {
-            if (array_key_exists("cashflowStatementHistoryQuarterly", $data["quoteSummary"]["result"][0])) {
-                if (array_key_exists("cashflowStatements", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"])) {
-                    if (array_key_exists("endDate", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["endDate"])) {
-                            $cashflow["date"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["endDate"]["raw"]; //@todo proof if this is correct
+            if (array_key_exists("cashflowStatementHistory", $data["quoteSummary"]["result"][0])) {
+                if (array_key_exists("cashflowStatements", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"])) {
+                    if (array_key_exists("endDate", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["endDate"])) {
+                            $cashflow["date"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["endDate"]["raw"]; //@todo proof if this is correct
                         }
                     }
 
-                    if (array_key_exists("netIncome", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["netIncome"])) {
-                            $cashflow["net_income"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["netIncome"]["raw"];
+                    if (array_key_exists("netIncome", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["netIncome"])) {
+                            $cashflow["net_income"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["netIncome"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("depreciation", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["depreciation"])) {
-                            $cashflow["depreciation"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["depreciation"]["raw"];
+                    if (array_key_exists("depreciation", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["depreciation"])) {
+                            $cashflow["depreciation"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["depreciation"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("changeToNetincome", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeToNetincome"])) {
-                            $cashflow["change_to_net_income"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeToNetincome"]["raw"];
+                    if (array_key_exists("changeToNetincome", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["changeToNetincome"])) {
+                            $cashflow["change_to_net_income"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["changeToNetincome"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("changeToAccountReceivables", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeToAccountReceivables"])) {
-                            $cashflow["change_to_account_receivables"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeToAccountReceivables"]["raw"];
+                    if (array_key_exists("changeToAccountReceivables", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["changeToAccountReceivables"])) {
+                            $cashflow["change_to_account_receivables"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["changeToAccountReceivables"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("changeToLiabilities", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeToLiabilities"])) {
-                            $cashflow["change_to_liabilities"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeToLiabilities"]["raw"];
+                    if (array_key_exists("changeToLiabilities", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["changeToLiabilities"])) {
+                            $cashflow["change_to_liabilities"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["changeToLiabilities"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("changeToInventory", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeToInventory"])) {
-                            $cashflow["change_to_inventory"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeToInventory"]["raw"];
+                    if (array_key_exists("changeToInventory", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["changeToInventory"])) {
+                            $cashflow["change_to_inventory"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["changeToInventory"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("changeToOperatingActivities", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeToOperatingActivities"])) {
-                            $cashflow["change_to_operating_activities"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeToOperatingActivities"]["raw"];
+                    if (array_key_exists("changeToOperatingActivities", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["changeToOperatingActivities"])) {
+                            $cashflow["change_to_operating_activities"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["changeToOperatingActivities"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("capitalExpenditures", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["capitalExpenditures"])) {
-                            $cashflow["capital_expenditures"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["capitalExpenditures"]["raw"];
+                    if (array_key_exists("capitalExpenditures", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["capitalExpenditures"])) {
+                            $cashflow["capital_expenditures"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["capitalExpenditures"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("investments", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["investments"])) {
-                            $cashflow["investments"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["investments"]["raw"];
+                    if (array_key_exists("investments", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["investments"])) {
+                            $cashflow["investments"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["investments"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("dividendsPaid", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["dividendsPaid"])) {
-                            $cashflow["dividends_paid"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["dividendsPaid"]["raw"];
+                    if (array_key_exists("dividendsPaid", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["dividendsPaid"])) {
+                            $cashflow["dividends_paid"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["dividendsPaid"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("netBorrowings", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["netBorrowings"])) {
-                            $cashflow["net_borrowings"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["netBorrowings"]["raw"];
+                    if (array_key_exists("netBorrowings", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["netBorrowings"])) {
+                            $cashflow["net_borrowings"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["netBorrowings"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("changeInCash", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeInCash"])) {
-                            $cashflow["change_in_cash"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["changeInCash"]["raw"];
+                    if (array_key_exists("changeInCash", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["changeInCash"])) {
+                            $cashflow["change_in_cash"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["changeInCash"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("repurchaseOfStock", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["repurchaseOfStock"])) {
-                            $cashflow["repurchase_of_stock"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["repurchaseOfStock"]["raw"];
+                    if (array_key_exists("repurchaseOfStock", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["repurchaseOfStock"])) {
+                            $cashflow["repurchase_of_stock"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["repurchaseOfStock"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("totalCashFromOperatingActivities", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["totalCashFromOperatingActivities"])) {
-                            $cashflow["total_cash_from_operating_activities"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["totalCashFromOperatingActivities"]["raw"];
+                    if (array_key_exists("totalCashFromOperatingActivities", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["totalCashFromOperatingActivities"])) {
+                            $cashflow["total_cash_from_operating_activities"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["totalCashFromOperatingActivities"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("totalCashflowsFromInvestingActivities", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["totalCashflowsFromInvestingActivities"])) {
-                            $cashflow["total_cashflows_from_investing_activities"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["totalCashflowsFromInvestingActivities"]["raw"];
+                    if (array_key_exists("totalCashflowsFromInvestingActivities", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["totalCashflowsFromInvestingActivities"])) {
+                            $cashflow["total_cashflows_from_investing_activities"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["totalCashflowsFromInvestingActivities"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("totalCashFromFinancingActivities", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["totalCashFromFinancingActivities"])) {
-                            $cashflow["total_cash_from_financing_activities"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistoryQuarterly"]["cashflowStatements"][0]["totalCashFromFinancingActivities"]["raw"];
+                    if (array_key_exists("totalCashFromFinancingActivities", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["totalCashFromFinancingActivities"])) {
+                            $cashflow["total_cash_from_financing_activities"] = $data["quoteSummary"]["result"][0]["cashflowStatementHistory"]["cashflowStatements"][0]["totalCashFromFinancingActivities"]["raw"];
                         }
                     }
                 }
@@ -582,7 +582,7 @@ class APIController
      * @param string $symbol
      * @return array
      */
-    public static function getBalanceSheet(string $symbol): array
+    private function getBalanceSheet(string $symbol): array
     {
         $balance_sheet = [
             "cash" => null,
@@ -610,148 +610,148 @@ class APIController
             "net_tangible_assets" => null,
         ];
 
-        $url = self::$finance_url . $symbol . "&modules=balanceSheetHistoryQuarterly";
+        $url = $this->finance_url . $symbol . "&modules=balanceSheetHistory";
         $response = file_get_contents($url);
         $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
 
         if ($data["quoteSummary"]["error"] === null) {
-            if (array_key_exists("balanceSheetHistoryQuarterly", $data["quoteSummary"]["result"][0])) {
-                if (array_key_exists("balanceSheetStatements", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"])) {
-                    if (array_key_exists("cash", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["cash"])) {
-                            $balance_sheet["cash"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["cash"]["raw"];
+            if (array_key_exists("balanceSheetHistory", $data["quoteSummary"]["result"][0])) {
+                if (array_key_exists("balanceSheetStatements", $data["quoteSummary"]["result"][0]["balanceSheetHistory"])) {
+                    if (array_key_exists("cash", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["cash"])) {
+                            $balance_sheet["cash"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["cash"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("shortTermInvestments", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["shortTermInvestments"])) {
-                            $balance_sheet["short_term_investments"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["shortTermInvestments"]["raw"];
+                    if (array_key_exists("shortTermInvestments", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["shortTermInvestments"])) {
+                            $balance_sheet["short_term_investments"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["shortTermInvestments"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("netReceivables", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["netReceivables"])) {
-                            $balance_sheet["net_receivables"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["netReceivables"]["raw"];
+                    if (array_key_exists("netReceivables", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["netReceivables"])) {
+                            $balance_sheet["net_receivables"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["netReceivables"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("inventory", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["inventory"])) {
-                            $balance_sheet["inventory"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["inventory"]["raw"];
+                    if (array_key_exists("inventory", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["inventory"])) {
+                            $balance_sheet["inventory"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["inventory"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("otherCurrentAssets", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["otherCurrentAssets"])) {
-                            $balance_sheet["other_current_assets"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["otherCurrentAssets"]["raw"];
+                    if (array_key_exists("otherCurrentAssets", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["otherCurrentAssets"])) {
+                            $balance_sheet["other_current_assets"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["otherCurrentAssets"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("totalCurrentAssets", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["totalCurrentAssets"])) {
-                            $balance_sheet["total_current_assets"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["totalCurrentAssets"]["raw"];
+                    if (array_key_exists("totalCurrentAssets", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["totalCurrentAssets"])) {
+                            $balance_sheet["total_current_assets"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["totalCurrentAssets"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("longTermInvestments", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["longTermInvestments"])) {
-                            $balance_sheet["long_term_investments"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["longTermInvestments"]["raw"];
+                    if (array_key_exists("longTermInvestments", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["longTermInvestments"])) {
+                            $balance_sheet["long_term_investments"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["longTermInvestments"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("propertyPlantEquipment", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["propertyPlantEquipment"])) {
-                            $balance_sheet["property_plant_equipment"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["propertyPlantEquipment"]["raw"];
+                    if (array_key_exists("propertyPlantEquipment", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["propertyPlantEquipment"])) {
+                            $balance_sheet["property_plant_equipment"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["propertyPlantEquipment"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("otherAssets", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["otherAssets"])) {
-                            $balance_sheet["other_assets"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["otherAssets"]["raw"];
+                    if (array_key_exists("otherAssets", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["otherAssets"])) {
+                            $balance_sheet["other_assets"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["otherAssets"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("totalAssets", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["totalAssets"])) {
-                            $balance_sheet["total_assets"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["totalAssets"]["raw"];
+                    if (array_key_exists("totalAssets", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["totalAssets"])) {
+                            $balance_sheet["total_assets"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["totalAssets"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("accountsPayable", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["accountsPayable"])) {
-                            $balance_sheet["accounts_payable"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["accountsPayable"]["raw"];
+                    if (array_key_exists("accountsPayable", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["accountsPayable"])) {
+                            $balance_sheet["accounts_payable"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["accountsPayable"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("shortLongTermDebt", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["shortLongTermDebt"])) {
-                            $balance_sheet["short_long_term_debt"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["shortLongTermDebt"]["raw"];
+                    if (array_key_exists("shortLongTermDebt", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["shortLongTermDebt"])) {
+                            $balance_sheet["short_long_term_debt"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["shortLongTermDebt"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("otherCurrentLiab", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["otherCurrentLiab"])) {
-                            $balance_sheet["other_current_liab"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["otherCurrentLiab"]["raw"];
+                    if (array_key_exists("otherCurrentLiab", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["otherCurrentLiab"])) {
+                            $balance_sheet["other_current_liab"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["otherCurrentLiab"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("longTermDebt", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["longTermDebt"])) {
-                            $balance_sheet["long_term_debt"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["longTermDebt"]["raw"];
+                    if (array_key_exists("longTermDebt", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["longTermDebt"])) {
+                            $balance_sheet["long_term_debt"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["longTermDebt"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("otherLiab", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["otherLiab"])) {
-                            $balance_sheet["other_liab"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["otherLiab"]["raw"];
+                    if (array_key_exists("otherLiab", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["otherLiab"])) {
+                            $balance_sheet["other_liab"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["otherLiab"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("totalCurrentLiabilities", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["totalCurrentLiabilities"])) {
-                            $balance_sheet["total_current_liabilities"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["totalCurrentLiabilities"]["raw"];
+                    if (array_key_exists("totalCurrentLiabilities", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["totalCurrentLiabilities"])) {
+                            $balance_sheet["total_current_liabilities"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["totalCurrentLiabilities"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("totalLiab", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["totalLiab"])) {
-                            $balance_sheet["total_liab"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["totalLiab"]["raw"];
+                    if (array_key_exists("totalLiab", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["totalLiab"])) {
+                            $balance_sheet["total_liab"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["totalLiab"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("commonStock", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["commonStock"])) {
-                            $balance_sheet["common_stock"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["commonStock"]["raw"];
+                    if (array_key_exists("commonStock", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["commonStock"])) {
+                            $balance_sheet["common_stock"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["commonStock"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("retainedEarnings", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["retainedEarnings"])) {
-                            $balance_sheet["retained_earnings"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["retainedEarnings"]["raw"];
+                    if (array_key_exists("retainedEarnings", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["retainedEarnings"])) {
+                            $balance_sheet["retained_earnings"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["retainedEarnings"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("treasuryStock", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["treasuryStock"])) {
-                            $balance_sheet["treasury_stock"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["treasuryStock"]["raw"];
+                    if (array_key_exists("treasuryStock", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["treasuryStock"])) {
+                            $balance_sheet["treasury_stock"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["treasuryStock"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("otherStockholderEquity", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["otherStockholderEquity"])) {
-                            $balance_sheet["other_stockholder_equity"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["otherStockholderEquity"]["raw"];
+                    if (array_key_exists("otherStockholderEquity", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["otherStockholderEquity"])) {
+                            $balance_sheet["other_stockholder_equity"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["otherStockholderEquity"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("totalStockholderEquity", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["totalStockholderEquity"])) {
-                            $balance_sheet["total_stockholder_equity"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["totalStockholderEquity"]["raw"];
+                    if (array_key_exists("totalStockholderEquity", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["totalStockholderEquity"])) {
+                            $balance_sheet["total_stockholder_equity"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["totalStockholderEquity"]["raw"];
                         }
                     }
 
-                    if (array_key_exists("netTangibleAssets", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0])) {
-                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["netTangibleAssets"])) {
-                            $balance_sheet["net_tangible_assets"] = $data["quoteSummary"]["result"][0]["balanceSheetHistoryQuarterly"]["balanceSheetStatements"][0]["netTangibleAssets"]["raw"];
+                    if (array_key_exists("netTangibleAssets", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["netTangibleAssets"])) {
+                            $balance_sheet["net_tangible_assets"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["netTangibleAssets"]["raw"];
                         }
                     }
                 }
@@ -767,7 +767,7 @@ class APIController
      * @param string $symbol
      * @return array
      */
-    public static function getRecommendations(string $symbol): array
+    private function getRecommendations(string $symbol): array
     {
         $recommendations = [
             "strong_buy" => null,
@@ -777,7 +777,7 @@ class APIController
             "strong_sell" => null
         ];
 
-        $url = self::$finance_url . $symbol . "&modules=recommendationTrend";
+        $url = $this->finance_url . $symbol . "&modules=recommendationTrend";
         $response = file_get_contents($url);
         $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
 
@@ -812,11 +812,11 @@ class APIController
         return $recommendations;
     }
 
-    public static function getUpgradeDowngrade(string $symbol): array
+    private function getUpgradeDowngrade(string $symbol): array
     {
         $upgrade_downgrade = [];
 
-        $url = self::$finance_url . $symbol . "&modules=upgradeDowngradeHistory";
+        $url = $this->finance_url . $symbol . "&modules=upgradeDowngradeHistory";
         $response = file_get_contents($url);
         $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
 
