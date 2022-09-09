@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string("symbol");
             $table->string("indicator");
             $table->string("value");
-            $table->string("value");
         });
     }
 
