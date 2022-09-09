@@ -13,6 +13,12 @@
         $(document).ready(function() {
             callAPI({
                 'symbol': '{{ $stock->symbol }}',
+                'module': 'balance_sheet',
+                'container': '#bm__stock-detail-container #bm__balance_sheet-container'
+            });
+
+            callAPI({
+                'symbol': '{{ $stock->symbol }}',
                 'module': 'cashflow',
                 'container': '#bm__stock-detail-container #bm__cashflow-container'
             });

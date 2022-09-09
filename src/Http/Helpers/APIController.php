@@ -104,6 +104,15 @@ class APIController
                         return View::make("finance-dashboard::stocks.components.cashflow")->with(["cashflow" => $cashflow, "stock" => $stock]);
                     }
 
+                case "balance_sheet":
+                    $balance_sheet = $this->getBalanceSheet(request()->get("symbol"));
+
+                    if (request()->has("json")) {
+                        return $balance_sheet;
+                    } else {
+                        return View::make("finance-dashboard::stocks.components.balance_sheet")->with(["balance_sheet" => $balance_sheet, "stock" => $stock]);
+                    }
+
                 default:
                     return;
             }
@@ -585,6 +594,7 @@ class APIController
     private function getBalanceSheet(string $symbol): array
     {
         $balance_sheet = [
+            "date" => null,
             "cash" => null,
             "short_term_investments" => null,
             "net_receivables" => null,
@@ -617,6 +627,12 @@ class APIController
         if ($data["quoteSummary"]["error"] === null) {
             if (array_key_exists("balanceSheetHistory", $data["quoteSummary"]["result"][0])) {
                 if (array_key_exists("balanceSheetStatements", $data["quoteSummary"]["result"][0]["balanceSheetHistory"])) {
+                    if (array_key_exists("endDate", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
+                        if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["endDate"])) {
+                            $balance_sheet["date"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["endDate"]["raw"];
+                        }
+                    }
+
                     if (array_key_exists("cash", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0])) {
                         if (array_key_exists("raw", $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["cash"])) {
                             $balance_sheet["cash"] = $data["quoteSummary"]["result"][0]["balanceSheetHistory"]["balanceSheetStatements"][0]["cash"]["raw"];
