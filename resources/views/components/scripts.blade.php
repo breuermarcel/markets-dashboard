@@ -32,8 +32,7 @@ function callAPI(data) {
             $('#bm__stock-detail-container').prepend(response);
 
             let bm__msnry = new Masonry(document.getElementById("bm__stock-detail-container"), {
-                itemSelector: '.col',
-                percentPosition: true
+                percentPosition: false
             });
 
             bm__msnry.layout();

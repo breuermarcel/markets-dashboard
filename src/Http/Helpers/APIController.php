@@ -597,6 +597,7 @@ class APIController
             "date" => null,
             "cash" => null,
             "short_term_investments" => null,
+            "cash_total" => null,
             "net_receivables" => null,
             "inventory" => null,
             "other_current_assets" => null,
@@ -773,6 +774,8 @@ class APIController
                 }
             }
         }
+
+        $balance_sheet["cash_total"] = $balance_sheet["cash"] + $balance_sheet["short_term_investments"];
 
         return $balance_sheet;
     }
