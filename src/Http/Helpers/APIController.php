@@ -605,10 +605,12 @@ class APIController
             "long_term_investments" => null,
             "property_plant_equipment" => null,
             "other_assets" => null,
+            "non_current_assets" => null,
             "total_assets" => null,
             "accounts_payable" => null,
             "short_long_term_debt" => null,
             "other_current_liab" => null,
+            "long_term_liab" => null,
             "long_term_debt" => null,
             "other_liab" => null,
             "total_current_liabilities" => null,
@@ -619,6 +621,7 @@ class APIController
             "other_stockholder_equity" => null,
             "total_stockholder_equity" => null,
             "net_tangible_assets" => null,
+            "total_non_current_assets" => null,
         ];
 
         $url = $this->finance_url . $symbol . "&modules=balanceSheetHistory";
@@ -776,6 +779,8 @@ class APIController
         }
 
         $balance_sheet["cash_total"] = $balance_sheet["cash"] + $balance_sheet["short_term_investments"];
+        $balance_sheet["long_term_liab"] = $balance_sheet["total_liab"] - $balance_sheet["total_current_liabilities"];
+        $balance_sheet["total_non_current_assets"] = $balance_sheet["total_assets"] - $balance_sheet["total_current_assets"];
 
         return $balance_sheet;
     }

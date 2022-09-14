@@ -15,11 +15,15 @@
                     </thead>
                     <tbody>
                         <tr class="fw-bold">
+                            <td scope="row">{{ trans("Anlagevermögen (gesamt)") }}</td>
+                            <td>@fmt_money($balance_sheet["total_assets"])</td>
+                        </tr>
+                        <tr class="fw-bolder">
                             <td scope="row">{{ trans("Aktuelle Anlagen") }}</td>
                             <td>@fmt_money($balance_sheet["total_current_assets"])</td>
                         </tr>
                         <tr>
-                            <td scope="row">{{ trans("Cash (gesamt)") }}</td>
+                            <td scope="row">{{ trans("Cash") }}</td>
                             <td>@fmt_money($balance_sheet["cash_total"])</td>
                         </tr>
                         <tr>
@@ -35,29 +39,67 @@
                             <td>@fmt_money($balance_sheet["other_current_assets"])</td>
                         </tr>
 
+                        <tr class="fw-bolder">
+                            <td scope="row">{{ trans("Anlagevermögen") }}</td>
+                            <td>@fmt_money($balance_sheet["total_non_current_assets"])</td>
+                        </tr>
                         <tr>
-                            <td scope="row">{{ trans("Sachanlagen (brutto)") }}</td>
-                            <td>@fmt_money($balance_sheet["long_term_debt"])</td>
+                            <td scope="row">{{ trans("Sachanlagen") }}</td>
+                            <td>@fmt_money(0)</td>
                         </tr>
                         <tr>
                             <td scope="row">{{ trans("Aufgelaufene Abschreibungen") }}</td>
-                            <td></td>
+                            <td>@fmt_money(0)</td>
                         </tr>
                         <tr>
                             <td scope="row">{{ trans("Sachanlagen (netto)") }}</td>
-                            <td></td>
+                            <td>@fmt_money(0)</td>
                         </tr>
                         <tr>
                             <td scope="row">{{ trans("Eigenkapital und sonstige Investitionen") }}</td>
-                            <td></td>
+                            <td>@fmt_money($balance_sheet["long_term_investments"])</td>
                         </tr>
                         <tr>
                             <td scope="row">{{ trans("Sonstige langfristige Aktiva") }}</td>
-                            <td></td>
+                            <td>@fmt_money(0)</td>
                         </tr>
                         <tr>
                             <td scope="row">{{ trans("Eigenkapital (gesamt)") }}</td>
                             <td>@fmt_money($balance_sheet["net_tangible_assets"])</td>
+                        </tr>
+
+
+                        <tr class="fw-bold">
+                            <td scope="row">{{ trans("Verbindlichkeiten und Eigenkapitalpositionen") }}
+                            <td>@fmt_money($balance_sheet["total_assets"])</td>
+                        </tr>
+                        <tr class="fw-bolder">
+                            <td scope="row">{{ trans("Verbindlichkeiten (gesamt)") }}</td>
+                            <td>@fmt_money($balance_sheet["total_liab"])</td>
+                        </tr>
+                        <tr>
+                            <td scope="row">{{ trans("Aktuelle Verbindlichkeiten") }}</td>
+                            <td>@fmt_money($balance_sheet["total_current_liabilities"])</td>
+                        </tr>
+                        <tr>
+                            <td scope="row">{{ trans("Langfristige Verbindlichkeiten") }}</td>
+                            <td>@fmt_money($balance_sheet["long_term_liab"])</td>
+                        </tr>
+                        <tr class="fw-bolder">
+                            <td scope="row">{{ trans("Eigenkapital (gesamt)") }}</td>
+                            <td>@fmt_money($balance_sheet["net_tangible_assets"])</td>
+                        </tr>
+                        <tr>
+                            <td scope="row">{{ trans("Stammaktie") }}</td>
+                            <td>@fmt_money($balance_sheet["common_stock"])</td>
+                        </tr>
+                        <tr>
+                            <td scope="row">{{ trans("Gewinnrücklagen") }}</td>
+                            <td>@fmt_money($balance_sheet["retained_earnings"])</td>
+                        </tr>
+                        <tr>
+                            <td scope="row">{{ trans("Aufgelaufener sonstiger Gesamterfolg") }}</td>
+                            <td>@fmt_money($balance_sheet["treasury_stock"])</td>
                         </tr>
                     </tbody>
                 </table>
