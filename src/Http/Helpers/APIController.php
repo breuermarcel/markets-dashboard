@@ -32,11 +32,7 @@ class APIController
     private array $modules = [
         "index_trend" => "indexTrend",
         "industry_trend" => "industryTrend",
-        "sector_trend" => "sectorTrend",
-        "institution_ownership" => "institutionOwnership",
-        "fund_ownership" => "fundOwnership",
-        "insider_ownership" => "insiderHolders",
-        "insider_transactions" => "insiderTransactions",
+        "sector_trend" => "sectorTrend"
     ];
 
     /**
