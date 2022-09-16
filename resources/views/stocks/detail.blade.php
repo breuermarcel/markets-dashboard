@@ -14,37 +14,43 @@
             callAPI({
                 'symbol': '{{ $stock->symbol }}',
                 'module': 'recommendations',
-                'container': '#bm__stock-detail-container #bm__recommendations-container'
+                'container': '#bm__stock-detail-container #bm__recommendations-container',
+                'html': 'true'
             });
 
             callAPI({
                 'symbol': '{{ $stock->symbol }}',
                 'module': 'balance_sheet',
-                'container': '#bm__stock-detail-container #bm__balance_sheet-container'
+                'container': '#bm__stock-detail-container #bm__balance_sheet-container',
+                'html': 'true'
             });
 
             callAPI({
                 'symbol': '{{ $stock->symbol }}',
                 'module': 'cashflow',
-                'container': '#bm__stock-detail-container #bm__cashflow-container'
+                'container': '#bm__stock-detail-container #bm__cashflow-container',
+                'html': 'true'
             });
 
             callAPI({
                 'symbol': '{{ $stock->symbol }}',
                 'module': 'income',
-                'container': '#bm__stock-detail-container #bm__income-container'
+                'container': '#bm__stock-detail-container #bm__income-container',
+                'html': 'true'
             });
 
             callAPI({
                 'symbol': '{{ $stock->symbol }}',
                 'module': 'esg',
-                'container': '#bm__stock-detail-container #bm__esg-container'
+                'container': '#bm__stock-detail-container #bm__esg-container',
+                'html': 'true'
             });
 
             callAPI({
                 'symbol': '{{ $stock->symbol }}',
                 'module': 'profile',
-                'container': '#bm__stock-detail-container #bm__profile-container'
+                'container': '#bm__stock-detail-container #bm__profile-container',
+                'html': 'true'
             });
 
             callAPI({

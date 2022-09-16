@@ -50,77 +50,25 @@ class APIController
 
             switch (request()->get("module")) {
                 case "chart":
-                    if (request()->has("period")) {
-                        $chart = $this->getChart(request()->get("symbol"), intval(request()->get("period")));
-
-                        if (request()->has("json")) {
-                            return $chart;
-                        } else {
-                            return View::make("finance-dashboard::stocks.components.graph")->with(["history" => $chart, "stock" => $stock]);
-                        }
-                    } else {
-                        $chart = $this->getChart(request()->get("symbol"), 30);
-
-                        if (request()->has("json")) {
-                            return $chart;
-                        } else {
-                            return View::make("finance-dashboard::stocks.components.graph")->with(["history"=> $chart, "stock" => $stock]);
-                        }
-                    }
+                    return request()->has("period") ? View::make("finance-dashboard::stocks.components.graph")->with(["history" => $this->getChart(request()->get("symbol"), intval(request()->get("period"))), "stock" => $stock]) : View::make("finance-dashboard::stocks.components.graph")->with(["history"=> $this->getChart(request()->get("symbol"), 30), "stock" => $stock]);
 
                 case "profile":
-                    $profile = $this->getAssetProfile(request()->get("symbol"));
-
-                    if (request()->has("json")) {
-                        return $profile;
-                    } else {
-                        return View::make("finance-dashboard::stocks.components.profile")->with(["profile" => $profile, "stock" => $stock]);
-                    }
+                    return request()->has("html") ? View::make("finance-dashboard::stocks.components.profile")->with(["profile" => $this->getAssetProfile(request()->get("symbol")), "stock" => $stock]) : $this->getAssetProfile(request()->get("symbol"));
 
                 case "esg":
-                    $esg = $this->getEsgScore(request()->get("symbol"));
-
-                    if (request()->has("json")) {
-                        return $esg;
-                    } else {
-                        return View::make("finance-dashboard::stocks.components.esg")->with(["esg" => $esg, "stock" => $stock]);
-                    }
+                    return request()->has("html") ? View::make("finance-dashboard::stocks.components.esg")->with(["esg" => $this->getEsgScore(request()->get("symbol")), "stock" => $stock]) : $this->getEsgScore(request()->get("symbol"));
 
                 case "income":
-                    $income = $this->getIncome(request()->get("symbol"));
+                    return request()->has("html") ? View::make("finance-dashboard::stocks.components.income")->with(["income" => $this->getIncome(request()->get("symbol")), "stock" => $stock]): $this->getIncome(request()->get("symbol"));
 
-                    if (request()->has("json")) {
-                        return $income;
-                    } else {
-                        return View::make("finance-dashboard::stocks.components.income")->with(["income" => $income, "stock" => $stock]);
-                    }
-
-                case "cashflow":
-                    $cashflow = $this->getCashflow(request()->get("symbol"));
-
-                    if (request()->has("json")) {
-                        return $cashflow;
-                    } else {
-                        return View::make("finance-dashboard::stocks.components.cashflow")->with(["cashflow" => $cashflow, "stock" => $stock]);
-                    }
+                case "cashflow":                       
+                    return request()->has("html") ? View::make("finance-dashboard::stocks.components.cashflow")->with(["cashflow" => $this->getCashflow(request()->get("symbol")), "stock" => $stock]) : $this->getCashflow(request()->get("symbol"));
 
                 case "balance_sheet":
-                    $balance_sheet = $this->getBalanceSheet(request()->get("symbol"));
-
-                    if (request()->has("json")) {
-                        return $balance_sheet;
-                    } else {
-                        return View::make("finance-dashboard::stocks.components.balance_sheet")->with(["balance_sheet" => $balance_sheet, "stock" => $stock]);
-                    }
+                    return request()->has("html") ? View::make("finance-dashboard::stocks.components.balance_sheet")->with(["balance_sheet" => $this->getBalanceSheet(request()->get("symbol")), "stock" => $stock]) : $this->getBalanceSheet(request()->get("symbol"));
 
                 case "recommendations":
-                    $recommendations = $this->getRecommendations(request()->get("symbol"));
-
-                    if (request()->has("json")) {
-                        return $recommendations;
-                    } else {
-                        return View::make("finance-dashboard::stocks.components.recommendations")->with(["recommendations" => $recommendations, "stock" => $stock]);
-                    }
+                    return request()->has("html") ? View::make("finance-dashboard::stocks.components.recommendations")->with(["recommendations" => $this->getRecommendations(request()->get("symbol")), "stock" => $stock]) : $this->getRecommendations(request()->get("symbol"));
             }
         }
     }
