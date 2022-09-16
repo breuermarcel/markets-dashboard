@@ -113,8 +113,14 @@ class APIController
                         return View::make("finance-dashboard::stocks.components.balance_sheet")->with(["balance_sheet" => $balance_sheet, "stock" => $stock]);
                     }
 
-                default:
-                    return;
+                case "recommendations":
+                    $recommendations = $this->getRecommendations(request()->get("symbol"));
+
+                    if (request()->has("json")) {
+                        return $recommendations;
+                    } else {
+                        return View::make("finance-dashboard::stocks.components.recommendations")->with(["recommendations" => $recommendations, "stock" => $stock]);
+                    }
             }
         }
     }
