@@ -5,7 +5,7 @@
         </div>
 
         <div class="card-body">
-            
+            @dd($recommendations)
         </div>
     </div>
 </div>
