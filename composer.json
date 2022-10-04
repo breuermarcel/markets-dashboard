@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": "^8.0"
+        "php": "^7.4|^8.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7"
@@ -37,10 +37,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "ChatServiceProvider"
+                "Breuermarcel\\FinanceDashboard\\FinanceDashboardServiceProvider"
             ],
             "aliases": {
-                "FinanceDashboard": "ChatFacade"
+                "FinanceDashboard": "Breuermarcel\\FinanceDashboard\\FinanceDashboardFacade"
             }
         }
     }
