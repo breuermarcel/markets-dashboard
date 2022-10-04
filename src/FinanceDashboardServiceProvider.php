@@ -33,7 +33,7 @@ class FinanceDashboardServiceProvider extends ServiceProvider
 
         // Register the main class to use with the facade
         $this->app->singleton("finance-dashboard", function () {
-            return new FinanceDashboard;
+            return new Chat;
         });
     }
 

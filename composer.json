@@ -37,10 +37,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Breuermarcel\\FinanceDashboard\\FinanceDashboardServiceProvider"
+                "ChatServiceProvider"
             ],
             "aliases": {
-                "FinanceDashboard": "Breuermarcel\\FinanceDashboard\\FinanceDashboardFacade"
+                "FinanceDashboard": "ChatFacade"
             }
         }
     }
