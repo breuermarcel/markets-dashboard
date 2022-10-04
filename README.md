@@ -7,7 +7,7 @@ Clone repository into your packages folder:
 git clone https://github.com/breuermarcel/finance-dashboard.git
 ```
 
-Define your package repositories:
+Define your package repositories: dev
 ```json
 "repositories": [
     {
@@ -15,6 +15,24 @@ Define your package repositories:
         "url": "./packages/*",
         "options": {
             "symlink": true
+        }
+    }
+],
+```
+
+Define your package repositories: live/latest version
+```json
+"repositories": [
+    {
+        "type":"package",
+        "package": {
+            "name": "breuermarcel/finance-dashboard",
+            "version":"master",
+            "source": {
+                "url": "https://github.com/breuermarcel/finance-dashboard.git",
+                "type": "git",
+                "reference":"master"
+            }
         }
     }
 ],
