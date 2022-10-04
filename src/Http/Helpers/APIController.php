@@ -13,34 +13,21 @@ class APIController
      *
      * @var string
      */
-    private string $chart_url = "https://query2.finance.yahoo.com/v8/finance/chart/?symbol=";
+    public string $chart_url = "https://query2.finance.yahoo.com/v8/finance/chart/?symbol=";
 
     /**
      * Yahoo finance API-url.
      *
      * @var string
      */
-    private string $finance_url = "https://query2.finance.yahoo.com/v10/finance/quoteSummary/?symbol=";
-
-    /**
-     * Yahoo finance modules.
-     *
-     * @var array
-     * @todo remove when all modules added.
-     */
-    private array $modules = [
-        "index_trend" => "indexTrend",
-        "industry_trend" => "industryTrend",
-        "sector_trend" => "sectorTrend"
-    ];
+    public string $finance_url = "https://query2.finance.yahoo.com/v10/finance/quoteSummary/?symbol=";
 
     /**
      * @return false|\Illuminate\Contracts\View\View|null[]
-     * @throws \JsonException
      * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function load() {
+    public function load()
+    {
         // todo validate requests
 
         if (request()->has("module") && request()->has("symbol")) {
@@ -48,7 +35,7 @@ class APIController
 
             switch (request()->get("module")) {
                 case "chart":
-                    return request()->has("period") ? View::make("finance-dashboard::stocks.components.graph")->with(["history" => $this->getChart(request()->get("symbol"), intval(request()->get("period"))), "stock" => $stock]) : View::make("finance-dashboard::stocks.components.graph")->with(["history"=> $this->getChart(request()->get("symbol"), 30), "stock" => $stock]);
+                    return request()->has("period") ? View::make("finance-dashboard::stocks.components.graph")->with(["history" => $this->getChart(request()->get("symbol"), intval(request()->get("period"))), "stock" => $stock]) : View::make("finance-dashboard::stocks.components.graph")->with(["history" => $this->getChart(request()->get("symbol"), 30), "stock" => $stock]);
 
                 case "profile":
                     return request()->has("html") ? View::make("finance-dashboard::stocks.components.profile")->with(["profile" => $this->getAssetProfile(request()->get("symbol")), "stock" => $stock]) : $this->getAssetProfile(request()->get("symbol"));
@@ -57,7 +44,7 @@ class APIController
                     return request()->has("html") ? View::make("finance-dashboard::stocks.components.esg")->with(["esg" => $this->getEsgScore(request()->get("symbol")), "stock" => $stock]) : $this->getEsgScore(request()->get("symbol"));
 
                 case "income":
-                    return request()->has("html") ? View::make("finance-dashboard::stocks.components.income")->with(["income" => $this->getIncome(request()->get("symbol")), "stock" => $stock]): $this->getIncome(request()->get("symbol"));
+                    return request()->has("html") ? View::make("finance-dashboard::stocks.components.income")->with(["income" => $this->getIncome(request()->get("symbol")), "stock" => $stock]) : $this->getIncome(request()->get("symbol"));
 
                 case "cashflow":
                     return request()->has("html") ? View::make("finance-dashboard::stocks.components.cashflow")->with(["cashflow" => $this->getCashflow(request()->get("symbol")), "stock" => $stock]) : $this->getCashflow(request()->get("symbol"));
@@ -80,7 +67,7 @@ class APIController
      * @param int $period
      * @return array
      */
-    private function getChart(string $symbol, int $period): array
+    protected function getChart(string $symbol, int $period): array
     {
         $chart = [];
 
@@ -89,19 +76,17 @@ class APIController
 
         $url = $this->chart_url . $symbol . "&period1=" . $from_date . "&period2=9999999999&interval=" . $interval;
         $response = file_get_contents($url);
-        $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+        $data = json_decode($response, true, 512);
 
-        if ($data["chart"]["error"] === null) {
-            if (array_key_exists("adjclose", $data["chart"]["result"][0]["indicators"]["adjclose"][0])) {
-                foreach ($data["chart"]["result"][0]["timestamp"] as $d_key => $date) {
-                    foreach ($data["chart"]["result"][0]["indicators"]["adjclose"][0]["adjclose"] as $v_key => $value) {
-                        if (($value !== null) && $d_key === $v_key) {
-                            $chart[] = [
-                                "adj_close" => $value,
-                                "date" => Carbon::parse($date)->format("d.m.Y"),
-                                "currency" => $data["chart"]["result"][0]["meta"]["currency"]
-                            ];
-                        }
+        if (($data["chart"]["error"] === null) && array_key_exists("adjclose", $data["chart"]["result"][0]["indicators"]["adjclose"][0])) {
+            foreach ($data["chart"]["result"][0]["timestamp"] as $d_key => $date) {
+                foreach ($data["chart"]["result"][0]["indicators"]["adjclose"][0]["adjclose"] as $v_key => $value) {
+                    if (($value !== null) && $d_key === $v_key) {
+                        $chart[] = [
+                            "adj_close" => $value,
+                            "date" => Carbon::parse($date)->format("d.m.Y"),
+                            "currency" => $data["chart"]["result"][0]["meta"]["currency"]
+                        ];
                     }
                 }
             }
@@ -116,7 +101,7 @@ class APIController
      * @param string $symbol
      * @return array
      */
-    private function getAssetProfile(string $symbol): array
+    public function getAssetProfile(string $symbol): array
     {
         $asset = [
             "address" => null,
@@ -134,7 +119,7 @@ class APIController
 
         $url = $this->finance_url . $symbol . "&modules=assetProfile";
         $response = file_get_contents($url);
-        $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+        $data = json_decode($response, true, 512);
 
         if ($data["quoteSummary"]["error"] === null) {
             if (array_key_exists("assetProfile", $data["quoteSummary"]["result"][0])) {
@@ -211,7 +196,7 @@ class APIController
      * @param string $symbol
      * @return array
      */
-    private function getEsgScore(string $symbol): array
+    public function getEsgScore(string $symbol): array
     {
         $esg = [
             "total" => null,
@@ -228,7 +213,7 @@ class APIController
 
         $url = $this->finance_url . $symbol . "&modules=esgScores";
         $response = file_get_contents($url);
-        $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+        $data = json_decode($response, true, 512);
 
         if ($data["quoteSummary"]["error"] === null) {
             if (array_key_exists("esgScores", $data["quoteSummary"]["result"][0])) {
@@ -299,7 +284,7 @@ class APIController
      * @param string $symbol
      * @return array
      */
-    private function getIncome(string $symbol): array
+    public function getIncome(string $symbol): array
     {
         $income = [
             "date" => null,
@@ -318,7 +303,7 @@ class APIController
 
         $url = $this->finance_url . $symbol . "&modules=incomeStatementHistory";
         $response = file_get_contents($url);
-        $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+        $data = json_decode($response, true, 512);
 
         if ($data["quoteSummary"]["error"] === null) {
             if (array_key_exists("incomeStatementHistory", $data["quoteSummary"]["result"][0])) {
@@ -403,7 +388,7 @@ class APIController
      * @param string $symbol
      * @return array
      */
-    private function getCashflow(string $symbol): array
+    public function getCashflow(string $symbol): array
     {
         $cashflow = [
             "date" => null,
@@ -427,7 +412,7 @@ class APIController
 
         $url = $this->finance_url . $symbol . "&modules=cashflowStatementHistory";
         $response = file_get_contents($url);
-        $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+        $data = json_decode($response, true, 512);
 
         if ($data["quoteSummary"]["error"] === null) {
             if (array_key_exists("cashflowStatementHistory", $data["quoteSummary"]["result"][0])) {
@@ -545,7 +530,7 @@ class APIController
      * @param string $symbol
      * @return array
      */
-    private function getBalanceSheet(string $symbol): array
+    public function getBalanceSheet(string $symbol): array
     {
         $balance_sheet = [
             "date" => null,
@@ -580,7 +565,7 @@ class APIController
 
         $url = $this->finance_url . $symbol . "&modules=balanceSheetHistory";
         $response = file_get_contents($url);
-        $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+        $data = json_decode($response, true, 512);
 
         if ($data["quoteSummary"]["error"] === null) {
             if (array_key_exists("balanceSheetHistory", $data["quoteSummary"]["result"][0])) {
@@ -745,7 +730,7 @@ class APIController
      * @param string $symbol
      * @return array
      */
-    private function getRecommendations(string $symbol): array
+    public function getRecommendations(string $symbol): array
     {
         $recommendations = [
             "strong_buy" => null,
@@ -757,7 +742,7 @@ class APIController
 
         $url = $this->finance_url . $symbol . "&modules=recommendationTrend";
         $response = file_get_contents($url);
-        $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+        $data = json_decode($response, true, 512);
 
         if ($data["quoteSummary"]["error"] === null) {
             if (array_key_exists("recommendationTrend", $data["quoteSummary"]["result"][0])) {
@@ -790,13 +775,17 @@ class APIController
         return $recommendations;
     }
 
-    private function getUpgradeDowngrade(string $symbol): array
+    /**
+     * @param string $symbol
+     * @return array
+     */
+    public function getUpgradeDowngrade(string $symbol): array
     {
         $upgrade_downgrade = [];
 
         $url = $this->finance_url . $symbol . "&modules=upgradeDowngradeHistory";
         $response = file_get_contents($url);
-        $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
+        $data = json_decode($response, true, 512);
 
         if ($data["quoteSummary"]["error"] === null) {
             if (array_key_exists("upgradeDowngradeHistory", $data["quoteSummary"]["result"][0])) {
