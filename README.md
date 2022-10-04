@@ -2,7 +2,7 @@
 
 ## Installation
 
-Clone repository into your packages folder:
+Clone repository into your packages' folder:
 ```bash
 git clone https://github.com/breuermarcel/finance-dashboard.git
 ```
