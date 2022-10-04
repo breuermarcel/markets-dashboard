@@ -4,9 +4,6 @@ namespace Breuermarcel\FinanceDashboard;
 
 use Illuminate\Support\Facades\Facade;
 
-/**
- * @see \Breuermarcel\FinanceDashboard\Skeleton\SkeletonClass
- */
 class FinanceDashboardFacade extends Facade
 {
     /**
@@ -14,7 +11,7 @@ class FinanceDashboardFacade extends Facade
      *
      * @return string
      */
-    protected static function getFacadeAccessor()
+    protected static function getFacadeAccessor(): string
     {
         return 'finance-dashboard';
     }

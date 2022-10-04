@@ -2,9 +2,9 @@
 
 namespace Breuermarcel\FinanceDashboard;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\ServiceProvider;
 
 class FinanceDashboardServiceProvider extends ServiceProvider
 {
@@ -21,30 +21,6 @@ class FinanceDashboardServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__ . "/../database/migrations");
         $this->loadBladeDirectives();
         $this->registerRoutes();
-
-        if ($this->app->runningInConsole()) {
-            /*$this->publishes([
-                __DIR__ . "/../config/config.php" => config_path("finance-dashboard.php"),
-            ], "config");*/
-
-            // Publishing the views.
-            /*$this->publishes([
-                __DIR__."/../resources/views" => resource_path("views/vendor/finance-dashboard"),
-            ], "views");*/
-
-            // Publishing assets.
-            /*$this->publishes([
-                __DIR__."/../resources/assets" => public_path("vendor/finance-dashboard"),
-            ], "assets");*/
-
-            // Publishing the translation files.
-            /*$this->publishes([
-                __DIR__."/../resources/lang" => resource_path("lang/vendor/finance-dashboard"),
-            ], "lang");*/
-
-            // Registering package commands.
-            // $this->commands([]);
-        }
     }
 
     /**
@@ -61,7 +37,7 @@ class FinanceDashboardServiceProvider extends ServiceProvider
         });
     }
 
-    private function routeConfiguration()
+    private function routeConfiguration(): array
     {
         return [
             "prefix" => config("finance-dashboard.routing.prefix"),
@@ -79,99 +55,84 @@ class FinanceDashboardServiceProvider extends ServiceProvider
     private function loadBladeDirectives()
     {
         Blade::directive("fmt_money", function ($expression) {
-            switch (config("app.locale")) {
-                case "de":
-                    return "
+            return match (config("app.locale")) {
+                "de" => "
                         <?php
                             if ($expression > 100)
                                 echo number_format($expression, 0, ',', '.') . '€';
                             else
                                 echo number_format($expression, 2, ',', '.') . '€';
                         ?>
-                    ";
-
-                default:
-                    return "
+                    ",
+                default => "
                         <?php
                             if ($expression > 100)
                                 echo '$' . number_format($expression, 0);
                             else
                                 echo '$' . number_format($expression, 2);
                         ?>
-                    ";
-            }
+                    ",
+            };
         });
 
         Blade::directive("fmt_number", function ($expression) {
-            switch (config("app.locale")) {
-                case "de":
-                    return "
+            return match (config("app.locale")) {
+                "de" => "
                         <?php
                             echo number_format($expression, 0, ',', '.');
                         ?>
-                    ";
-
-                default:
-                    return "
+                    ",
+                default => "
                         <?php
                             echo number_format($expression, 0);
                         ?>
-                    ";
-            }
+                    ",
+            };
         });
 
         Blade::directive("fmt_decimal", function ($expression) {
-            switch (config("app.locale")) {
-                case "de":
-                    return "
+            return match (config("app.locale")) {
+                "de" => "
                         <?php
                             echo number_format($expression, 2, ',', '.');
                         ?>
-                    ";
-
-                default:
-                    return "
+                    ",
+                default => "
                         <?php
                             echo number_format($expression, 2);
                         ?>
-                    ";
-            }
+                    ",
+            };
         });
 
         Blade::directive("fmt_percentage", function ($expression) {
-            switch (config("app.locale")) {
-                case "de":
-                    return "
+            return match (config("app.locale")) {
+                "de" => "
                         <?php
                             echo number_format($expression, 2, ',', '.') * 100 . '%';
                         ?>
-                    ";
-
-                default:
-                    return "
+                    ",
+                default => "
                         <?php
                             echo number_format($expression, 2) * 100 . '%';
                         ?>
-                    ";
-            }
+                    ",
+            };
         });
 
         Blade::directive("fmt_date", function ($expression) {
-            switch (config("app.locale")) {
-                case "de":
-                    return "
+            return match (config("app.locale")) {
+                "de" => "
                         <?php
                             echo date('d.m.Y', $expression);
                         ?>
-                    ";
-
-                default:
-                    return "
+                    ",
+                default => "
                         <?php
                             echo date('Y-m-d', $expression);
                         ?>
-                    ";
-            }
+                    ",
+            };
         });
     }
 }

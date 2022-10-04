@@ -2,19 +2,18 @@
 
 namespace Breuermarcel\FinanceDashboard\Http\Controllers;
 
+use Breuermarcel\FinanceDashboard\Models\Stock;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
-use Breuermarcel\FinanceDashboard\Models\Stock;
-use Illuminate\Database\Eloquent\Collection;
 
 class SearchController extends Controller
 {
     /**
-     * Handle handle.
-     *
      * @param Request $request
-     * @return void
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|void
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function index(Request $request)
     {
@@ -23,12 +22,8 @@ class SearchController extends Controller
                 "sword" => "required|string|max:50",
             ]);
 
-            if ($validator->fails()) {
-                return redirect()->route("stocks.create")->withErrors($validator)->withInput();
-            }
-
             $validated = $validator->validated();
-            $search_results = $this->do_search($validated["sword"]);
+            $search_results = $this->doSearch($validated["sword"]);
 
             return View::make("finance-dashboard::components.search-results")->with("search_results", $search_results);
         }
@@ -40,7 +35,7 @@ class SearchController extends Controller
      * @param string $val
      * @return Collection
      */
-    private function doSearch(string $val) : Collection
+    private function doSearch(string $val): Collection
     {
         return Stock::select('symbol', 'name')
             ->where('symbol', 'LIKE', '%' . $val . '%')

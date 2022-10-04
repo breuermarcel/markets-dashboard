@@ -6,14 +6,14 @@
                 <a class="nav-link" href="{{ route('stocks.index') }}">{{ trans('Stocks') }}</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('stocks.analysis') }}">{{ trans('Analysis') }}</a>
+                <a class="nav-link" href="#">{{ trans('Analysis') }}</a>
             </li>
         </ul>
 
         <h6 class="sidebar-heading px-3 text-muted">{{ trans('Settings') }}</h6>
         <ul class="nav flex-column mb-5">
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('analysis.index') }}">{{ trans('Analytics Criteria') }}</a>
+                <a class="nav-link" href="#">{{ trans('Analytics Criteria') }}</a>
             </li>
         </ul>
     </div>

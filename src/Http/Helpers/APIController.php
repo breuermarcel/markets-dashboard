@@ -2,9 +2,9 @@
 
 namespace Breuermarcel\FinanceDashboard\Http\Helpers;
 
+use Breuermarcel\FinanceDashboard\Models\Stock;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
-use Breuermarcel\FinanceDashboard\Models\Stock;
 
 class APIController
 {
@@ -35,7 +35,10 @@ class APIController
     ];
 
     /**
-     * Basis function.
+     * @return false|\Illuminate\Contracts\View\View|null[]
+     * @throws \JsonException
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function load() {
         // todo validate requests
@@ -56,7 +59,7 @@ class APIController
                 case "income":
                     return request()->has("html") ? View::make("finance-dashboard::stocks.components.income")->with(["income" => $this->getIncome(request()->get("symbol")), "stock" => $stock]): $this->getIncome(request()->get("symbol"));
 
-                case "cashflow":                       
+                case "cashflow":
                     return request()->has("html") ? View::make("finance-dashboard::stocks.components.cashflow")->with(["cashflow" => $this->getCashflow(request()->get("symbol")), "stock" => $stock]) : $this->getCashflow(request()->get("symbol"));
 
                 case "balance_sheet":
@@ -66,6 +69,8 @@ class APIController
                     return request()->has("html") ? View::make("finance-dashboard::stocks.components.recommendations")->with(["recommendations" => $this->getRecommendations(request()->get("symbol")), "stock" => $stock]) : $this->getRecommendations(request()->get("symbol"));
             }
         }
+
+        return false;
     }
 
     /**

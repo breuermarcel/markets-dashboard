@@ -9,5 +9,5 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <input id="bm__searchInput" class="form-control form-control-dark w-100" type="text" placeholder="{{ trans('Search') }}" aria-label="Search">
+    <input id="bm__searchInput" onkeypress="callSearch(event)" class="form-control form-control-dark w-100" type="text" placeholder="{{ trans('Search') }}" aria-label="Search">
 </nav>

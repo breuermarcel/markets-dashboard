@@ -2,10 +2,9 @@
 
 namespace Breuermarcel\FinanceDashboard\Http\Controllers;
 
+use Breuermarcel\FinanceDashboard\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Breuermarcel\FinanceDashboard\Models\Stock;
-use Breuermarcel\FinanceDashboard\Http\Helpers\APIController;
 
 class StockController extends Controller
 {
@@ -16,9 +15,7 @@ class StockController extends Controller
      */
     public function index()
     {
-        $stocks = Stock::simplePaginate(10);
-
-        return view("finance-dashboard::stocks.list", compact('stocks'));
+        return view("finance-dashboard::stocks.list", ["stocks" => Stock::simplePaginate(10)]);
     }
 
     /**
@@ -34,7 +31,7 @@ class StockController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -68,7 +65,7 @@ class StockController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \Breuermarcel\FinanceDashboard\Models\Stock  $stock
+     * @param \Breuermarcel\FinanceDashboard\Models\Stock $stock
      * @return \Illuminate\Http\Response
      */
     public function show(Stock $stock)
@@ -79,7 +76,7 @@ class StockController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \Breuermarcel\FinanceDashboard\Models\Stock  $stock
+     * @param \Breuermarcel\FinanceDashboard\Models\Stock $stock
      * @return \Illuminate\Http\Response
      */
     public function edit(Stock $stock)
@@ -90,8 +87,8 @@ class StockController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Breuermarcel\FinanceDashboard\Models\Stock  $stock
+     * @param \Illuminate\Http\Request $request
+     * @param \Breuermarcel\FinanceDashboard\Models\Stock $stock
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Stock $stock)
@@ -119,7 +116,7 @@ class StockController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \Breuermarcel\FinanceDashboard\Models\Stock  $stock
+     * @param \Breuermarcel\FinanceDashboard\Models\Stock $stock
      * @return \Illuminate\Http\Response
      */
     public function destroy(Stock $stock)
