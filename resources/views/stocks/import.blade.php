@@ -2,12 +2,12 @@
 
 @section("content")
 
-<form class="row g-3" action="{{ route('stocks.doImport') }}" method="POST" enctype="multipart/form-data">
+<form class="row g-3" action="{{ route('stocks.import.store') }}" method="POST" enctype="multipart/form-data">
     @method("POST")
     @csrf
 
     <div class="col-12">
-        <label for="file" class="form-label">Datei</label>
+        <label for="file" class="form-label">{{ trans("Datei") }}</label>
         <input type="file" name="file" id="file" class="form-control @error('file') is-invalid @enderror" aria-describedby="fileHelpBlock">
         <div id="fileHelpBlock" class="form-text">
             {{ trans("Erlaubte Dateiformate: CSV.") }}

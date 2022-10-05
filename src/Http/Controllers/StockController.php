@@ -142,7 +142,7 @@ class StockController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function doImportCSV(Request $request)
+    public function storeCSV(Request $request)
     {
         $validator = Validator::make(
             $request->only("file"),
@@ -150,7 +150,7 @@ class StockController extends Controller
         );
 
         if ($validator->fails()) {
-            return redirect()->route("stocks.import")->withErrors($validator)->withInput();
+            return redirect()->route("stocks.import.show")->withErrors($validator)->withInput();
         }
 
         $csv = fopen($request->file->getPathname(), "r");

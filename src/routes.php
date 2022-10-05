@@ -3,20 +3,32 @@
 use Breuermarcel\FinanceDashboard\Http\{
     Controllers\SearchController,
     Controllers\StockController,
+    Controllers\InformationController,
     Helpers\APIController
 };
-use Illuminate\Support\Facades\Route;
 
 Route::get("search", [SearchController::class, "index"])->name("search");
 
 Route::prefix("stocks")->group(function () {
-    Route::get("import", [StockController::class, "importCSV"])->name("stocks.import");
-    Route::post("import", [StockController::class, "doImportCSV"])->name("stocks.doImport");
-    Route::get("analysis", [StockController::class, "getStocksByCriteria"])->name("stocks.analysis");
-});
-Route::resource("stocks", StockController::class);
+    Route::prefix("import")->group(function () {
+        Route::get("/", [StockController::class, "importCSV"])->name("stocks.import.show");
+        Route::post("/", [StockController::class, "storeCSV"])->name("stocks.import.store");
+    });
 
-Route::get("api", [APIController::class, "load"])->name("api");
+    Route::get("/", [StockController::class, "index"])->name("stocks.index");
+    Route::get("/create", [StockController::class, "create"])->name("stocks.create");
+    Route::post("/store", [StockController::class, "store"])->name("stocks.store");
+    Route::get("/{stock}", [StockController::class, "show"])->name("stocks.show");
+    Route::get("/{stock}/edit", [StockController::class, "edit"])->name("stocks.edit");
+    Route::put("/{stock}", [StockController::class, "update"])->name("stocks.update");
+    Route::delete("/{stock}", [StockController::class, "destroy"])->name("stocks.destroy");
+});
+
+Route::prefix("api")->group(function (){
+    Route::get("/", [InformationController::class, "store"])->name("api.store");
+    Route::get("/{stock}", [APIController::class, "load"])->name("api.show");
+});
+
 
 Route::get("/", function () {
     return redirect()->route("stocks.index");

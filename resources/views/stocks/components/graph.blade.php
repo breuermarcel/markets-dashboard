@@ -4,7 +4,7 @@
             <span class="me-2 fw-bolder">{{ trans('Chart') }}</span>
 
             <div class="btn-group btn-group-sm" role="group" aria-label="{{ trans('Period') }}">
-                <button class="btn btn-outline-danger" onclick="callAPI({
+                <button class="btn btn-outline-danger" onclick="loadStockInformation({
                         'symbol': '{{ $stock->symbol }}',
                         'module': 'chart',
                         'period': '30',
@@ -13,7 +13,7 @@
                     1 {{ trans('Monat') }}
                 </button>
 
-                <button class="btn btn-outline-danger" onclick="callAPI({
+                <button class="btn btn-outline-danger" onclick="loadStockInformation({
                         'symbol': '{{ $stock->symbol }}',
                         'module': 'chart',
                         'period': '90',
@@ -22,7 +22,7 @@
                     3 {{ trans('Monate') }}
                 </button>
 
-                <button class="btn btn-outline-danger" onclick="callAPI({
+                <button class="btn btn-outline-danger" onclick="loadStockInformation({
                         'symbol': '{{ $stock->symbol }}',
                         'module': 'chart',
                         'period': '180',
@@ -31,7 +31,7 @@
                     6 {{ trans('Monate') }}
                 </button>
 
-                <button class="btn btn-outline-danger" onclick="callAPI({
+                <button class="btn btn-outline-danger" onclick="loadStockInformation({
                         'symbol': '{{ $stock->symbol }}',
                         'module': 'chart',
                         'period': '365',
@@ -40,7 +40,7 @@
                     1 {{ trans('Jahr') }}
                 </button>
 
-                <button class="btn btn-outline-danger" onclick="callAPI({
+                <button class="btn btn-outline-danger" onclick="loadStockInformation({
                         'symbol': '{{ $stock->symbol }}',
                         'module': 'chart',
                         'period': '1095',
@@ -49,7 +49,7 @@
                     3 {{ trans('Jahre') }}
                 </button>
 
-                <button class="btn btn-outline-danger" onclick="callAPI({
+                <button class="btn btn-outline-danger" onclick="loadStockInformation({
                         'symbol': '{{ $stock->symbol }}',
                         'module': 'chart',
                         'period': '1825',

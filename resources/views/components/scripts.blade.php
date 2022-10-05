@@ -7,7 +7,7 @@
         if (event.keyCode === 13) {
             $.get({
                 type: 'GET',
-                url: '/finance-dashboard/search/',
+                url: '{{ route("search") }}',
                 data: {
                     'sword': event.target.value
                 },
@@ -21,20 +21,13 @@
         }
     }
 
-    function callAPI(data) {
+    function storeStockInformation(symbol) {
         $.get({
             type: 'GET',
-            url: '/finance-dashboard/api/',
-            data: data,
-            success: function (response) {
-                $(data["container"]).remove();
-                $('#bm__stock-detail-container').prepend(response);
-
-                let bm__msnry = new Masonry(document.getElementById("bm__stock-detail-container"), {
-                    percentPosition: false
-                });
-
-                bm__msnry.layout();
+            url: '{{ route("api.store") }}',
+            data: {
+                "_token": "{{ csrf_token() }}",
+                symbol: symbol
             }
         });
     }

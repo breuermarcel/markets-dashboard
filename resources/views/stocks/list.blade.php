@@ -4,7 +4,7 @@
     <div class="btn-toolbar mb-2">
         <div class="btn-group">
             <a href="{{ route('stocks.create') }}" class="btn btn-sm btn-outline-secondary">{{ trans('Hinzufügen') }}</a>
-            <a href="{{ route('stocks.import') }}" class="btn btn-sm btn-outline-secondary">{{ trans('Importieren') }}</a>
+            <a href="{{ route('stocks.import.show') }}" class="btn btn-sm btn-outline-secondary">{{ trans('Importieren') }}</a>
         </div>
     </div>
 
@@ -38,6 +38,7 @@
                         class="btn btn-outline-secondary">{{ trans('Anzeigen') }}</a>
                         <a href="{{ route('stocks.edit', $stock) }}"
                             class="btn btn-secondary">{{ trans('Bearbeiten') }}</a>
+                        <button onclick="storeStockInformation('{{ $stock->symbol }}')" class="btn btn-outline-success">{{ trans("Informationen aktualisieren") }}</button>
                         <form class="d-inline" method="POST" action="{{ route('stocks.destroy', $stock) }}">
                             @csrf
                             @method('DELETE')
