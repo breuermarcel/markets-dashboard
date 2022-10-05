@@ -29,6 +29,8 @@
                 "_token": "{{ csrf_token() }}",
                 symbol: symbol
             }
+        }).done(function (response) {
+            console.log(response)
         });
     }
 </script>

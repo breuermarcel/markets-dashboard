@@ -10,6 +10,13 @@ use Illuminate\Http\Request;
 
 class InformationController extends Controller
 {
+    public function index()
+    {
+        $stocks = Stock::select("symbol")->get()->toJson();
+
+        return view("finance-dashboard::stocks.information.import", compact("stocks"));
+    }
+
     /**
      * @param Request $request
      */

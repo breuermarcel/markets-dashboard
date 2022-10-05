@@ -15,6 +15,8 @@ Route::prefix("stocks")->group(function () {
         Route::post("/", [StockController::class, "storeCSV"])->name("stocks.import.store");
     });
 
+    Route::get("/information", [InformationController::class, "index"])->name("stocks.information.index");
+
     Route::get("/", [StockController::class, "index"])->name("stocks.index");
     Route::get("/create", [StockController::class, "create"])->name("stocks.create");
     Route::post("/store", [StockController::class, "store"])->name("stocks.store");
@@ -24,7 +26,7 @@ Route::prefix("stocks")->group(function () {
     Route::delete("/{stock}", [StockController::class, "destroy"])->name("stocks.destroy");
 });
 
-Route::prefix("api")->group(function (){
+Route::prefix("api")->group(function () {
     Route::get("/", [InformationController::class, "store"])->name("api.store");
     Route::get("/{stock}", [APIController::class, "load"])->name("api.show");
 });
