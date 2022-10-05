@@ -5,6 +5,7 @@ namespace Breuermarcel\FinanceDashboard\Http\Helpers;
 use Breuermarcel\FinanceDashboard\Models\Stock;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Validator;
 
 class APIController
 {
@@ -28,9 +29,14 @@ class APIController
      */
     public function load()
     {
-        // todo validate requests
+        $validator = Validator::make(request()->all(), [
+            "symbol" => "required|string|max:10",
+            "module" => "required|string"
+        ]);
 
-
+        if ($validator->fails()) {
+            abort(500);
+        }
 
         if (request()->has("module") && request()->has("symbol")) {
             $stock = Stock::findOrFail(request()->get("symbol"));
