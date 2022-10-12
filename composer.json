@@ -19,7 +19,6 @@
         "php": "^7.4|^8.0"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.7"
     },
     "autoload": {
         "psr-4": {
@@ -28,7 +27,6 @@
     },
     "autoload-dev": {
         "psr-4": {
-
         }
     },
     "config": {
@@ -37,7 +35,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Breuermarcel\\FinanceDashboard\\FinanceDashboardServiceProvider"
+                "ProjectManagementServiceProvider"
             ],
             "aliases": {
                 "FinanceDashboard": "Breuermarcel\\FinanceDashboard\\FinanceDashboardFacade"

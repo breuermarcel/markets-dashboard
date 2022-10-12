@@ -1,5 +1,7 @@
 # Finance-Dashboard
 
+___
+
 ## Installation
 
 Clone repository into your packages' folder:
@@ -52,3 +54,13 @@ Migrate database:
 ```bash
 php artisan migrate
 ```
+
+-----
+
+## Data Structure
+```mermaid
+
+erDiagram
+    
+
+````
