@@ -11,22 +11,17 @@
     "authors": [
         {
             "name": "Marcel Breuer",
-            "email": "breuer.marcel@outlook.com",
-            "role": "Developer"
+            "email": "breuer.marcel@outlook.com"
         }
     ],
     "require": {
-        "php": "^7.4|^8.0"
-    },
-    "require-dev": {
+        "php": "^8.0",
+        "guzzlehttp/guzzle": "^7.2",
+        "laravel/framework": "^9.19"
     },
     "autoload": {
         "psr-4": {
             "Breuermarcel\\FinanceDashboard\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
         }
     },
     "config": {
@@ -35,10 +30,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "ProjectManagementServiceProvider"
+                "Breuermarcel\\FinanceDashboard\\ServiceProvider"
             ],
             "aliases": {
-                "FinanceDashboard": "Breuermarcel\\FinanceDashboard\\FinanceDashboardFacade"
+                "FinanceDashboard": "Breuermarcel\\FinanceDashboard\\Facade"
             }
         }
     }

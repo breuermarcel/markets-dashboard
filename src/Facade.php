@@ -2,9 +2,9 @@
 
 namespace Breuermarcel\FinanceDashboard;
 
-use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\Facades\Facade as IlluminateFacade;
 
-class FinanceDashboardFacade extends Facade
+class Facade extends IlluminateFacade
 {
     /**
      * Get the registered name of the component.
