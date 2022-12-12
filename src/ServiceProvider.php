@@ -29,7 +29,7 @@ class ServiceProvider extends IlluminateServiceProvider
     public function register()
     {
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__ . "/../config/config.php", "finance-dashboard");
+        $this->mergeConfigFrom(__DIR__ . "/../config/finance-dashboard.php", "finance-dashboard");
 
         // Register the main class to use with the facade
         $this->app->singleton("finance-dashboard", function () {

@@ -2,10 +2,10 @@
 
 namespace Breuermarcel\FinanceDashboard\Http\Helpers;
 
-use Breuermarcel\FinanceDashboard\Models\Stock;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Validator;
+use Breuermarcel\FinanceDashboard\Models\Stock;
 
 class APIController
 {
