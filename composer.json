@@ -1,11 +1,11 @@
 {
-    "name": "breuermarcel/finance-dashboard",
+    "name": "breuermarcel/markets-dashboard",
     "description": "",
     "keywords": [
         "breuermarcel",
-        "finance-dashboard"
+        "markets-dashboard"
     ],
-    "homepage": "https://github.com/breuermarcel/finance-dashboard",
+    "homepage": "https://github.com/breuermarcel/markets-dashboard",
     "license": "MIT",
     "type": "library",
     "authors": [
@@ -21,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Breuermarcel\\FinanceDashboard\\": "src"
+            "Breuermarcel\\MarketsDashboard\\": "src"
         }
     },
     "config": {
@@ -30,10 +30,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Breuermarcel\\FinanceDashboard\\ServiceProvider"
+                "Breuermarcel\\MarketsDashboard\\ServiceProvider"
             ],
             "aliases": {
-                "FinanceDashboard": "Breuermarcel\\FinanceDashboard\\Facade"
+                "MarketsDashboard": "Breuermarcel\\MarketsDashboard\\Facade"
             }
         }
     }

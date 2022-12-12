@@ -4,7 +4,7 @@ namespace Breuermarcel\MarketsDashboard;
 
 use Illuminate\Support\Facades\Facade as IlluminateFacade;
 
-class MarketsFacade extends IlluminateFacade
+class MarketsDashboardFacade extends IlluminateFacade
 {
     /**
      * Get the registered name of the component.
