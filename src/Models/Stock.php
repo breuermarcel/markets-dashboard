@@ -1,6 +1,6 @@
 <?php
 
-namespace Breuermarcel\FinanceDashboard\Models;
+namespace Breuermarcel\MarketsDashboard\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +14,7 @@ class Stock extends Model
      *
      * @var string
      */
-    protected $table = "bm_stocks";
+    protected $table = "bm_markets_stocks";
 
     /**
      * The primary key for the model.

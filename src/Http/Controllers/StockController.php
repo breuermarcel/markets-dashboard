@@ -1,8 +1,8 @@
 <?php
 
-namespace Breuermarcel\FinanceDashboard\Http\Controllers;
+namespace Breuermarcel\MarketsDashboard\Http\Controllers;
 
-use Breuermarcel\FinanceDashboard\Models\Stock;
+use Breuermarcel\MarketsDashboard\Models\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -15,7 +15,7 @@ class StockController extends Controller
      */
     public function index()
     {
-        return view("finance-dashboard::stocks.list", ["stocks" => Stock::simplePaginate(10)]);
+        return view("markets-dashboard::stocks.list", ["stocks" => Stock::simplePaginate(10)]);
     }
 
     /**
@@ -25,7 +25,7 @@ class StockController extends Controller
      */
     public function create()
     {
-        return view("finance-dashboard::stocks.create");
+        return view("markets-dashboard::stocks.create");
     }
 
     /**
@@ -133,7 +133,7 @@ class StockController extends Controller
      */
     public function importCSV()
     {
-        return view("finance-dashboard::stocks.import");
+        return view("markets-dashboard::stocks.import");
     }
 
     /**

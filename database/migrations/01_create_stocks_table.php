@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create("bm_stocks", function (Blueprint $table) {
+        Schema::create("bm_markets_analysis", function (Blueprint $table) {
             $table->string("symbol")->primary();
             $table->string("wkn")->unique()->nullable();
             $table->string("isin")->unique()->nullable();
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists("bm_stocks");
+        Schema::dropIfExists("bm_markets_analysis");
     }
 };

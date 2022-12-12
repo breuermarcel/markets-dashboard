@@ -1,6 +1,6 @@
 <?php
 
-namespace Breuermarcel\FinanceDashboard;
+namespace Breuermarcel\MarketsDashboard;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
@@ -16,8 +16,8 @@ class ServiceProvider extends IlluminateServiceProvider
         /*
          * Optional methods to load your package assets
          */
-        // $this->loadTranslationsFrom(__DIR__."/../resources/lang", "finance-dashboard");
-        $this->loadViewsFrom(__DIR__ . "/../resources/views", "finance-dashboard");
+        // $this->loadTranslationsFrom(__DIR__."/../resources/lang", "markets-dashboard");
+        $this->loadViewsFrom(__DIR__ . "/../resources/views", "markets-dashboard");
         $this->loadMigrationsFrom(__DIR__ . "/../database/migrations");
         $this->loadBladeDirectives();
         $this->registerRoutes();
@@ -29,19 +29,19 @@ class ServiceProvider extends IlluminateServiceProvider
     public function register()
     {
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__ . "/../config/finance-dashboard.php", "finance-dashboard");
+        $this->mergeConfigFrom(__DIR__ . "/../config/markets-dashboard.php", "markets-dashboard");
 
         // Register the main class to use with the facade
-        $this->app->singleton("finance-dashboard", function () {
-            return new FinanceDashboard;
+        $this->app->singleton("markets-dashboard", function () {
+            return new MarketsDashboard;
         });
     }
 
     private function routeConfiguration(): array
     {
         return [
-            "prefix" => config("finance-dashboard.routing.prefix"),
-            "middleware" => config("finance-dashboard.routing.middleware"),
+            "prefix" => config("markets-dashboard.routing.prefix"),
+            "middleware" => config("markets-dashboard.routing.middleware"),
         ];
     }
 

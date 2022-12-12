@@ -1,4 +1,4 @@
-@extends("finance-dashboard::main")
+@extends("markets-dashboard::main")
 
 @section("content")
     <form class="row g-3" method="POST" action="{{ route('stocks.update', $stock) }}">

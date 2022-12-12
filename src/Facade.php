@@ -1,10 +1,10 @@
 <?php
 
-namespace Breuermarcel\FinanceDashboard;
+namespace Breuermarcel\MarketsDashboard;
 
 use Illuminate\Support\Facades\Facade as IlluminateFacade;
 
-class Facade extends IlluminateFacade
+class MarketsFacade extends IlluminateFacade
 {
     /**
      * Get the registered name of the component.
@@ -13,6 +13,6 @@ class Facade extends IlluminateFacade
      */
     protected static function getFacadeAccessor(): string
     {
-        return 'finance-dashboard';
+        return 'markets-dashboard';
     }
 }

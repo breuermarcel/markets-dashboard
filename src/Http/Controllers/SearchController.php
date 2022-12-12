@@ -1,8 +1,8 @@
 <?php
 
-namespace Breuermarcel\FinanceDashboard\Http\Controllers;
+namespace Breuermarcel\MarketsDashboard\Http\Controllers;
 
-use Breuermarcel\FinanceDashboard\Models\Stock;
+use Breuermarcel\MarketsDashboard\Models\Stock;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -25,7 +25,7 @@ class SearchController extends Controller
             $validated = $validator->validated();
             $search_results = $this->doSearch($validated["sword"]);
 
-            return View::make("finance-dashboard::components.search-results")->with("search_results", $search_results);
+            return View::make("markets-dashboard::components.search-results")->with("search_results", $search_results);
         }
     }
 

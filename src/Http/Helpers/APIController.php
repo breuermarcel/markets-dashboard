@@ -1,11 +1,11 @@
 <?php
 
-namespace Breuermarcel\FinanceDashboard\Http\Helpers;
+namespace Breuermarcel\MarketsDashboard\Http\Helpers;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Validator;
-use Breuermarcel\FinanceDashboard\Models\Stock;
+use Breuermarcel\MarketsDashboard\Models\Stock;
 
 class APIController
 {
@@ -43,25 +43,25 @@ class APIController
 
             switch (request()->get("module")) {
                 case "chart":
-                    return request()->has("period") ? View::make("finance-dashboard::stocks.components.graph")->with(["history" => $this->getChart(request()->get("symbol"), intval(request()->get("period"))), "stock" => $stock]) : View::make("finance-dashboard::stocks.components.graph")->with(["history" => $this->getChart(request()->get("symbol"), 30), "stock" => $stock]);
+                    return request()->has("period") ? View::make("markets-dashboard::stocks.components.graph")->with(["history" => $this->getChart(request()->get("symbol"), intval(request()->get("period"))), "stock" => $stock]) : View::make("markets-dashboard::stocks.components.graph")->with(["history" => $this->getChart(request()->get("symbol"), 30), "stock" => $stock]);
 
                 case "profile":
-                    return request()->has("html") ? View::make("finance-dashboard::stocks.components.profile")->with(["profile" => $this->getAssetProfile(request()->get("symbol")), "stock" => $stock]) : $this->getAssetProfile(request()->get("symbol"));
+                    return request()->has("html") ? View::make("markets-dashboard::stocks.components.profile")->with(["profile" => $this->getAssetProfile(request()->get("symbol")), "stock" => $stock]) : $this->getAssetProfile(request()->get("symbol"));
 
                 case "esg":
-                    return request()->has("html") ? View::make("finance-dashboard::stocks.components.esg")->with(["esg" => $this->getEsgScore(request()->get("symbol")), "stock" => $stock]) : $this->getEsgScore(request()->get("symbol"));
+                    return request()->has("html") ? View::make("markets-dashboard::stocks.components.esg")->with(["esg" => $this->getEsgScore(request()->get("symbol")), "stock" => $stock]) : $this->getEsgScore(request()->get("symbol"));
 
                 case "income":
-                    return request()->has("html") ? View::make("finance-dashboard::stocks.components.income")->with(["income" => $this->getIncome(request()->get("symbol")), "stock" => $stock]) : $this->getIncome(request()->get("symbol"));
+                    return request()->has("html") ? View::make("markets-dashboard::stocks.components.income")->with(["income" => $this->getIncome(request()->get("symbol")), "stock" => $stock]) : $this->getIncome(request()->get("symbol"));
 
                 case "cashflow":
-                    return request()->has("html") ? View::make("finance-dashboard::stocks.components.cashflow")->with(["cashflow" => $this->getCashflow(request()->get("symbol")), "stock" => $stock]) : $this->getCashflow(request()->get("symbol"));
+                    return request()->has("html") ? View::make("markets-dashboard::stocks.components.cashflow")->with(["cashflow" => $this->getCashflow(request()->get("symbol")), "stock" => $stock]) : $this->getCashflow(request()->get("symbol"));
 
                 case "balance_sheet":
-                    return request()->has("html") ? View::make("finance-dashboard::stocks.components.balance_sheet")->with(["balance_sheet" => $this->getBalanceSheet(request()->get("symbol")), "stock" => $stock]) : $this->getBalanceSheet(request()->get("symbol"));
+                    return request()->has("html") ? View::make("markets-dashboard::stocks.components.balance_sheet")->with(["balance_sheet" => $this->getBalanceSheet(request()->get("symbol")), "stock" => $stock]) : $this->getBalanceSheet(request()->get("symbol"));
 
                 case "recommendations":
-                    return request()->has("html") ? View::make("finance-dashboard::stocks.components.recommendations")->with(["recommendations" => $this->getRecommendations(request()->get("symbol")), "stock" => $stock]) : $this->getRecommendations(request()->get("symbol"));
+                    return request()->has("html") ? View::make("markets-dashboard::stocks.components.recommendations")->with(["recommendations" => $this->getRecommendations(request()->get("symbol")), "stock" => $stock]) : $this->getRecommendations(request()->get("symbol"));
             }
         }
 

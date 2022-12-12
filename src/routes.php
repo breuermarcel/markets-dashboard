@@ -1,6 +1,6 @@
 <?php
 
-use Breuermarcel\FinanceDashboard\Http\{
+use Breuermarcel\MarketsDashboard\Http\{
     Controllers\SearchController,
     Controllers\StockController,
     Controllers\InformationController,

@@ -1,4 +1,4 @@
-@extends("finance-dashboard::main")
+@extends("markets-dashboard::main")
 
 @section("content")
 

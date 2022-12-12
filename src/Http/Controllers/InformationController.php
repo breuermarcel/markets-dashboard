@@ -1,10 +1,10 @@
 <?php
 
-namespace Breuermarcel\FinanceDashboard\Http\Controllers;
+namespace Breuermarcel\MarketsDashboard\Http\Controllers;
 
-use Breuermarcel\FinanceDashboard\Http\Helpers\APIController;
-use Breuermarcel\FinanceDashboard\Models\Information;
-use Breuermarcel\FinanceDashboard\Models\Stock;
+use Breuermarcel\MarketsDashboard\Http\Helpers\APIController;
+use Breuermarcel\MarketsDashboard\Models\Information;
+use Breuermarcel\MarketsDashboard\Models\Stock;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
@@ -14,7 +14,7 @@ class InformationController extends Controller
     {
         $stocks = Stock::select("symbol")->get()->toJson();
 
-        return view("finance-dashboard::stocks.information.import", compact("stocks"));
+        return view("markets-dashboard::stocks.information.import", compact("stocks"));
     }
 
     /**

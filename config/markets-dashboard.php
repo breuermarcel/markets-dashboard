@@ -1,10 +1,10 @@
 <?php
 
 return [
-    "name" => "finance-dashboard",
+    "name" => "markets-dashboard",
 
     "routing" => [
-        "prefix" => "finance-dashboard",
+        "prefix" => "markets-dashboard",
         "middleware" => [
             "web"
         ]
