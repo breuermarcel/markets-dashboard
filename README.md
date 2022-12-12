@@ -1,4 +1,4 @@
-# Finance-Dashboard
+# Markets-Dashboard
 
 ___
 
@@ -6,7 +6,7 @@ ___
 
 Clone repository into your packages' folder:
 ```bash
-git clone https://github.com/breuermarcel/finance-dashboard.git
+git clone https://github.com/breuermarcel/markets-dashboard.git
 ```
 
 Define your package repositories: dev
@@ -28,12 +28,12 @@ Define your package repositories: live/latest version
     {
         "type":"package",
         "package": {
-            "name": "breuermarcel/finance-dashboard",
-            "version":"master",
+            "name": "breuermarcel/markets-dashboard",
+            "version":"main",
             "source": {
-                "url": "https://github.com/breuermarcel/finance-dashboard.git",
+                "url": "https://github.com/breuermarcel/markets-dashboard.git",
                 "type": "git",
-                "reference":"master"
+                "reference":"main"
             }
         }
     }
@@ -42,20 +42,10 @@ Define your package repositories: live/latest version
 
 Require package:
 ```bash
-composer require breuermarcel/finance-dashboard
+composer require breuermarcel/markets-dashboard
 ```
 
 Migrate database:
 ```bash
 php artisan migrate
 ```
-
------
-
-## Data Structure
-```mermaid
-
-erDiagram
-    
-
-````
