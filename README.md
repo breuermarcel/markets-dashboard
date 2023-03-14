@@ -1,15 +1,11 @@
 # Markets-Dashboard
-
-___
-
 ## Installation
-
-Clone repository into your packages' folder:
+> Clone repository into your packages' folder:
 ```bash
 git clone https://github.com/breuermarcel/markets-dashboard.git
 ```
 
-Define your package repositories: dev
+> Define your package repositories: dev
 ```json
 "repositories": [
     {
@@ -22,7 +18,7 @@ Define your package repositories: dev
 ],
 ```
 
-Define your package repositories: live/latest version
+> Define your package repositories: live/latest version
 ```json
 "repositories": [
     {
@@ -40,12 +36,18 @@ Define your package repositories: live/latest version
 ],
 ```
 
-Require package:
+> Require package:
 ```bash
 composer require breuermarcel/markets-dashboard
 ```
 
-Migrate database:
+> Migrate database:
 ```bash
 php artisan migrate
 ```
+
+## Todos 
+- [ ] remove api logic
+- [ ] composer.json: add requirements 
+- [ ] add translations
+- [ ] rename to markets-dashboard
