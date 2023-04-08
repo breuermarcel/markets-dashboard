@@ -15,26 +15,19 @@
         }
     ],
     "require": {
-        "php": "^8.0",
-        "guzzlehttp/guzzle": "^7.2",
-        "laravel/framework": "^9.19"
+        "laravel/framework": "^10.0",
+        "breuermarcel/markets-api": "*"
     },
     "autoload": {
         "psr-4": {
             "Breuermarcel\\MarketsDashboard\\": "src"
         }
     },
-    "config": {
-        "sort-packages": true
-    },
     "extra": {
         "laravel": {
             "providers": [
-                "Breuermarcel\\MarketsDashboard\\ServiceProvider"
-            ],
-            "aliases": {
-                "MarketsDashboard": "Breuermarcel\\MarketsDashboard\\Facade"
-            }
+                "Breuermarcel\\MarketsDashboard\\Providers\\MarketsDashboardServiceProvider"
+            ]
         }
     }
 }

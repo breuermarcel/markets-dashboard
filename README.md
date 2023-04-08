@@ -51,3 +51,4 @@ php artisan migrate
 - [ ] composer.json: add requirements 
 - [ ] add translations
 - [ ] rename to markets-dashboard
+- [ ] use npm and not cdn

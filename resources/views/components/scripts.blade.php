@@ -6,7 +6,7 @@
         if (event.keyCode === 13) {
             $.get({
                 type: 'GET',
-                url: '{{ route("search") }}',
+                url: '{{ route(config("markets-dashboard.routing.as") . "search") }}',
                 data: {
                     'sword': event.target.value
                 },
@@ -23,13 +23,13 @@
     function storeStockInformation(symbol) {
         $.get({
             type: 'GET',
-            url: '{{ route("api.store") }}',
+            url: '{{ route(config("markets-dashboard.routing.as") . "api.store") }}',
             data: {
                 "_token": "{{ csrf_token() }}",
                 symbol: symbol
             }
         }).done(function (response) {
-            console.log(response)
+
         });
     }
 </script>

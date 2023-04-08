@@ -1,6 +1,6 @@
 <?php
 
-namespace Breuermarcel\MarketsDashboard;
+namespace Breuermarcel\MarketsDashboard\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
@@ -8,39 +8,25 @@ use Illuminate\Support\ServiceProvider as IlluminateServiceProvider;
 
 class MarketsDashboardServiceProvider extends IlluminateServiceProvider
 {
-    /**
-     * Bootstrap the application services.
-     */
     public function boot()
     {
-        /*
-         * Optional methods to load your package assets
-         */
-        // $this->loadTranslationsFrom(__DIR__."/../resources/lang", "markets-dashboard");
-        $this->loadViewsFrom(__DIR__ . "/../resources/views", "markets-dashboard");
-        $this->loadMigrationsFrom(__DIR__ . "/../database/migrations");
+        $this->loadTranslationsFrom(__DIR__ . "/../../resources/lang", "markets-dashboard");
+        $this->loadViewsFrom(__DIR__ . "/../../resources/views", "markets-dashboard");
+        $this->loadMigrationsFrom(__DIR__ . "/../../database/migrations");
         $this->loadBladeDirectives();
         $this->registerRoutes();
     }
 
-    /**
-     * Register the application services.
-     */
     public function register()
     {
-        // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__ . "/../config/markets-dashboard.php", "markets-dashboard");
-
-        // Register the main class to use with the facade
-        $this->app->singleton("markets-dashboard", function () {
-            return new MarketsDashboard;
-        });
+        $this->mergeConfigFrom(__DIR__ . "/../../config/markets-dashboard.php", "markets-dashboard");
     }
 
     private function routeConfiguration(): array
     {
         return [
             "prefix" => config("markets-dashboard.routing.prefix"),
+            "as" => config("markets-dashboard.routing.as"),
             "middleware" => config("markets-dashboard.routing.middleware"),
         ];
     }
@@ -48,7 +34,7 @@ class MarketsDashboardServiceProvider extends IlluminateServiceProvider
     private function registerRoutes()
     {
         Route::group($this->routeConfiguration(), function () {
-            $this->loadRoutesFrom(__DIR__ . "/routes.php");
+            $this->loadRoutesFrom(__DIR__ . "/../routes.php");
         });
     }
 

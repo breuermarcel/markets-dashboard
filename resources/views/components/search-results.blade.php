@@ -19,7 +19,7 @@
                             <tbody>
                             @foreach ($search_results as $stock)
                                 <tr class="cursor"
-                                    onclick="location.href = '{{ route('stocks.show', $stock->symbol) }}';">
+                                    onclick="location.href = '{{ route(config("markets-dashboard.routing.as") .'stocks.show', $stock->symbol) }}';">
                                     <td class="col">{{ $stock->symbol }}</td>
                                     <td class="col">{{ $stock->name }}</td>
                                 </tr>

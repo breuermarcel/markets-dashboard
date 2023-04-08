@@ -44,7 +44,7 @@ class StockController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route("stocks.create")->withErrors($validator)->withInput();
+            return redirect()->route(config("markets-dashboard.routing.as") . "stocks.create")->withErrors($validator)->withInput();
         }
 
         $validated = $validator->validated();
@@ -59,7 +59,7 @@ class StockController extends Controller
             ]
         );
 
-        return redirect()->route("stocks.index")->withSuccess(trans("Aktie erfolgreich hinzugefügt."));
+        return redirect()->route(config("markets-dashboard.routing.as") . "stocks.index")->withSuccess(trans("Aktie erfolgreich hinzugefügt."));
     }
 
     /**
@@ -70,7 +70,7 @@ class StockController extends Controller
      */
     public function show(Stock $stock)
     {
-        return view("finance-dashboard::stocks.detail", compact("stock"));
+        return view("markets-dashboard::stocks.detail", compact("stock"));
     }
 
     /**
@@ -81,7 +81,7 @@ class StockController extends Controller
      */
     public function edit(Stock $stock)
     {
-        return view("finance-dashboard::stocks.edit", compact("stock"));
+        return view("markets-dashboard::stocks.edit", compact("stock"));
     }
 
     /**
@@ -100,7 +100,7 @@ class StockController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route("stocks.edit")->withErrors($validator)->withInput();
+            return redirect()->route(config("markets-dashboard.routing.as") . "stocks.edit")->withErrors($validator)->withInput();
         }
 
         $validated = $validator->validated();
@@ -110,7 +110,7 @@ class StockController extends Controller
         $stock->name = $validated["name"];
         $stock->save();
 
-        return redirect()->route("stocks.index")->withSuccess(trans("Aktie erfolgreich aktualisiert."));
+        return redirect()->route(config("markets-dashboard.routing.as") . "stocks.index")->withSuccess(trans("Aktie erfolgreich aktualisiert."));
     }
 
     /**
@@ -123,7 +123,7 @@ class StockController extends Controller
     {
         $stock->delete();
 
-        return redirect()->route("stocks.index")->withSuccess(trans("Aktie erfolgreich gelöscht."));
+        return redirect()->route(config("markets-dashboard.routing.as") . "stocks.index")->withSuccess(trans("Aktie erfolgreich gelöscht."));
     }
 
     /**
@@ -150,7 +150,7 @@ class StockController extends Controller
         );
 
         if ($validator->fails()) {
-            return redirect()->route("stocks.import.show")->withErrors($validator)->withInput();
+            return redirect()->route(config("markets-dashboard.routing.as") . "stocks.import.show")->withErrors($validator)->withInput();
         }
 
         $csv = fopen($request->file->getPathname(), "r");
@@ -176,7 +176,7 @@ class StockController extends Controller
 
         fclose($csv);
 
-        return redirect()->route("stocks.import")->withSuccess(trans("Import war erfolgreich."));
+        return redirect()->route(config("markets-dashboard.routing.as") . "stocks.import")->withSuccess(trans("Import war erfolgreich."));
     }
 
     /**

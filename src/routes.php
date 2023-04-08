@@ -31,7 +31,6 @@ Route::prefix("api")->group(function () {
     Route::get("/{stock}", [APIController::class, "load"])->name("api.show");
 });
 
-
 Route::get("/", function () {
-    return redirect()->route("stocks.index");
+    return redirect()->route(config("markets-dashboard.routing.as") . "stocks.index");
 });

@@ -5,6 +5,7 @@ return [
 
     "routing" => [
         "prefix" => "markets-dashboard",
+        "as" => "markets-dashboard.",
         "middleware" => [
             "web"
         ]

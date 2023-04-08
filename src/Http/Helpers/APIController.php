@@ -9,24 +9,10 @@ use Breuermarcel\MarketsDashboard\Models\Stock;
 
 class APIController
 {
-    /**
-     * Yahoo finance API-url.
-     *
-     * @var string
-     */
     public string $chart_url = "https://query2.finance.yahoo.com/v8/finance/chart/?symbol=";
 
-    /**
-     * Yahoo finance API-url.
-     *
-     * @var string
-     */
     public string $finance_url = "https://query2.finance.yahoo.com/v10/finance/quoteSummary/?symbol=";
 
-    /**
-     * @return false|\Illuminate\Contracts\View\View|null[]
-     * @throws \Psr\Container\ContainerExceptionInterface
-     */
     public function load()
     {
         $validator = Validator::make(request()->all(), [
@@ -68,13 +54,6 @@ class APIController
         return false;
     }
 
-    /**
-     * Get financial chart from API.
-     *
-     * @param string $symbol
-     * @param int $period
-     * @return array
-     */
     protected function getChart(string $symbol, int $period): array
     {
         $chart = [];
@@ -93,10 +72,6 @@ class APIController
         return $chart;
     }
 
-    /**
-     * @param array $data
-     * @return array
-     */
     private function validateChart(array $data): array
     {
         $chart = [];
@@ -116,12 +91,6 @@ class APIController
         return $chart;
     }
 
-    /**
-     * Get asset profile from API.
-     *
-     * @param string $symbol
-     * @return array
-     */
     public function getAssetProfile(string $symbol): array
     {
         $asset = [];
@@ -220,12 +189,6 @@ class APIController
         return $profile;
     }
 
-    /**
-     * Get esg score from API.
-     *
-     * @param string $symbol
-     * @return array
-     */
     public function getEsgScore(string $symbol): array
     {
         $esg = [];
@@ -317,12 +280,6 @@ class APIController
         return $esg;
     }
 
-    /**
-     * Get income from API.
-     *
-     * @param string $symbol
-     * @return array
-     */
     public function getIncome(string $symbol): array
     {
         $income = [];
@@ -430,12 +387,6 @@ class APIController
         return $income;
     }
 
-    /**
-     * Get cashflow from API.
-     *
-     * @param string $symbol
-     * @return array
-     */
     public function getCashflow(string $symbol): array
     {
         $cashflow = [];
@@ -582,11 +533,6 @@ class APIController
         return $cashflow;
     }
 
-    /**
-     * Get balance sheet from API.
-     * @param string $symbol
-     * @return array
-     */
     public function getBalanceSheet(string $symbol): array
     {
         $balance_sheet = [];
@@ -790,12 +736,6 @@ class APIController
         return $balance_sheet;
     }
 
-    /**
-     * Get recommendations from API.
-     *
-     * @param string $symbol
-     * @return array
-     */
     public function getRecommendations(string $symbol): array
     {
         $recommendations = [];
@@ -851,10 +791,6 @@ class APIController
         return $recommendations;
     }
 
-    /**
-     * @param string $symbol
-     * @return array
-     */
     public function getUpgradeDowngrade(string $symbol): array
     {
         $upgrade_downgrade = [];

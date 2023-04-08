@@ -13,7 +13,7 @@
         function loadStockInformation(data) {
             $.get({
                 type: 'GET',
-                url: '{{ route("api.show", $stock) }}',
+                url: '{{ route(config("markets-dashboard.routing.as") ."api.show", $stock) }}',
                 data: data,
                 success: function (response) {
                     $(data["container"]).remove();
@@ -28,7 +28,7 @@
             });
         }
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             loadStockInformation({
                 'symbol': '{{ $stock->symbol }}',
                 'module': 'recommendations',

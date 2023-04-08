@@ -17,9 +17,6 @@ class InformationController extends Controller
         return view("markets-dashboard::stocks.information.import", compact("stocks"));
     }
 
-    /**
-     * @param Request $request
-     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->only("symbol"), [
