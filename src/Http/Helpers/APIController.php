@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Validator;
 use Breuermarcel\MarketsDashboard\Models\Stock;
 
+/**
+ * @todo remove and use markets-api
+ */
+
 class APIController
 {
     public string $chart_url = "https://query2.finance.yahoo.com/v8/finance/chart/?symbol=";

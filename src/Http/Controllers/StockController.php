@@ -4,6 +4,7 @@ namespace Breuermarcel\MarketsDashboard\Http\Controllers;
 
 use Breuermarcel\MarketsDashboard\Models\Stock;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
 
 class StockController extends Controller
@@ -11,7 +12,7 @@ class StockController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -21,7 +22,7 @@ class StockController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
@@ -31,8 +32,8 @@ class StockController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
@@ -66,7 +67,7 @@ class StockController extends Controller
      * Display the specified resource.
      *
      * @param \Breuermarcel\FinanceDashboard\Models\Stock $stock
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function show(Stock $stock)
     {
@@ -77,7 +78,7 @@ class StockController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param \Breuermarcel\FinanceDashboard\Models\Stock $stock
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function edit(Stock $stock)
     {
@@ -87,9 +88,9 @@ class StockController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @param \Breuermarcel\FinanceDashboard\Models\Stock $stock
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function update(Request $request, Stock $stock)
     {
@@ -117,7 +118,7 @@ class StockController extends Controller
      * Remove the specified resource from storage.
      *
      * @param \Breuermarcel\FinanceDashboard\Models\Stock $stock
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function destroy(Stock $stock)
     {
@@ -129,7 +130,7 @@ class StockController extends Controller
     /**
      * Display the form to post csv-file.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function importCSV()
     {
@@ -140,7 +141,7 @@ class StockController extends Controller
      * Import csv-file to stocks.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function storeCSV(Request $request)
     {
@@ -182,7 +183,7 @@ class StockController extends Controller
     /**
      * Display the specified resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function getStocksByCriteria()
     {
