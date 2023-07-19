@@ -23,9 +23,7 @@ class InformationController extends Controller
             "symbol" => "required"
         ]);
 
-        if ($validator->fails()) {
-            abort(500);
-        }
+        abort_if($validator->fails(), 500);
 
         $validated = $validator->validated();
 

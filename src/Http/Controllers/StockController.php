@@ -45,7 +45,7 @@ class StockController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route(config("markets-dashboard.routing.as") . "stocks.create")->withErrors($validator)->withInput();
+            return to_route(config("markets-dashboard.routing.as") . "stocks.create")->withErrors($validator)->withInput();
         }
 
         $validated = $validator->validated();
@@ -60,7 +60,7 @@ class StockController extends Controller
             ]
         );
 
-        return redirect()->route(config("markets-dashboard.routing.as") . "stocks.index")->withSuccess(trans("Aktie erfolgreich hinzugefügt."));
+        return to_route(config("markets-dashboard.routing.as") . "stocks.index")->withSuccess(trans("Aktie erfolgreich hinzugefügt."));
     }
 
     /**
@@ -101,7 +101,7 @@ class StockController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return redirect()->route(config("markets-dashboard.routing.as") . "stocks.edit")->withErrors($validator)->withInput();
+            return to_route(config("markets-dashboard.routing.as") . "stocks.edit")->withErrors($validator)->withInput();
         }
 
         $validated = $validator->validated();
@@ -111,7 +111,7 @@ class StockController extends Controller
         $stock->name = $validated["name"];
         $stock->save();
 
-        return redirect()->route(config("markets-dashboard.routing.as") . "stocks.index")->withSuccess(trans("Aktie erfolgreich aktualisiert."));
+        return to_route(config("markets-dashboard.routing.as") . "stocks.index")->withSuccess(trans("Aktie erfolgreich aktualisiert."));
     }
 
     /**
@@ -124,7 +124,7 @@ class StockController extends Controller
     {
         $stock->delete();
 
-        return redirect()->route(config("markets-dashboard.routing.as") . "stocks.index")->withSuccess(trans("Aktie erfolgreich gelöscht."));
+        return to_route(config("markets-dashboard.routing.as") . "stocks.index")->withSuccess(trans("Aktie erfolgreich gelöscht."));
     }
 
     /**
@@ -151,7 +151,7 @@ class StockController extends Controller
         );
 
         if ($validator->fails()) {
-            return redirect()->route(config("markets-dashboard.routing.as") . "stocks.import.show")->withErrors($validator)->withInput();
+            return to_route(config("markets-dashboard.routing.as") . "stocks.import.show")->withErrors($validator)->withInput();
         }
 
         $csv = fopen($request->file->getPathname(), "r");
@@ -177,7 +177,7 @@ class StockController extends Controller
 
         fclose($csv);
 
-        return redirect()->route(config("markets-dashboard.routing.as") . "stocks.import")->withSuccess(trans("Import war erfolgreich."));
+        return to_route(config("markets-dashboard.routing.as") . "stocks.import")->withSuccess(trans("Import war erfolgreich."));
     }
 
     /**

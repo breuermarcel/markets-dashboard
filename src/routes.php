@@ -32,5 +32,5 @@ Route::prefix("api")->group(function () {
 });
 
 Route::get("/", function () {
-    return redirect()->route(config("markets-dashboard.routing.as") . "stocks.index");
+    return to_route(config("markets-dashboard.routing.as") . "stocks.index");
 })->name("dashboard");
