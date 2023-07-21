@@ -4,7 +4,6 @@ namespace Breuermarcel\MarketsDashboard\Http\Controllers;
 
 use Breuermarcel\MarketsDashboard\Models\Stock;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
@@ -14,7 +13,7 @@ class SearchController extends Controller
 {
     /**
      * @param Request $request
-     * @return \Illuminate\Contracts\View\View|RedirectResponse|void
+     * @return \Illuminate\Contracts\View\View|void
      * @throws ValidationException
      */
     public function index(Request $request)

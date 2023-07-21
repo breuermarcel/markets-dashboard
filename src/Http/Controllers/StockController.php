@@ -2,53 +2,42 @@
 
 namespace Breuermarcel\MarketsDashboard\Http\Controllers;
 
+use Breuermarcel\MarketsDashboard\Http\Requests\CsvStoreRequest;
+use Breuermarcel\MarketsDashboard\Http\Requests\StockStoreRequest;
+use Breuermarcel\MarketsDashboard\Http\Requests\StockUpdateRequest;
 use Breuermarcel\MarketsDashboard\Models\Stock;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 
 class StockController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return Response
+     * @return View|Application|Factory|\Illuminate\Contracts\Foundation\Application
      */
-    public function index()
+    public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
-        return view("markets-dashboard::stocks.list", ["stocks" => Stock::simplePaginate(10)]);
+        $stocks = Stock::simplePaginate(10);
+
+        return view("markets-dashboard::stocks.list", compact("stocks"));
     }
 
+
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
+     * @return View|Application|Factory|\Illuminate\Contracts\Foundation\Application
      */
-    public function create()
+    public function create(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         return view("markets-dashboard::stocks.create");
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return Response
+     * @param StockStoreRequest $request
+     * @return mixed
      */
-    public function store(Request $request)
+    public function store(StockStoreRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            "symbol" => "required|string|max:10",
-            "wkn" => "nullable|string|max:25",
-            "isin" => "nullable|string|max:25",
-            "name" => "nullable|string|max:150"
-        ]);
-
-        if ($validator->fails()) {
-            return to_route(config("markets-dashboard.routing.as") . "stocks.create")->withErrors($validator)->withInput();
-        }
-
-        $validated = $validator->validated();
+        $validated = $request->validated();
 
         Stock::updateOrCreate(
             ["symbol" => strtoupper($validated["symbol"])],
@@ -64,63 +53,44 @@ class StockController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param \Breuermarcel\FinanceDashboard\Models\Stock $stock
-     * @return Response
+     * @param Stock $stock
+     * @return View|Application|Factory|\Illuminate\Contracts\Foundation\Application
      */
-    public function show(Stock $stock)
+    public function show(Stock $stock): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         return view("markets-dashboard::stocks.detail", compact("stock"));
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \Breuermarcel\FinanceDashboard\Models\Stock $stock
-     * @return Response
+     * @param Stock $stock
+     * @return \Illuminate\Contracts\Foundation\Application|Factory|View|Application
      */
-    public function edit(Stock $stock)
+    public function edit(Stock $stock): Application|View|Factory|\Illuminate\Contracts\Foundation\Application
     {
         return view("markets-dashboard::stocks.edit", compact("stock"));
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param \Breuermarcel\FinanceDashboard\Models\Stock $stock
-     * @return Response
+     * @param StockUpdateRequest $request
+     * @param Stock $stock
+     * @return mixed
      */
-    public function update(Request $request, Stock $stock)
+    public function update(StockUpdateRequest $request, Stock $stock): mixed
     {
-        $validator = Validator::make($request->only(["wkn", "isin", "name"]), [
-            "wkn" => "nullable|string|max:25",
-            "isin" => "nullable|string|max:25",
-            "name" => "nullable|string|max:150"
+        $validated = $request->safe()->only([
+            "wkn", "isin", "name"
         ]);
 
-        if ($validator->fails()) {
-            return to_route(config("markets-dashboard.routing.as") . "stocks.edit")->withErrors($validator)->withInput();
-        }
-
-        $validated = $validator->validated();
-
-        $stock->wkn = $validated["wkn"];
-        $stock->isin = $validated["isin"];
-        $stock->name = $validated["name"];
-        $stock->save();
+        $stock->update($validated);
 
         return to_route(config("markets-dashboard.routing.as") . "stocks.index")->withSuccess(trans("Aktie erfolgreich aktualisiert."));
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param \Breuermarcel\FinanceDashboard\Models\Stock $stock
-     * @return Response
+     * @param Stock $stock
+     * @return mixed
      */
-    public function destroy(Stock $stock)
+    public function destroy(Stock $stock): mixed
     {
         $stock->delete();
 
@@ -128,32 +98,20 @@ class StockController extends Controller
     }
 
     /**
-     * Display the form to post csv-file.
-     *
-     * @return Response
+     * @return \Illuminate\Contracts\Foundation\Application|Factory|View|Application
      */
-    public function importCSV()
+    public function importCSV(): Application|View|Factory|\Illuminate\Contracts\Foundation\Application
     {
         return view("markets-dashboard::stocks.import");
     }
 
     /**
-     * Import csv-file to stocks.
-     *
-     * @param Request $request
-     * @return Response
+     * @param CsvStoreRequest $request
+     * @return mixed
      */
-    public function storeCSV(Request $request)
+    public function storeCSV(CsvStoreRequest $request): mixed
     {
-        $validator = Validator::make(
-            $request->only("file"),
-            ["file" => "required|mimes:csv,txt|max:2048"]
-        );
-
-        if ($validator->fails()) {
-            return to_route(config("markets-dashboard.routing.as") . "stocks.import.show")->withErrors($validator)->withInput();
-        }
-
+        $validated = $request->validated();
         $csv = fopen($request->file->getPathname(), "r");
         $firstline = true;
 
@@ -180,11 +138,6 @@ class StockController extends Controller
         return to_route(config("markets-dashboard.routing.as") . "stocks.import")->withSuccess(trans("Import war erfolgreich."));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @return Response
-     */
     public function getStocksByCriteria()
     {
         //

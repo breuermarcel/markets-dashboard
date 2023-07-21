@@ -50,6 +50,5 @@ php artisan migrate
 - [ ] remove api logic
 - [ ] composer.json: add requirements 
 - [ ] add translations
-- [ ] rename to markets-dashboard
 - [ ] use npm and not cdn
 - [ ] use bootstrap-components
