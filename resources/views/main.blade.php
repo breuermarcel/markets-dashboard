@@ -7,11 +7,11 @@
 
     <title>Markets-Dashboard</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
 </head>
 <body id="bm__body">
-    @include("markets-dashboard::components.styling")
+@include("markets-dashboard::components.styling")
     @include("markets-dashboard::components.scripts")
     @include('markets-dashboard::components.navbar')
     <div class="container-fluid">
