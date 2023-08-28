@@ -64,7 +64,7 @@ class APIController
         $from_date = Carbon::now()->subDays($period)->format('U');
         $interval = '1d';
 
-        $url = $this->chart_url . $symbol . '&period1=' . $from_date . '&period2=9999999999&interval=' . $interval;
+        $url = $this->chart_url.$symbol.'&period1='.$from_date.'&period2=9999999999&interval='.$interval;
         $response = file_get_contents($url);
         $data = json_decode($response, true);
 
@@ -98,7 +98,7 @@ class APIController
     {
         $asset = [];
 
-        $url = $this->finance_url . $symbol . '&modules=assetProfile';
+        $url = $this->finance_url.$symbol.'&modules=assetProfile';
         $response = file_get_contents($url);
         $data = json_decode($response, true);
 
@@ -196,7 +196,7 @@ class APIController
     {
         $esg = [];
 
-        $url = $this->finance_url . $symbol . '&modules=esgScores';
+        $url = $this->finance_url.$symbol.'&modules=esgScores';
         $response = file_get_contents($url);
         $data = json_decode($response, true);
 
@@ -287,7 +287,7 @@ class APIController
     {
         $income = [];
 
-        $url = $this->finance_url . $symbol . '&modules=incomeStatementHistory';
+        $url = $this->finance_url.$symbol.'&modules=incomeStatementHistory';
         $response = file_get_contents($url);
         $data = json_decode($response, true);
 
@@ -394,7 +394,7 @@ class APIController
     {
         $cashflow = [];
 
-        $url = $this->finance_url . $symbol . '&modules=cashflowStatementHistory';
+        $url = $this->finance_url.$symbol.'&modules=cashflowStatementHistory';
         $response = file_get_contents($url);
         $data = json_decode($response, true);
 
@@ -540,7 +540,7 @@ class APIController
     {
         $balance_sheet = [];
 
-        $url = $this->finance_url . $symbol . '&modules=balanceSheetHistory';
+        $url = $this->finance_url.$symbol.'&modules=balanceSheetHistory';
         $response = file_get_contents($url);
         $data = json_decode($response, true);
 
@@ -743,7 +743,7 @@ class APIController
     {
         $recommendations = [];
 
-        $url = $this->finance_url . $symbol . '&modules=recommendationTrend';
+        $url = $this->finance_url.$symbol.'&modules=recommendationTrend';
         $response = file_get_contents($url);
         $data = json_decode($response, true);
 
@@ -797,7 +797,7 @@ class APIController
     {
         $upgrade_downgrade = [];
 
-        $url = $this->finance_url . $symbol . '&modules=upgradeDowngradeHistory';
+        $url = $this->finance_url.$symbol.'&modules=upgradeDowngradeHistory';
         $response = file_get_contents($url);
         $data = json_decode($response, true);
 

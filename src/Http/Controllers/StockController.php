@@ -41,7 +41,7 @@ class StockController extends Controller
             ]
         );
 
-        return to_route(config('markets-dashboard.routing.as') . 'stocks.index')->withSuccess(trans('Aktie erfolgreich hinzugefügt.'));
+        return to_route(config('markets-dashboard.routing.as').'stocks.index')->withSuccess(trans('Aktie erfolgreich hinzugefügt.'));
     }
 
     public function show(Stock $stock): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
@@ -62,14 +62,14 @@ class StockController extends Controller
 
         $stock->update($validated);
 
-        return to_route(config('markets-dashboard.routing.as') . 'stocks.index')->withSuccess(trans('Aktie erfolgreich aktualisiert.'));
+        return to_route(config('markets-dashboard.routing.as').'stocks.index')->withSuccess(trans('Aktie erfolgreich aktualisiert.'));
     }
 
     public function destroy(Stock $stock): mixed
     {
         $stock->delete();
 
-        return to_route(config('markets-dashboard.routing.as') . 'stocks.index')->withSuccess(trans('Aktie erfolgreich gelöscht.'));
+        return to_route(config('markets-dashboard.routing.as').'stocks.index')->withSuccess(trans('Aktie erfolgreich gelöscht.'));
     }
 
     public function importCSV(): Application|View|Factory|\Illuminate\Contracts\Foundation\Application
@@ -84,7 +84,7 @@ class StockController extends Controller
         $firstline = true;
 
         while (($data = fgetcsv($csv)) !== false) {
-            if (!$firstline) {
+            if (! $firstline) {
                 Stock::updateOrCreate(
                     [
                         // search for item
@@ -103,7 +103,7 @@ class StockController extends Controller
 
         fclose($csv);
 
-        return to_route(config('markets-dashboard.routing.as') . 'stocks.import')->withSuccess(trans('Import war erfolgreich.'));
+        return to_route(config('markets-dashboard.routing.as').'stocks.import')->withSuccess(trans('Import war erfolgreich.'));
     }
 
     public function getStocksByCriteria()

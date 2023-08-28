@@ -36,8 +36,8 @@ class SearchController extends Controller
     private function doSearch(string $val): Collection
     {
         return Stock::select('symbol', 'name')
-            ->where('symbol', 'LIKE', '%' . $val . '%')
-            ->orWhere('name', 'LIKE', '%' . $val . '%')
+            ->where('symbol', 'LIKE', '%'.$val.'%')
+            ->orWhere('name', 'LIKE', '%'.$val.'%')
             ->get();
     }
 }
