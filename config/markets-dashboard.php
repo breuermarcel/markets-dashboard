@@ -1,13 +1,13 @@
 <?php
 
 return [
-    "name" => "markets-dashboard",
+    'name' => 'markets-dashboard',
 
-    "routing" => [
-        "prefix" => "markets-dashboard",
-        "as" => "markets-dashboard.",
-        "middleware" => [
-            "web"
-        ]
-    ]
+    'routing' => [
+        'prefix' => 'markets-dashboard',
+        'as' => 'markets-dashboard.',
+        'middleware' => [
+            'web',
+        ],
+    ],
 ];

@@ -12,17 +12,17 @@ class Stock extends Model
     /**
      * @var string
      */
-    protected $table = "bm_stocks";
+    protected $table = 'bm_stocks';
 
     /**
      * @var string
      */
-    protected $primaryKey = "symbol";
+    protected $primaryKey = 'symbol';
 
     /**
      * @var string
      */
-    protected $keyType = "string";
+    protected $keyType = 'string';
 
     /**
      * @var bool
@@ -35,10 +35,10 @@ class Stock extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        "symbol",
-        "wkn",
-        "isin",
-        "name"
+        'symbol',
+        'wkn',
+        'isin',
+        'name',
     ];
 
     public function information()

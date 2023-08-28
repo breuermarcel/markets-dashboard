@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create("bm_stocks", function (Blueprint $table) {
-            $table->string("symbol")->primary();
-            $table->string("wkn")->unique()->nullable();
-            $table->string("isin")->unique()->nullable();
-            $table->string("name");
+        Schema::create('bm_stocks', function (Blueprint $table) {
+            $table->string('symbol')->primary();
+            $table->string('wkn')->unique()->nullable();
+            $table->string('isin')->unique()->nullable();
+            $table->string('name');
         });
     }
 
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists("bm_stocks");
+        Schema::dropIfExists('bm_stocks');
     }
 };

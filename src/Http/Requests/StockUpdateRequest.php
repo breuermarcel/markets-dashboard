@@ -23,9 +23,9 @@ class StockUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "wkn" => "nullable|string|max:25|unique:bm_stocks",
-            "isin" => "nullable|string|max:25|unique:bm_stocks",
-            "name" => "nullable|string|max:150"
+            'wkn' => 'nullable|string|max:25|unique:bm_stocks',
+            'isin' => 'nullable|string|max:25|unique:bm_stocks',
+            'name' => 'nullable|string|max:150',
         ];
     }
 }

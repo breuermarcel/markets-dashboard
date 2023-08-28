@@ -12,29 +12,26 @@ use Illuminate\Validation\ValidationException;
 class SearchController extends Controller
 {
     /**
-     * @param Request $request
      * @return \Illuminate\Contracts\View\View|void
+     *
      * @throws ValidationException
      */
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $validator = Validator::make($request->only("sword"), [
-                "sword" => "required|string|max:50",
+            $validator = Validator::make($request->only('sword'), [
+                'sword' => 'required|string|max:50',
             ]);
 
             $validated = $validator->validated();
-            $search_results = $this->doSearch($validated["sword"]);
+            $search_results = $this->doSearch($validated['sword']);
 
-            return View::make("markets-dashboard::components.search-results")->with("search_results", $search_results);
+            return View::make('markets-dashboard::components.search-results')->with('search_results', $search_results);
         }
     }
 
     /**
      * Search by word for stock.
-     *
-     * @param string $val
-     * @return Collection
      */
     private function doSearch(string $val): Collection
     {

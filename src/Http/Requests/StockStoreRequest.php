@@ -23,10 +23,10 @@ class StockStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "symbol" => "required|string|max:10|unique:bm_stocks",
-            "wkn" => "nullable|string|max:25|unique:bm_stocks",
-            "isin" => "nullable|string|max:25|unique:bm_stocks",
-            "name" => "nullable|string|max:150"
+            'symbol' => 'required|string|max:10|unique:bm_stocks',
+            'wkn' => 'nullable|string|max:25|unique:bm_stocks',
+            'isin' => 'nullable|string|max:25|unique:bm_stocks',
+            'name' => 'nullable|string|max:150',
         ];
     }
 }

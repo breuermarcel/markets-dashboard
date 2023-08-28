@@ -9,7 +9,7 @@ class Information extends Model
 {
     use HasFactory;
 
-    protected $table = "bm_markets_analysis";
+    protected $table = 'bm_markets_analysis';
 
     protected $fillable = [
         //
