@@ -8,6 +8,7 @@ return [
         'as' => 'markets-dashboard.',
         'middleware' => [
             'web',
+            'auth',
         ],
     ],
 ];
