@@ -16,7 +16,7 @@
     ],
     "require": {
         "laravel/framework": "^10.0",
-        "breuermarcel/markets-api": "*"
+        "breuermarcel/stockify": "*"
     },
     "autoload": {
         "psr-4": {
